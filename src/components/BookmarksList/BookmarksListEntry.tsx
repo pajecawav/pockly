@@ -109,6 +109,12 @@ export function BookmarksListEntry({ bookmark }: Props) {
 									liked: !bookmark.liked,
 								},
 							},
+							optimisticResponse: {
+								updateBookmark: {
+									...bookmark,
+									liked: !bookmark.liked,
+								},
+							},
 							// TODO: modify cached data instead of refetching
 							refetchQueries: [
 								namedOperations.Query.GetLikedBookmarks,
