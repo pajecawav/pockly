@@ -66,7 +66,7 @@ export function Sidebar() {
 				onClose={addBookmarkModalState.onClose}
 			/>
 
-			<Stack direction="column" w="full" spacing={0}>
+			<Stack direction="column" w="full" spacing="0.5">
 				<SidebarHeading>Bookmarks</SidebarHeading>
 				<SidebarLink href="/read" icon={CollectionIcon}>
 					Reading List

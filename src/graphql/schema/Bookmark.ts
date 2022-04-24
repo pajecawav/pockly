@@ -1,3 +1,5 @@
+import { getPageMetadata } from "@/lib/metadata";
+import { getHostnameFromUrl } from "@/utils";
 import { db } from "prisma/client";
 import { builder } from "../builder";
 
@@ -85,7 +87,6 @@ const CreateBookmarkInput = builder.inputType("CreateBookmarkInput", {
 			validate: { url: true },
 		}),
 		title: t.string({
-			required: true,
 			validate: { minLength: 1, maxLength: 100 },
 		}),
 	}),
@@ -102,10 +103,19 @@ builder.mutationField("createBookmark", t =>
 			}),
 		},
 		resolve: async (query, _parent, { input }, { user }) => {
-			// TODO: fetch title from the page if not provided
+			const metadata = await getPageMetadata(input.url);
+
+			const title =
+				input.title ?? metadata.title ?? getHostnameFromUrl(input.url);
+
 			return db.bookmark.create({
 				...query,
-				data: { userId: user!.id, url: input.url, title: input.title },
+				data: {
+					userId: user!.id,
+					url: input.url,
+					title,
+					image: metadata.image,
+				},
 			});
 		},
 	})

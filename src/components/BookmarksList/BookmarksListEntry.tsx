@@ -1,3 +1,4 @@
+import { getHostnameFromUrl } from "@/utils";
 import {
 	BookmarksListEntry_BookmarkFragment,
 	DeleteBookmarkMutation,
@@ -86,7 +87,7 @@ export function BookmarksListEntry({ bookmark }: Props) {
 			>
 				<Text as="div">{bookmark.title}</Text>{" "}
 				<Text as="div" color="lightslategray">
-					{new URL(bookmark.url).hostname}
+					{getHostnameFromUrl(bookmark.url)}
 				</Text>
 			</Link>
 

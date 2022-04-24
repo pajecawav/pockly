@@ -1,4 +1,5 @@
 import { useZodForm } from "@/hooks/useZodForm";
+import { optionalTextInputSchema } from "@/utils/schemas";
 import {
 	CreateBookmarkMutation,
 	CreateBookmarkMutationVariables,
@@ -18,7 +19,6 @@ import {
 	ModalOverlay,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import { useRef } from "react";
 import { object, string } from "zod";
 
 interface Props {
@@ -42,8 +42,7 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 	const form = useZodForm({
 		schema: object({
 			url: string().url(),
-			// TODO: make optional after implementing automatic metadata fetching on backend
-			title: string().min(1).max(100),
+			title: optionalTextInputSchema(string().min(1).max(100)),
 		}),
 	});
 
@@ -99,7 +98,7 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 						<Input
 							id="bookmark-title"
 							type="title"
-							placeholder="Title"
+							placeholder="(Optional)"
 							isInvalid={
 								form.formState.touchedFields.title &&
 								!!form.formState.errors.title
