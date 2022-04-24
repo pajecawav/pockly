@@ -23,6 +23,7 @@ const BookmarksListEntry_bookmarkFragment = gql`
 		liked
 		archived
 		url
+		createdAt
 	}
 `;
 
@@ -106,12 +107,6 @@ export function BookmarksListEntry({ bookmark }: Props) {
 							variables: {
 								id: bookmark.id,
 								input: {
-									liked: !bookmark.liked,
-								},
-							},
-							optimisticResponse: {
-								updateBookmark: {
-									...bookmark,
 									liked: !bookmark.liked,
 								},
 							},

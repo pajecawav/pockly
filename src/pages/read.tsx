@@ -17,7 +17,7 @@ export default function ReadingListPage() {
 			${BookmarksList.fragments.bookmark}
 
 			query GetUnreadBookmarks {
-				bookmarks(filter: { archived: false }) {
+				bookmarks(filter: { archived: false }, sort: createdAt) {
 					id
 					...BookmarksListEntry_bookmark
 				}

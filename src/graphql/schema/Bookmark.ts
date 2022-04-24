@@ -9,10 +9,21 @@ export const BookmarkObject = builder.prismaObject("Bookmark", {
 		title: t.exposeString("title"),
 		body: t.exposeString("body", { nullable: true }),
 		image: t.exposeString("image", { nullable: true }),
-		liked: t.exposeBoolean("liked"),
-		archived: t.exposeBoolean("archived"),
 		createdAt: t.expose("createdAt", { type: "DateTime" }),
 		updatedAt: t.expose("updatedAt", { type: "DateTime" }),
+		likedAt: t.expose("likedAt", { type: "DateTime", nullable: true }),
+		archivedAt: t.expose("archivedAt", {
+			type: "DateTime",
+			nullable: true,
+		}),
+		liked: t.field({
+			type: "Boolean",
+			resolve: bookmark => !!bookmark.likedAt,
+		}),
+		archived: t.field({
+			type: "Boolean",
+			resolve: bookmark => !!bookmark.archivedAt,
+		}),
 	}),
 });
 
@@ -23,23 +34,45 @@ const BookmarksFilterInput = builder.inputType("BookmarksFilterInput", {
 	}),
 });
 
+const BookmarksSortOrderEnum = builder.enumType("BookmarksSortOrderEnum", {
+	values: ["createdAt", "likedAt", "archivedAt"] as const,
+});
+
 builder.queryField("bookmarks", t =>
 	t.prismaField({
 		authScopes: { user: true },
 		type: ["Bookmark"],
 		args: {
 			filter: t.arg({ type: BookmarksFilterInput }),
+			sort: t.arg({
+				type: BookmarksSortOrderEnum,
+				required: true,
+				defaultValue: "createdAt",
+			}),
+			oldestFirst: t.arg.boolean({ defaultValue: false }),
 		},
-		resolve: async (query, _root, { filter }, { user }) => {
+		resolve: async (
+			query,
+			_root,
+			{ filter, oldestFirst, sort },
+			{ user }
+		) => {
+			const sortOrder = oldestFirst ? "asc" : "desc";
+
+			// TODO: how to make this less ugly?
+			const filterToQueryOption = (filter: boolean | undefined | null) =>
+				filter != null
+					? { [filter ? "not" : "equals"]: null }
+					: undefined;
+
 			return db.bookmark.findMany({
 				...query,
 				where: {
 					userId: user!.id,
-					liked: filter?.liked ?? undefined,
-					archived: filter?.archived ?? undefined,
+					likedAt: filterToQueryOption(filter?.liked),
+					archivedAt: filterToQueryOption(filter?.archived),
 				},
-				// TODO: proper ordering based on a filter
-				orderBy: { createdAt: "desc" },
+				orderBy: { [sort]: sortOrder },
 			});
 		},
 	})
@@ -103,13 +136,16 @@ builder.mutationField("updateBookmark", t =>
 				rejectOnNotFound: true,
 			});
 
+			const inputToDateValue = (bool: boolean | undefined) =>
+				bool === undefined ? undefined : bool ? new Date() : null;
+
 			return db.bookmark.update({
 				...query,
 				where: { id },
 				data: {
 					title: input?.title ?? undefined,
-					liked: input?.liked ?? undefined,
-					archived: input?.archived ?? undefined,
+					likedAt: inputToDateValue(input?.liked ?? undefined),
+					archivedAt: inputToDateValue(input?.archived ?? undefined),
 				},
 			});
 		},

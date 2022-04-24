@@ -17,7 +17,7 @@ export default function LikedBookmarksPage() {
 			${BookmarksList.fragments.bookmark}
 
 			query GetLikedBookmarks {
-				bookmarks(filter: { liked: true }) {
+				bookmarks(filter: { liked: true }, sort: likedAt) {
 					id
 					...BookmarksListEntry_bookmark
 				}

@@ -3,8 +3,6 @@ import { Header } from "@/components/Header";
 import {
 	GetArchivedBookmarksQuery,
 	GetArchivedBookmarksQueryVariables,
-	GetLikedBookmarksQuery,
-	GetLikedBookmarksQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
 import { Box, Center, Spinner } from "@chakra-ui/react";
@@ -19,7 +17,7 @@ export default function LikedBookmarksPage() {
 			${BookmarksList.fragments.bookmark}
 
 			query GetArchivedBookmarks {
-				bookmarks(filter: { archived: true }) {
+				bookmarks(filter: { archived: true }, sort: archivedAt) {
 					id
 					...BookmarksListEntry_bookmark
 				}

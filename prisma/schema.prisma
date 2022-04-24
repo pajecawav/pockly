@@ -67,15 +67,15 @@ model User {
 }
 
 model Bookmark {
-  id        String   @id @default(cuid())
-  url       String
-  title     String
-  body      String?
-  image     String?
-  liked     Boolean  @default(false)
-  archived  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String    @id @default(cuid())
+  url        String
+  title      String
+  body       String?
+  image      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  likedAt    DateTime?
+  archivedAt DateTime?
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
