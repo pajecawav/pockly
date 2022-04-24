@@ -1,8 +1,8 @@
-html,
+/* html,
 body,
 #__next {
 	height: 100%;
-}
+} */
 
 #__next {
 	display: flex;

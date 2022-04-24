@@ -12,6 +12,7 @@ import { HStack, Icon, IconButton, Link, Stack, Text } from "@chakra-ui/react";
 import { ArchiveIcon, HeartIcon, TrashIcon } from "@heroicons/react/outline";
 import gql from "graphql-tag";
 import { FilledIcon } from "../FilledIcon";
+import { BookmarkImage } from "./BookmarkImage";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
@@ -25,6 +26,7 @@ const BookmarksListEntry_bookmarkFragment = gql`
 		archived
 		url
 		createdAt
+		image
 	}
 `;
 
@@ -73,19 +75,28 @@ export function BookmarksListEntry({ bookmark }: Props) {
 	return (
 		<Stack
 			direction={{ base: "column", sm: "row" }}
+			alignItems={{ sm: "center" }}
 			py="1.5"
 			pr="4"
+			spacing="4"
 			borderBottom="1px"
 			borderColor="gray.100"
 			_dark={{ borderColor: "gray.700" }}
 		>
+			<Link href={bookmark.url} isExternal>
+				<BookmarkImage title={bookmark.title} src={bookmark.image} />
+			</Link>
+
 			<Link
 				href={bookmark.url}
 				isExternal
 				flex="1"
+				w={{ base: "auto", sm: "0" }}
 				wordBreak="break-word"
 			>
-				<Text as="div">{bookmark.title}</Text>{" "}
+				<Text as="div" isTruncated title={bookmark.title}>
+					{bookmark.title}
+				</Text>{" "}
 				<Text as="div" color="lightslategray">
 					{getHostnameFromUrl(bookmark.url)}
 				</Text>
