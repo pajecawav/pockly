@@ -8,7 +8,7 @@ import {
 
 /** @type {import("@chakra-ui/react").ThemeConfig} */
 const config: ThemeConfig = {
-	initialColorMode: "system",
+	initialColorMode: "light",
 	useSystemColorMode: false,
 };
 

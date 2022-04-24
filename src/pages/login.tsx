@@ -9,6 +9,7 @@ export default function LoginPage() {
 	return (
 		<Center w="full" minH="full" p={1}>
 			<Button
+				size="lg"
 				leftIcon={<Icon as={GitHubIcon} />}
 				onClick={() => signIn("github")}
 			>
