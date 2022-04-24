@@ -1,0 +1,17 @@
+overwrite: true
+schema: ./src/graphql/build-schema.js
+require:
+    # required to make path mappings from `tsconfig.json` work
+    - tsconfig-paths/register
+documents: "src/**/!(*.d).{ts,tsx}"
+generates:
+    src/__generated__/schema.graphql:
+        plugins:
+            - schema-ast
+    src/__generated__/operations.ts:
+        plugins:
+            - typescript
+            - typescript-operations:
+                  dedupeOperationSuffix: true
+            - named-operations-object
+            # - typescript-react-apollo

@@ -1,0 +1,18 @@
+html,
+body,
+#__next {
+	height: 100%;
+}
+
+#__next {
+	display: flex;
+}
+
+#nprogress .bar {
+	background: black;
+}
+
+#nprogress .spinner,
+#nprogress .peg {
+	display: none;
+}
