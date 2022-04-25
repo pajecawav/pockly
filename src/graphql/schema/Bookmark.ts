@@ -31,6 +31,7 @@ export const BookmarkObject = builder.prismaObject("Bookmark", {
 
 const BookmarksFilterInput = builder.inputType("BookmarksFilterInput", {
 	fields: t => ({
+		title: t.string(),
 		liked: t.boolean({ defaultValue: undefined }),
 		archived: t.boolean({ defaultValue: undefined }),
 	}),
@@ -67,10 +68,24 @@ builder.queryField("bookmarks", t =>
 					? { [filter ? "not" : "equals"]: null }
 					: undefined;
 
+			const queryStringToPostgresOperators = (query: string) =>
+				query
+					.split(" ")
+					.map(value => value.trim())
+					.filter(Boolean)
+					.join(" & ");
+
 			return db.bookmark.findMany({
 				...query,
 				where: {
 					userId: user!.id,
+					...(filter?.title && {
+						title: {
+							search: queryStringToPostgresOperators(
+								filter.title
+							),
+						},
+					}),
 					likedAt: filterToQueryOption(filter?.liked),
 					archivedAt: filterToQueryOption(filter?.archived),
 				},

@@ -11,6 +11,7 @@ import {
 	CollectionIcon,
 	HeartIcon,
 	PencilAltIcon,
+	SearchIcon,
 } from "@heroicons/react/outline";
 import { signOut, useSession } from "next-auth/react";
 import { AddBookmarkModal } from "../AddBookmarkModal";
@@ -76,6 +77,9 @@ export function Sidebar() {
 				</SidebarLink>
 				<SidebarLink href="/archive" icon={ArchiveIcon}>
 					Archive
+				</SidebarLink>
+				<SidebarLink href="/search" icon={SearchIcon}>
+					Search
 				</SidebarLink>
 			</Stack>
 		</Stack>
