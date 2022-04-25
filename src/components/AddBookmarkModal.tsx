@@ -8,7 +8,9 @@ import {
 import { useMutation } from "@apollo/client";
 import {
 	Button,
-	chakra,
+	FormControl,
+	FormErrorMessage,
+	FormLabel,
 	Input,
 	Modal,
 	ModalBody,
@@ -17,6 +19,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Stack,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { object, string } from "zod";
@@ -44,6 +47,7 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 			url: string().url(),
 			title: optionalTextInputSchema(string().min(1).max(100)),
 		}),
+		reValidateMode: "onSubmit",
 	});
 
 	const [createBookmark, { loading }] = useMutation<
@@ -65,47 +69,48 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 			<ModalOverlay />
 			<ModalContent>
 				<ModalHeader>Add Bookmark</ModalHeader>
+
 				<ModalCloseButton />
 
 				<ModalBody>
-					<chakra.form
+					<Stack
+						as="form"
 						id="add-bookmark-form"
 						onSubmit={form.handleSubmit(values => {
 							createBookmark({
 								variables: { input: values },
 							});
 						})}
-						display="grid"
-						rowGap={2}
-						columnGap={4}
-						alignItems="center"
-						gridTemplateColumns="max-content auto"
 					>
-						<label htmlFor="bookmark-url">URL</label>
-						<Input
-							id="bookmark-url"
-							type="url"
-							required
-							placeholder="https://..."
-							isInvalid={
-								form.formState.touchedFields.url &&
-								!!form.formState.errors.url
-							}
-							{...form.register("url")}
-						/>
+						<FormControl isInvalid={!!form.formState.errors.url}>
+							<FormLabel htmlFor="bookmark-url">URL</FormLabel>
+							<Input
+								id="bookmark-url"
+								type="url"
+								required
+								placeholder="https://..."
+								{...form.register("url")}
+							/>
+							<FormErrorMessage>
+								{form.formState.errors.url?.message}
+							</FormErrorMessage>
+						</FormControl>
 
-						<label htmlFor="bookmark-title">Title</label>
-						<Input
-							id="bookmark-title"
-							type="title"
-							placeholder="(Optional)"
-							isInvalid={
-								form.formState.touchedFields.title &&
-								!!form.formState.errors.title
-							}
-							{...form.register("title")}
-						/>
-					</chakra.form>
+						<FormControl isInvalid={!!form.formState.errors.title}>
+							<FormLabel htmlFor="bookmark-title">
+								Title
+							</FormLabel>
+							<Input
+								id="bookmark-title"
+								type="title"
+								placeholder="(Optional)"
+								{...form.register("title")}
+							/>
+							<FormErrorMessage>
+								{form.formState.errors.title?.message}
+							</FormErrorMessage>
+						</FormControl>
+					</Stack>
 				</ModalBody>
 
 				<ModalFooter>

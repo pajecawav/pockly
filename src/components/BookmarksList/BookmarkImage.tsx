@@ -1,4 +1,5 @@
 import { Box, Center, GridProps, Image } from "@chakra-ui/react";
+import { useState } from "react";
 
 interface Props {
 	title: string;
@@ -12,6 +13,10 @@ const backgroundColors: GridProps["bg"][][] = [
 ];
 
 export function BookmarkImage({ title, src }: Props) {
+	// HACK: Chakra Image ignores fallback when loading="lazy"
+	// (https://github.com/chakra-ui/chakra-ui/pull/1012)
+	const [isError, setIsError] = useState<boolean>(false);
+
 	const letter = title.toUpperCase().match(/[A-Z]/)?.[0];
 
 	const colorIndex = title.length % backgroundColors.length;
@@ -38,7 +43,7 @@ export function BookmarkImage({ title, src }: Props) {
 			>
 				{letter}
 			</Center>
-			{src && (
+			{src && !isError && (
 				<Image
 					position="absolute"
 					w="full"
@@ -47,6 +52,7 @@ export function BookmarkImage({ title, src }: Props) {
 					src={src}
 					alt=""
 					loading="lazy"
+					onError={() => setIsError(true)}
 				/>
 			)}
 		</Box>

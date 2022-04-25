@@ -39,6 +39,16 @@ IconComponent.defaultProps = {
 };
 const Icon: ComponentStyleConfig = {};
 
+const Modal: ComponentStyleConfig = {
+	baseStyle: {
+		header: {
+			borderBottom: "1px",
+			borderColor: "gray.100",
+			_dark: { borderColor: "gray.700" },
+		},
+	},
+};
+
 export const theme = extendTheme({
 	config,
 	fonts: {
@@ -57,5 +67,6 @@ export const theme = extendTheme({
 		Button,
 		IconButton,
 		Icon,
+		Modal,
 	},
 });
