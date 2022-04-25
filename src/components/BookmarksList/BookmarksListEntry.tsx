@@ -1,8 +1,6 @@
 import { getHostnameFromUrl } from "@/utils";
 import {
 	BookmarksListEntry_BookmarkFragment,
-	DeleteBookmarkMutation,
-	DeleteBookmarkMutationVariables,
 	namedOperations,
 	UpdateBookmarkMutation,
 	UpdateBookmarkMutationVariables,
@@ -16,6 +14,7 @@ import { BookmarkImage } from "./BookmarkImage";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
+	onDelete: () => void;
 }
 
 const BookmarksListEntry_bookmarkFragment = gql`
@@ -30,7 +29,7 @@ const BookmarksListEntry_bookmarkFragment = gql`
 	}
 `;
 
-export function BookmarksListEntry({ bookmark }: Props) {
+export function BookmarksListEntry({ bookmark, onDelete }: Props) {
 	const [mutateUpdate] = useMutation<
 		UpdateBookmarkMutation,
 		UpdateBookmarkMutationVariables
@@ -55,20 +54,6 @@ export function BookmarksListEntry({ bookmark }: Props) {
 					archived: vars.input.archived ?? bookmark.archived,
 				},
 			}),
-		}
-	);
-
-	const [mutateDelete] = useMutation<
-		DeleteBookmarkMutation,
-		DeleteBookmarkMutationVariables
-	>(
-		gql`
-			mutation DeleteBookmark($id: String!) {
-				deleteBookmark(id: $id)
-			}
-		`,
-		{
-			update: cache => cache.evict({ id: cache.identify(bookmark) }),
 		}
 	);
 
@@ -161,9 +146,7 @@ export function BookmarksListEntry({ bookmark }: Props) {
 					icon={<Icon as={TrashIcon} boxSize="5" />}
 					title="Delete bookmark"
 					aria-label="Delete bookmark"
-					onClick={() =>
-						mutateDelete({ variables: { id: bookmark.id } })
-					}
+					onClick={onDelete}
 				/>
 			</HStack>
 		</Stack>

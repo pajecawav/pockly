@@ -163,7 +163,8 @@ builder.mutationField("updateBookmark", t =>
 );
 
 builder.mutationField("deleteBookmark", t =>
-	t.boolean({
+	t.field({
+		type: BookmarkObject,
 		authScopes: { user: true },
 		args: {
 			id: t.arg.string({ required: true }),
@@ -174,9 +175,7 @@ builder.mutationField("deleteBookmark", t =>
 				rejectOnNotFound: true,
 			});
 
-			await db.bookmark.delete({ where: { id: args.id } });
-
-			return true;
+			return await db.bookmark.delete({ where: { id: args.id } });
 		},
 	})
 );
