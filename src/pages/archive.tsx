@@ -8,7 +8,7 @@ import { useQuery } from "@apollo/client";
 import { Box, Center, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
 
-export default function LikedBookmarksPage() {
+export default function ArchivedBookmarksPage() {
 	const { data } = useQuery<
 		GetArchivedBookmarksQuery,
 		GetArchivedBookmarksQueryVariables

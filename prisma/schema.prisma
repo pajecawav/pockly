@@ -77,7 +77,7 @@ model Bookmark {
   likedAt    DateTime?
   archivedAt DateTime?
 
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   @@map("bookmarks")

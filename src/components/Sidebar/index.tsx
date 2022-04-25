@@ -74,8 +74,8 @@ export function Sidebar() {
 				<SidebarLink href="/liked" icon={HeartIcon}>
 					Liked
 				</SidebarLink>
-				<SidebarLink href="/archived" icon={ArchiveIcon}>
-					Archived
+				<SidebarLink href="/archive" icon={ArchiveIcon}>
+					Archive
 				</SidebarLink>
 			</Stack>
 		</Stack>
