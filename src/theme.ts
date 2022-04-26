@@ -17,7 +17,7 @@ const font =
 
 const Button: ComponentStyleConfig = {
 	defaultProps: {
-		size: "sm",
+		size: { md: "sm" },
 	},
 };
 
@@ -28,7 +28,7 @@ IconButtonComponent.defaultProps = {
 };
 const IconButton: ComponentStyleConfig = {
 	defaultProps: {
-		size: "sm",
+		size: { md: "sm" },
 	},
 };
 
@@ -62,7 +62,6 @@ export const theme = extendTheme({
 		global: (props: any) => ({
 			body: {
 				bg: mode("white", "gray.800")(props),
-				fontSize: "sm",
 			},
 		}),
 	},

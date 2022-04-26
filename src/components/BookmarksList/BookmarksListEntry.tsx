@@ -57,6 +57,35 @@ export function BookmarksListEntry({ bookmark, onDelete }: Props) {
 		}
 	);
 
+	const onToggleLiked = () => {
+		mutateUpdate({
+			variables: {
+				id: bookmark.id,
+				input: {
+					liked: !bookmark.liked,
+				},
+			},
+			// TODO: modify cached data instead of refetching
+			refetchQueries: [namedOperations.Query.GetLikedBookmarks],
+		});
+	};
+
+	const onMoveToArchive = () => {
+		mutateUpdate({
+			variables: {
+				id: bookmark.id,
+				input: {
+					archived: !bookmark.archived,
+				},
+			},
+			// TODO: modify cached data instead of refetching
+			refetchQueries: [
+				namedOperations.Query.GetUnreadBookmarks,
+				namedOperations.Query.GetArchivedBookmarks,
+			],
+		});
+	};
+
 	return (
 		<Stack
 			direction={{ base: "column", sm: "row" }}
@@ -89,61 +118,34 @@ export function BookmarksListEntry({ bookmark, onDelete }: Props) {
 
 			<HStack spacing="1">
 				<IconButton
-					size="xs"
+					size="sm"
 					icon={
 						<FilledIcon
 							as={HeartIcon}
-							boxSize="5"
+							boxSize="6"
 							filled={bookmark.liked}
 						/>
 					}
 					title="Toggle liked"
 					aria-label="Toggle liked"
-					onClick={() =>
-						mutateUpdate({
-							variables: {
-								id: bookmark.id,
-								input: {
-									liked: !bookmark.liked,
-								},
-							},
-							// TODO: modify cached data instead of refetching
-							refetchQueries: [
-								namedOperations.Query.GetLikedBookmarks,
-							],
-						})
-					}
+					onClick={onToggleLiked}
 				/>
 				<IconButton
-					size="xs"
+					size="sm"
 					icon={
 						<FilledIcon
 							as={ArchiveIcon}
-							boxSize="5"
+							boxSize="6"
 							filled={bookmark.archived}
 						/>
 					}
 					title="Move to archive"
 					aria-label="Move to archive"
-					onClick={() =>
-						mutateUpdate({
-							variables: {
-								id: bookmark.id,
-								input: {
-									archived: !bookmark.archived,
-								},
-							},
-							// TODO: modify cached data instead of refetching
-							refetchQueries: [
-								namedOperations.Query.GetUnreadBookmarks,
-								namedOperations.Query.GetArchivedBookmarks,
-							],
-						})
-					}
+					onClick={onMoveToArchive}
 				/>
 				<IconButton
-					size="xs"
-					icon={<Icon as={TrashIcon} boxSize="5" />}
+					size="sm"
+					icon={<Icon as={TrashIcon} boxSize="6" />}
 					title="Delete bookmark"
 					aria-label="Delete bookmark"
 					onClick={onDelete}

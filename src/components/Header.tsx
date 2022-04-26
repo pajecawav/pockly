@@ -21,9 +21,9 @@ export function Header({ children }: Props) {
 			position="sticky"
 			top="0"
 			zIndex="sticky"
-			h="12"
+			h="14"
 			py="3"
-			pl={{ base: "8", md: "0" }}
+			pl={{ base: "10", md: "0" }}
 			bg={useDefaultBackgroundColor()}
 			borderBottom="1px"
 			borderColor="gray.100"
@@ -39,11 +39,11 @@ export function Header({ children }: Props) {
 				icon={
 					<Icon
 						as={colorMode === "light" ? MoonIcon : SunIcon}
-						boxSize="5"
+						boxSize="6"
 					/>
 				}
 				alignSelf="flex-end"
-				size="xs"
+				size="sm"
 				variant="unstyled"
 				onClick={() => toggleColorMode()}
 				title="Toggle theme"
