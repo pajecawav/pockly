@@ -41,6 +41,9 @@ const Icon: ComponentStyleConfig = {};
 
 const Modal: ComponentStyleConfig = {
 	baseStyle: {
+		dialog: {
+			m: "2",
+		},
 		header: {
 			borderBottom: "1px",
 			borderColor: "gray.100",

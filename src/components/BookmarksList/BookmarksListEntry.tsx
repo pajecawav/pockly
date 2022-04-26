@@ -62,7 +62,7 @@ export function BookmarksListEntry({ bookmark, onDelete }: Props) {
 			direction={{ base: "column", sm: "row" }}
 			alignItems={{ sm: "center" }}
 			py="1.5"
-			pr="4"
+			pr="2"
 			spacing="4"
 			borderBottom="1px"
 			borderColor="gray.100"

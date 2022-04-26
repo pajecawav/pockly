@@ -21,7 +21,6 @@ export function Header({ children }: Props) {
 			top="0"
 			zIndex="sticky"
 			py="3"
-			pr="4"
 			bg="white"
 			borderBottom="1px"
 			borderColor="gray.100"

@@ -32,7 +32,8 @@ export function Sidebar() {
 			zIndex="sticky"
 			direction="column"
 			alignItems="start"
-			p={3}
+			py={3}
+			pr={3}
 			gap={2}
 		>
 			<HStack w="full" px={2}>

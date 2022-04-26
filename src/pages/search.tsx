@@ -77,7 +77,7 @@ export default function SearchBookmarksPage() {
 			{/* TODO: responsive layout */}
 			<HStack
 				as="form"
-				my="2"
+				my="3"
 				alignItems="stretch"
 				onSubmit={form.handleSubmit(handleSubmit)}
 			>
@@ -87,7 +87,8 @@ export default function SearchBookmarksPage() {
 					{...form.register("query")}
 				/>
 				<Select
-					w="60"
+					w="40"
+					flexShrink={0}
 					defaultValue={scopeEnum.enum.all}
 					{...form.register("scope")}
 				>
@@ -97,9 +98,9 @@ export default function SearchBookmarksPage() {
 				</Select>
 				<Button
 					type="submit"
-					isLoading={loading}
 					size="md"
 					flexShrink={0}
+					isLoading={loading}
 				>
 					Search
 				</Button>
