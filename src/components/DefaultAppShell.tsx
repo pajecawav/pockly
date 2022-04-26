@@ -10,7 +10,7 @@ export function DefaultAppShell({ children }: Props) {
 	return (
 		<Stack w="full" maxW="4xl" mx="auto" px="3" direction="row" spacing="0">
 			<Sidebar />
-			<Box flex="1" w="0">
+			<Box as="main" flex="1" w="0">
 				{children}
 			</Box>
 		</Stack>

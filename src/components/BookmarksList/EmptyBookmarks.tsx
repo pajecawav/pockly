@@ -8,7 +8,7 @@ export function EmptyBookmarks() {
 			color="lightslategray"
 			borderBottom="1px"
 			borderColor="gray.100"
-			_dark={{ borderColor: "gray.700", bg: "gray.800" }}
+			_dark={{ borderColor: "gray.700" }}
 		>
 			No bookmarks.
 		</Center>

@@ -1,3 +1,4 @@
+import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
 import {
 	HStack,
 	Icon,
@@ -20,11 +21,13 @@ export function Header({ children }: Props) {
 			position="sticky"
 			top="0"
 			zIndex="sticky"
+			h="12"
 			py="3"
-			bg="white"
+			pl={{ base: "8", md: "0" }}
+			bg={useDefaultBackgroundColor()}
 			borderBottom="1px"
 			borderColor="gray.100"
-			_dark={{ borderColor: "gray.700", bg: "gray.800" }}
+			_dark={{ borderColor: "gray.700" }}
 			fontWeight="semibold"
 		>
 			{children}
