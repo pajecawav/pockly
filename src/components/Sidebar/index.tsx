@@ -58,7 +58,7 @@ export function Sidebar() {
 	const addBookmarkModalState = useDisclosure();
 
 	return (
-		<RemoveScroll enabled={sidebarIsOpen} forwardProps>
+		<RemoveScroll enabled={sidebarIsOpen}>
 			<VStack
 				as="nav"
 				w="52"
