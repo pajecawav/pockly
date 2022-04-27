@@ -47,7 +47,7 @@ const Modal: ComponentStyleConfig = {
 		header: {
 			borderBottom: "1px",
 			borderColor: "gray.100",
-			_dark: { borderColor: "gray.700" },
+			_dark: { borderColor: "gray.600" },
 		},
 	},
 };

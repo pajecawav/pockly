@@ -4,7 +4,7 @@ import {
 	DeleteBookmarkMutationVariables,
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
-import { Stack } from "@chakra-ui/react";
+import { Stack, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useState } from "react";
 import { BookmarksListEntry } from "./BookmarksListEntry";
@@ -16,6 +16,8 @@ interface Props {
 }
 
 export function BookmarksList({ bookmarks }: Props) {
+	const toast = useToast();
+
 	const [deletingBookmark, setDeletingBookmark] =
 		useState<BookmarksListEntry_BookmarkFragment | null>(null);
 
@@ -32,7 +34,13 @@ export function BookmarksList({ bookmarks }: Props) {
 		`,
 		{
 			optimisticResponse: vars => ({ deleteBookmark: { id: vars.id } }),
-			onCompleted: () => setDeletingBookmark(null),
+			onCompleted: () => {
+				setDeletingBookmark(null);
+				toast({
+					status: "success",
+					description: "Deleted bookmark!",
+				});
+			},
 			update: (cache, result) => {
 				if (result.data?.deleteBookmark) {
 					cache.evict({

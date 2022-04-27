@@ -6,7 +6,15 @@ import {
 	UpdateBookmarkMutationVariables,
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
-import { HStack, Icon, IconButton, Link, Stack, Text } from "@chakra-ui/react";
+import {
+	HStack,
+	Icon,
+	IconButton,
+	Link,
+	Stack,
+	Text,
+	useToast,
+} from "@chakra-ui/react";
 import { ArchiveIcon, HeartIcon, TrashIcon } from "@heroicons/react/outline";
 import gql from "graphql-tag";
 import { FilledIcon } from "../FilledIcon";
@@ -30,6 +38,8 @@ const BookmarksListEntry_bookmarkFragment = gql`
 `;
 
 export function BookmarksListEntry({ bookmark, onDelete }: Props) {
+	const toast = useToast();
+
 	const [mutateUpdate] = useMutation<
 		UpdateBookmarkMutation,
 		UpdateBookmarkMutationVariables
@@ -54,6 +64,14 @@ export function BookmarksListEntry({ bookmark, onDelete }: Props) {
 					archived: vars.input.archived ?? bookmark.archived,
 				},
 			}),
+			onCompleted: data => {
+				if (data.updateBookmark.archived) {
+					toast({
+						status: "success",
+						description: "Archived bookmark!",
+					});
+				}
+			},
 		}
 	);
 

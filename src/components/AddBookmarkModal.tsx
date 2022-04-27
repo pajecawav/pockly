@@ -20,6 +20,7 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Stack,
+	useToast,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { object, string } from "zod";
@@ -42,6 +43,8 @@ const CREATE_BOOKMARK = gql`
 `;
 
 export function AddBookmarkModal({ isOpen, onClose }: Props) {
+	const toast = useToast();
+
 	const form = useZodForm({
 		schema: object({
 			url: string().url(),
@@ -54,7 +57,13 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 		CreateBookmarkMutation,
 		CreateBookmarkMutationVariables
 	>(CREATE_BOOKMARK, {
-		onCompleted: () => close(),
+		onCompleted: () => {
+			close();
+			toast({
+				status: "success",
+				description: "Saved bookmark!",
+			});
+		},
 		// TODO: update cached data instead of refetching
 		refetchQueries: [namedOperations.Query.GetUnreadBookmarks],
 	});
