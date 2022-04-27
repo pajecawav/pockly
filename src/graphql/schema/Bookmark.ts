@@ -2,6 +2,7 @@ import { getPageMetadata } from "@/lib/metadata";
 import { getHostnameFromUrl } from "@/utils";
 import { db } from "prisma/client";
 import { builder } from "../builder";
+import { TagObject } from "./Tag";
 
 export const BookmarkObject = builder.prismaObject("Bookmark", {
 	findUnique: bookmark => ({ id: bookmark.id }),
@@ -25,6 +26,15 @@ export const BookmarkObject = builder.prismaObject("Bookmark", {
 		archived: t.field({
 			type: "Boolean",
 			resolve: bookmark => !!bookmark.archivedAt,
+		}),
+		tags: t.field({
+			type: [TagObject],
+			resolve: bookmark =>
+				db.bookmark
+					.findUnique({
+						where: { id: bookmark.id },
+					})
+					.tags(),
 		}),
 	}),
 });
@@ -53,11 +63,12 @@ builder.queryField("bookmarks", t =>
 				defaultValue: "addedAt",
 			}),
 			oldestFirst: t.arg.boolean({ defaultValue: false }),
+			tag: t.arg.string(),
 		},
 		resolve: async (
 			query,
 			_root,
-			{ filter, oldestFirst, sort },
+			{ filter, oldestFirst, sort, tag },
 			{ user }
 		) => {
 			const sortOrder = oldestFirst ? "asc" : "desc";
@@ -88,6 +99,7 @@ builder.queryField("bookmarks", t =>
 					}),
 					likedAt: filterToQueryOption(filter?.liked),
 					archivedAt: filterToQueryOption(filter?.archived),
+					...(tag && { tags: { some: { name: tag } } }),
 				},
 				orderBy: { [sort]: sortOrder },
 			});
@@ -112,10 +124,7 @@ builder.mutationField("createBookmark", t =>
 		type: "Bookmark",
 		authScopes: { user: true },
 		args: {
-			input: t.arg({
-				type: CreateBookmarkInput,
-				required: true,
-			}),
+			input: t.arg({ type: CreateBookmarkInput, required: true }),
 		},
 		resolve: async (query, _parent, { input }, { user }) => {
 			const metadata = await getPageMetadata(input.url);
@@ -153,7 +162,7 @@ builder.mutationField("updateBookmark", t =>
 		authScopes: { user: true },
 		args: {
 			id: t.arg.string({ required: true }),
-			input: t.arg({ type: UpdateBookmarkInput }),
+			input: t.arg({ type: UpdateBookmarkInput, required: true }),
 		},
 		resolve: async (query, _parent, { id, input }, { user }) => {
 			await db.bookmark.findFirst({
@@ -168,10 +177,75 @@ builder.mutationField("updateBookmark", t =>
 				...query,
 				where: { id },
 				data: {
-					title: input?.title ?? undefined,
-					addedAt: input?.archived === false ? new Date() : undefined,
-					likedAt: inputToDateValue(input?.liked ?? undefined),
-					archivedAt: inputToDateValue(input?.archived ?? undefined),
+					title: input.title ?? undefined,
+					addedAt: input.archived === false ? new Date() : undefined,
+					likedAt: inputToDateValue(input.liked ?? undefined),
+					archivedAt: inputToDateValue(input.archived ?? undefined),
+				},
+			});
+		},
+	})
+);
+
+const UpdateBookmarkTagsInput = builder.inputType("UpdateBookmarkTagsInput", {
+	fields: t => ({
+		tags: t.stringList({
+			required: true,
+			validate: {
+				refine: [
+					values => new Set(values).size === values.length,
+					{ message: "All tags must be unique" },
+				],
+			},
+		}),
+	}),
+});
+
+builder.mutationField("updateBookmarkTags", t =>
+	t.prismaField({
+		type: "Bookmark",
+		authScopes: { user: true },
+		args: {
+			id: t.arg.string({ required: true }),
+			input: t.arg({
+				type: UpdateBookmarkTagsInput,
+				required: true,
+			}),
+		},
+		resolve: async (query, _parent, { id, input }, { user }) => {
+			const tagNames = input.tags.map(tag => tag.toLocaleLowerCase());
+			const tagNamesSet = new Set(tagNames);
+
+			const existingTags = await db.bookmark
+				.findUnique({
+					where: { id },
+					rejectOnNotFound: true,
+				})
+				.tags();
+			const existingTagNames = existingTags.map(tag => tag.name);
+			const existingTagNamesSet = new Set(existingTagNames);
+
+			const newTagNames = tagNames.filter(
+				tag => !existingTagNamesSet.has(tag)
+			);
+
+			const tagNamesToDelete = existingTagNames.filter(
+				name => !tagNamesSet.has(name)
+			);
+
+			return db.bookmark.update({
+				...query,
+				where: { id },
+				data: {
+					tags: {
+						create: newTagNames.map(tag => ({
+							name: tag,
+							userId: user!.id,
+						})),
+						disconnect: tagNamesToDelete.map(tag => ({
+							name_userId: { name: tag, userId: user!.id },
+						})),
+					},
 				},
 			});
 		},

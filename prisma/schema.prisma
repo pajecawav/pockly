@@ -63,6 +63,7 @@ model User {
   sessions      Session[]
 
   bookmarks Bookmark[]
+  tags      Tag[]
 
   @@map("users")
 }
@@ -81,5 +82,20 @@ model Bookmark {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
+  tags Tag[]
+
   @@map("bookmarks")
+}
+
+model Tag {
+  id   String @id @default(cuid())
+  name String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  bookmarks Bookmark[]
+
+  @@unique([name, userId])
+  @@map("tags")
 }

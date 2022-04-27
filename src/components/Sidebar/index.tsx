@@ -21,6 +21,7 @@ import {
 	MenuIcon,
 	PencilAltIcon,
 	SearchIcon,
+	TagIcon,
 } from "@heroicons/react/outline";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -153,6 +154,9 @@ export function Sidebar() {
 					</SidebarLink>
 					<SidebarLink href="/search" icon={SearchIcon}>
 						Search
+					</SidebarLink>
+					<SidebarLink href="/tags" icon={TagIcon}>
+						All Tags
 					</SidebarLink>
 				</Stack>
 			</VStack>
