@@ -1,12 +1,11 @@
 import {
+	AlertDialog,
+	AlertDialogBody,
+	AlertDialogContent,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogOverlay,
 	Button,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	Text,
 } from "@chakra-ui/react";
 import { useRef } from "react";
@@ -24,48 +23,47 @@ export function DeleteBookmarkConfirmationModal({
 	onConfirm,
 	onClose,
 }: Props) {
-	const deleteButtonRef = useRef<HTMLButtonElement | null>(null);
+	const cancelButtonRef = useRef<HTMLButtonElement | null>(null);
 
 	return (
-		<Modal
+		<AlertDialog
 			isOpen={isOpen}
 			onClose={onClose}
 			isCentered
-			initialFocusRef={deleteButtonRef}
+			leastDestructiveRef={cancelButtonRef}
 		>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Delete Bookmark</ModalHeader>
+			<AlertDialogOverlay>
+				<AlertDialogContent>
+					<AlertDialogHeader>Delete Bookmark</AlertDialogHeader>
 
-				<ModalCloseButton />
+					<AlertDialogBody>
+						<Text>
+							Are you sure you want to delete this bookmark? This
+							cannot be undone.
+						</Text>
+					</AlertDialogBody>
 
-				<ModalBody>
-					<Text>
-						Are you sure you want to delete this bookmark? This
-						cannot be undone.
-					</Text>
-				</ModalBody>
-
-				<ModalFooter>
-					<Button
-						mr={3}
-						variant="outline"
-						size="md"
-						onClick={onClose}
-					>
-						Close
-					</Button>
-					<Button
-						size="md"
-						colorScheme="red"
-						isLoading={isDeleting}
-						ref={deleteButtonRef}
-						onClick={() => onConfirm()}
-					>
-						Delete
-					</Button>
-				</ModalFooter>
-			</ModalContent>
-		</Modal>
+					<AlertDialogFooter>
+						<Button
+							mr={3}
+							variant="outline"
+							size="md"
+							onClick={onClose}
+							ref={cancelButtonRef}
+						>
+							Close
+						</Button>
+						<Button
+							size="md"
+							colorScheme="red"
+							isLoading={isDeleting}
+							onClick={() => onConfirm()}
+						>
+							Delete
+						</Button>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialogOverlay>
+		</AlertDialog>
 	);
 }
