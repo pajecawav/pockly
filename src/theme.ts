@@ -19,9 +19,12 @@ const Button: ComponentStyleConfig = {
 	defaultProps: {
 		size: { md: "sm" },
 	},
+	baseStyle: {
+		_focus: { boxShadow: "none" },
+		_focusVisible: { boxShadow: "outline" },
+	},
 };
 
-// HACK: defaultProps doesn't work for some reason
 IconButtonComponent.defaultProps = {
 	...IconButtonComponent.defaultProps,
 	variant: "unstyled",
@@ -32,7 +35,13 @@ const IconButton: ComponentStyleConfig = {
 	},
 };
 
-// HACK: defaultProps doesn't work for some reason
+const Link: ComponentStyleConfig = {
+	baseStyle: {
+		_focus: { boxShadow: "none" },
+		_focusVisible: { boxShadow: "outline" },
+	},
+};
+
 IconComponent.defaultProps = {
 	...IconComponent.defaultProps,
 	strokeWidth: "1.5",
@@ -68,6 +77,7 @@ export const theme = extendTheme({
 	components: {
 		Button,
 		IconButton,
+		Link,
 		Icon,
 		Modal,
 	},

@@ -44,7 +44,7 @@ export function Header({ children }: Props) {
 				}
 				alignSelf="flex-end"
 				size="sm"
-				variant="unstyled"
+				variant="ghost"
 				onClick={() => toggleColorMode()}
 				title="Toggle theme"
 				aria-label="Toggle theme"

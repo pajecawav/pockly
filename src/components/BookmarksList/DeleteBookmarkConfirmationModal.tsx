@@ -49,6 +49,7 @@ export function DeleteBookmarkConfirmationModal({
 							variant="outline"
 							size="md"
 							onClick={onClose}
+							_focus={{ boxShadow: "outline" }}
 							ref={cancelButtonRef}
 						>
 							Close
@@ -57,6 +58,7 @@ export function DeleteBookmarkConfirmationModal({
 							size="md"
 							colorScheme="red"
 							isLoading={isDeleting}
+							_focus={{ boxShadow: "outline" }}
 							onClick={() => onConfirm()}
 						>
 							Delete
