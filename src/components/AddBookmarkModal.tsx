@@ -114,12 +114,7 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 				</ModalBody>
 
 				<ModalFooter>
-					<Button
-						mr={3}
-						variant="outline"
-						size="md"
-						onClick={onClose}
-					>
+					<Button mr={3} variant="outline" size="md" onClick={close}>
 						Close
 					</Button>
 					<Button

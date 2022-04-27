@@ -73,7 +73,7 @@ model Bookmark {
   title      String
   body       String?
   image      String?
-  createdAt  DateTime  @default(now())
+  addedAt    DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   likedAt    DateTime?
   archivedAt DateTime?

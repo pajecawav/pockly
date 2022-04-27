@@ -24,7 +24,7 @@ const BookmarksListEntry_bookmarkFragment = gql`
 		liked
 		archived
 		url
-		createdAt
+		addedAt
 		image
 	}
 `;

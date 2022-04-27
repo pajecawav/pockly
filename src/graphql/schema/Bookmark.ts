@@ -11,7 +11,7 @@ export const BookmarkObject = builder.prismaObject("Bookmark", {
 		title: t.exposeString("title"),
 		body: t.exposeString("body", { nullable: true }),
 		image: t.exposeString("image", { nullable: true }),
-		createdAt: t.expose("createdAt", { type: "DateTime" }),
+		addedAt: t.expose("addedAt", { type: "DateTime" }),
 		updatedAt: t.expose("updatedAt", { type: "DateTime" }),
 		likedAt: t.expose("likedAt", { type: "DateTime", nullable: true }),
 		archivedAt: t.expose("archivedAt", {
@@ -38,7 +38,7 @@ const BookmarksFilterInput = builder.inputType("BookmarksFilterInput", {
 });
 
 const BookmarksSortOrderEnum = builder.enumType("BookmarksSortOrderEnum", {
-	values: ["createdAt", "likedAt", "archivedAt"] as const,
+	values: ["addedAt", "likedAt", "archivedAt"] as const,
 });
 
 builder.queryField("bookmarks", t =>
@@ -50,7 +50,7 @@ builder.queryField("bookmarks", t =>
 			sort: t.arg({
 				type: BookmarksSortOrderEnum,
 				required: true,
-				defaultValue: "createdAt",
+				defaultValue: "addedAt",
 			}),
 			oldestFirst: t.arg.boolean({ defaultValue: false }),
 		},
@@ -169,6 +169,7 @@ builder.mutationField("updateBookmark", t =>
 				where: { id },
 				data: {
 					title: input?.title ?? undefined,
+					addedAt: input?.archived === false ? new Date() : undefined,
 					likedAt: inputToDateValue(input?.liked ?? undefined),
 					archivedAt: inputToDateValue(input?.archived ?? undefined),
 				},

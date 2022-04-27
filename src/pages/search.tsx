@@ -42,7 +42,6 @@ export default function SearchBookmarksPage() {
 						archived: $archived
 						liked: $liked
 					}
-					sort: createdAt
 				) {
 					id
 					...BookmarksListEntry_bookmark
