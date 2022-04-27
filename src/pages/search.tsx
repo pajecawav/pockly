@@ -6,7 +6,7 @@ import {
 	SearchBookmarksQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
-import { Box, Button, HStack, Input, Select } from "@chakra-ui/react";
+import { Box, Button, Grid, Input, Select } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useState } from "react";
 import { enum as zodEnum, object, string, TypeOf } from "zod";
@@ -74,37 +74,36 @@ export default function SearchBookmarksPage() {
 				</Box>
 			</Header>
 
-			{/* TODO: responsive layout */}
-			<HStack
+			<Grid
 				as="form"
-				my="3"
-				alignItems="stretch"
 				onSubmit={form.handleSubmit(handleSubmit)}
+				mt="3"
+				mb={{ base: "0", sm: "2" }}
+				gridTemplateColumns={{
+					base: "auto max-content",
+					sm: "auto max-content max-content",
+				}}
+				gap="2"
 			>
 				<Input
+					{...form.register("query")}
 					type="search"
 					placeholder="Search"
-					{...form.register("query")}
 				/>
 				<Select
-					w="40"
-					flexShrink={0}
-					defaultValue={scopeEnum.enum.all}
 					{...form.register("scope")}
+					defaultValue={scopeEnum.enum.all}
+					w="40"
+					order={{ base: 4, sm: "unset" }}
 				>
 					<option value={scopeEnum.enum.all}>All Boomarks</option>
 					<option value={scopeEnum.enum.liked}>Liked</option>
 					<option value={scopeEnum.enum.archive}>Archive</option>
 				</Select>
-				<Button
-					type="submit"
-					size="md"
-					flexShrink={0}
-					isLoading={loading}
-				>
+				<Button type="submit" size="md" isLoading={loading}>
 					Search
 				</Button>
-			</HStack>
+			</Grid>
 
 			{currentData && <BookmarksList bookmarks={currentData.bookmarks} />}
 		</>
