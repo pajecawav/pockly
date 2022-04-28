@@ -1,4 +1,7 @@
-import { BookmarksList } from "@/components/BookmarksList";
+import {
+	BookmarksList,
+	BookmarksList_bookmarkFragment,
+} from "@/components/BookmarksList";
 import { Header } from "@/components/Header";
 import { useZodForm } from "@/hooks/useZodForm";
 import {
@@ -29,7 +32,7 @@ export default function SearchBookmarksPage() {
 		SearchBookmarksQueryVariables
 	>(
 		gql`
-			${BookmarksList.fragments.bookmark}
+			${BookmarksList_bookmarkFragment}
 
 			query SearchBookmarks(
 				$query: String!
@@ -44,7 +47,7 @@ export default function SearchBookmarksPage() {
 					}
 				) {
 					id
-					...BookmarksListEntry_bookmark
+					...BookmarksList_bookmark
 				}
 			}
 		`,

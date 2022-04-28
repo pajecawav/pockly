@@ -27,7 +27,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { RemoveScroll } from "react-remove-scroll";
-import { AddBookmarkModal } from "../AddBookmarkModal";
+import { AddBookmarkModal } from "./AddBookmarkModal";
 import { SidebarHeading } from "./SidebarHeading";
 import { SidebarLink } from "./SidebarLink";
 

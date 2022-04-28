@@ -1,4 +1,7 @@
-import { BookmarksList } from "@/components/BookmarksList";
+import {
+	BookmarksList,
+	BookmarksList_bookmarkFragment,
+} from "@/components/BookmarksList";
 import { Header } from "@/components/Header";
 import {
 	GetLikedBookmarksQuery,
@@ -14,12 +17,12 @@ export default function LikedBookmarksPage() {
 		GetLikedBookmarksQueryVariables
 	>(
 		gql`
-			${BookmarksList.fragments.bookmark}
+			${BookmarksList_bookmarkFragment}
 
 			query GetLikedBookmarks {
 				bookmarks(filter: { liked: true }, sort: likedAt) {
 					id
-					...BookmarksListEntry_bookmark
+					...BookmarksList_bookmark
 				}
 			}
 		`

@@ -15,7 +15,12 @@ import {
 	Text,
 	useToast,
 } from "@chakra-ui/react";
-import { ArchiveIcon, HeartIcon, TrashIcon } from "@heroicons/react/outline";
+import {
+	ArchiveIcon,
+	HeartIcon,
+	TagIcon,
+	TrashIcon,
+} from "@heroicons/react/outline";
 import gql from "graphql-tag";
 import { FilledIcon } from "../FilledIcon";
 import { BookmarkImage } from "./BookmarkImage";
@@ -23,9 +28,10 @@ import { BookmarkImage } from "./BookmarkImage";
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
 	onDelete: () => void;
+	onEditTags: () => void;
 }
 
-const BookmarksListEntry_bookmarkFragment = gql`
+export const BookmarksListEntry_bookmarkFragment = gql`
 	fragment BookmarksListEntry_bookmark on Bookmark {
 		id
 		title
@@ -37,7 +43,7 @@ const BookmarksListEntry_bookmarkFragment = gql`
 	}
 `;
 
-export function BookmarksListEntry({ bookmark, onDelete }: Props) {
+export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 	const toast = useToast();
 
 	const [mutateUpdate] = useMutation<
@@ -163,6 +169,13 @@ export function BookmarksListEntry({ bookmark, onDelete }: Props) {
 				/>
 				<IconButton
 					size="sm"
+					icon={<Icon as={TagIcon} boxSize="6" />}
+					title="Edit tags"
+					aria-label="Edit tags"
+					onClick={onEditTags}
+				/>
+				<IconButton
+					size="sm"
 					icon={<Icon as={TrashIcon} boxSize="6" />}
 					title="Delete bookmark"
 					aria-label="Delete bookmark"
@@ -172,7 +185,3 @@ export function BookmarksListEntry({ bookmark, onDelete }: Props) {
 		</Stack>
 	);
 }
-
-BookmarksListEntry.fragments = {
-	bookmark: BookmarksListEntry_bookmarkFragment,
-};

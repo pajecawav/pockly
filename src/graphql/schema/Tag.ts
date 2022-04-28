@@ -33,6 +33,7 @@ builder.queryField("tags", t =>
 		authScopes: { user: true },
 		type: [TagObject],
 		resolve: async (query, _root, _args, { user }) => {
+			// TODO: only return tags with atleast one bookmark tagged
 			return db.tag.findMany({
 				...query,
 				where: {

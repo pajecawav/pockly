@@ -1,5 +1,5 @@
 import {
-	BookmarksListEntry_BookmarkFragment,
+	BookmarksList_BookmarkFragment,
 	DeleteBookmarkMutation,
 	DeleteBookmarkMutationVariables,
 } from "@/__generated__/operations";
@@ -7,19 +7,38 @@ import { useMutation } from "@apollo/client";
 import { Stack, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useState } from "react";
-import { BookmarksListEntry } from "./BookmarksListEntry";
+import {
+	BookmarksListEntry,
+	BookmarksListEntry_bookmarkFragment,
+} from "./BookmarksListEntry";
 import { DeleteBookmarkConfirmationModal } from "./DeleteBookmarkConfirmationModal";
+import {
+	EditBookmarkTagsModal,
+	EditBookmarkTagsModal_bookmarkFragment,
+} from "./EditBookmarkTagsModal";
 import { EmptyBookmarks } from "./EmptyBookmarks";
 
 interface Props {
-	bookmarks: BookmarksListEntry_BookmarkFragment[];
+	bookmarks: BookmarksList_BookmarkFragment[];
 }
+
+export const BookmarksList_bookmarkFragment = gql`
+	${BookmarksListEntry_bookmarkFragment}
+	${EditBookmarkTagsModal_bookmarkFragment}
+
+	fragment BookmarksList_bookmark on Bookmark {
+		...BookmarksListEntry_bookmark
+		...EditBookmarkTagsModal_bookmark
+	}
+`;
 
 export function BookmarksList({ bookmarks }: Props) {
 	const toast = useToast();
 
 	const [deletingBookmark, setDeletingBookmark] =
-		useState<BookmarksListEntry_BookmarkFragment | null>(null);
+		useState<BookmarksList_BookmarkFragment | null>(null);
+	const [editingTagsBookmark, setEditingTagsBookmark] =
+		useState<BookmarksList_BookmarkFragment | null>(null);
 
 	const [mutateDelete, { loading: isDeleting }] = useMutation<
 		DeleteBookmarkMutation,
@@ -51,6 +70,11 @@ export function BookmarksList({ bookmarks }: Props) {
 		}
 	);
 
+	const reset = () => {
+		setDeletingBookmark(null);
+		setEditingTagsBookmark(null);
+	};
+
 	return (
 		<>
 			<Stack direction="column" spacing="0">
@@ -60,6 +84,7 @@ export function BookmarksList({ bookmarks }: Props) {
 							key={bookmark.id}
 							bookmark={bookmark}
 							onDelete={() => setDeletingBookmark(bookmark)}
+							onEditTags={() => setEditingTagsBookmark(bookmark)}
 						/>
 					))
 				) : (
@@ -70,7 +95,7 @@ export function BookmarksList({ bookmarks }: Props) {
 			<DeleteBookmarkConfirmationModal
 				isOpen={!!deletingBookmark}
 				isDeleting={isDeleting}
-				onClose={() => setDeletingBookmark(null)}
+				onClose={reset}
 				onConfirm={() => {
 					if (deletingBookmark) {
 						mutateDelete({
@@ -79,10 +104,11 @@ export function BookmarksList({ bookmarks }: Props) {
 					}
 				}}
 			/>
+
+			<EditBookmarkTagsModal
+				bookmark={editingTagsBookmark}
+				onClose={reset}
+			/>
 		</>
 	);
 }
-
-BookmarksList.fragments = {
-	bookmark: BookmarksListEntry.fragments.bookmark,
-};

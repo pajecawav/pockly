@@ -1,4 +1,7 @@
-import { BookmarksList } from "@/components/BookmarksList";
+import {
+	BookmarksList,
+	BookmarksList_bookmarkFragment,
+} from "@/components/BookmarksList";
 import { Header } from "@/components/Header";
 import {
 	GetArchivedBookmarksQuery,
@@ -14,12 +17,12 @@ export default function ArchivedBookmarksPage() {
 		GetArchivedBookmarksQueryVariables
 	>(
 		gql`
-			${BookmarksList.fragments.bookmark}
+			${BookmarksList_bookmarkFragment}
 
 			query GetArchivedBookmarks {
 				bookmarks(filter: { archived: true }, sort: archivedAt) {
 					id
-					...BookmarksListEntry_bookmark
+					...BookmarksList_bookmark
 				}
 			}
 		`

@@ -1,4 +1,7 @@
-import { BookmarksList } from "@/components/BookmarksList";
+import {
+	BookmarksList,
+	BookmarksList_bookmarkFragment,
+} from "@/components/BookmarksList";
 import { Header } from "@/components/Header";
 import {
 	GetBookmarksWithTagQuery,
@@ -18,12 +21,12 @@ export default function BookmarksWithTagPage() {
 		GetBookmarksWithTagQueryVariables
 	>(
 		gql`
-			${BookmarksList.fragments.bookmark}
+			${BookmarksList_bookmarkFragment}
 
 			query GetBookmarksWithTag($tag: String!) {
 				bookmarks(tag: $tag) {
 					id
-					...BookmarksListEntry_bookmark
+					...BookmarksList_bookmark
 				}
 			}
 		`,

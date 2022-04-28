@@ -192,6 +192,7 @@ const UpdateBookmarkTagsInput = builder.inputType("UpdateBookmarkTagsInput", {
 		tags: t.stringList({
 			required: true,
 			validate: {
+				items: { minLength: 1 },
 				refine: [
 					values => new Set(values).size === values.length,
 					{ message: "All tags must be unique" },
@@ -238,9 +239,17 @@ builder.mutationField("updateBookmarkTags", t =>
 				where: { id },
 				data: {
 					tags: {
-						create: newTagNames.map(tag => ({
-							name: tag,
-							userId: user!.id,
+						connectOrCreate: newTagNames.map(tag => ({
+							create: {
+								name: tag,
+								userId: user!.id,
+							},
+							where: {
+								name_userId: {
+									name: tag,
+									userId: user!.id,
+								},
+							},
 						})),
 						disconnect: tagNamesToDelete.map(tag => ({
 							name_userId: { name: tag, userId: user!.id },

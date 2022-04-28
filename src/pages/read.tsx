@@ -1,4 +1,7 @@
-import { BookmarksList } from "@/components/BookmarksList";
+import {
+	BookmarksList,
+	BookmarksList_bookmarkFragment,
+} from "@/components/BookmarksList";
 import { Header } from "@/components/Header";
 import {
 	GetUnreadBookmarksQuery,
@@ -14,12 +17,12 @@ export default function ReadingListPage() {
 		GetUnreadBookmarksQueryVariables
 	>(
 		gql`
-			${BookmarksList.fragments.bookmark}
+			${BookmarksList_bookmarkFragment}
 
 			query GetUnreadBookmarks {
 				bookmarks(filter: { archived: false }, sort: addedAt) {
 					id
-					...BookmarksListEntry_bookmark
+					...BookmarksList_bookmark
 				}
 			}
 		`
