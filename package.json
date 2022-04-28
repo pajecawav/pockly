@@ -15,12 +15,21 @@
 		"generate:theme-typings": "chakra-cli tokens src/theme.ts",
 		"lint": "next lint",
 		"tsc": "tsc --noEmit",
-		"format": "prettier 'src/**/*.{js,jsx,ts,tsx,css}' --write",
-		"format:list": "prettier --list-different 'src/**/*.{js,ts,jsx,tsx,css}'",
+		"format": "prettier './**/*.{js,jsx,ts,tsx,css,json,md,yml}' --write",
+		"format:check": "prettier --check './**/*.{js,jsx,ts,tsx,css,json,md,yml}'",
 		"prepare": "is-ci || husky install"
 	},
 	"prisma": {
 		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx}": [
+			"eslint --fix",
+			"prettier --write"
+		],
+		"*.{json,md,yml,css}": [
+			"prettier --write"
+		]
 	},
 	"dependencies": {
 		"@apollo/client": "^3.5.6",
@@ -74,6 +83,7 @@
 		"eslint": "^8",
 		"eslint-config-next": "^12.1.5",
 		"husky": "^7.0.4",
+		"lint-staged": "^12.4.1",
 		"prettier": "^2.5.0",
 		"prisma": "^3.6.0",
 		"ts-node": "^10.7.0",
