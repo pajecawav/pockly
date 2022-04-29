@@ -60,6 +60,15 @@ export function Sidebar() {
 
 	return (
 		<RemoveScroll enabled={sidebarIsOpen}>
+			{/* overlay to prevent mouse events outside of sidebar */}
+			<Box
+				display={{ base: sidebarIsOpen ? "block" : "none", md: "none" }}
+				position="fixed"
+				inset="0"
+				bg="transparent"
+				zIndex="overlay"
+			/>
+
 			<VStack
 				as="nav"
 				w="52"
