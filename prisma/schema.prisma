@@ -84,6 +84,7 @@ model Bookmark {
 
   tags Tag[]
 
+  @@unique([url, userId])
   @@map("bookmarks")
 }
 

@@ -132,13 +132,21 @@ builder.mutationField("createBookmark", t =>
 			const title =
 				input.title ?? metadata.title ?? getHostnameFromUrl(input.url);
 
-			return db.bookmark.create({
+			return db.bookmark.upsert({
 				...query,
-				data: {
+				where: { url_userId: { url: input.url, userId: user!.id } },
+				create: {
 					userId: user!.id,
 					url: input.url,
 					title,
 					image: metadata.image,
+				},
+				// move bookmark to the top of the reading list if it already exists
+				update: {
+					title,
+					image: metadata.image,
+					addedAt: new Date(),
+					archivedAt: null,
 				},
 			});
 		},
