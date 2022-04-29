@@ -117,7 +117,7 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 		>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Add Bookmark</ModalHeader>
+				<ModalHeader>Edit Tags</ModalHeader>
 
 				<ModalCloseButton />
 
@@ -139,10 +139,12 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 									options={data?.tags.map(tag =>
 										createOption(tag.name)
 									)}
-									backspaceRemovesValue={true}
 									createOptionPosition="last"
 									isClearable={false}
+									backspaceRemovesValue={true}
 									tabSelectsValue={false}
+									escapeClearsValue={false}
+									closeMenuOnSelect={false}
 									components={{ DropdownIndicator: null }}
 									ref={selectRef}
 								/>
