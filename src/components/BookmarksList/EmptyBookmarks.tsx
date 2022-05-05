@@ -1,16 +1,5 @@
-import { Center } from "@chakra-ui/react";
+import { Empty } from "../Empty";
 
 export function EmptyBookmarks() {
-	return (
-		<Center
-			h="40"
-			fontSize="xl"
-			color="lightslategray"
-			borderBottom="1px"
-			borderColor="gray.100"
-			_dark={{ borderColor: "gray.700" }}
-		>
-			No bookmarks.
-		</Center>
-	);
+	return <Empty>No bookmarks.</Empty>;
 }

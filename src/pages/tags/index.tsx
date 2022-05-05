@@ -1,3 +1,4 @@
+import { Empty } from "@/components/Empty";
 import { Header } from "@/components/Header";
 import {
 	GetAllTagsQuery,
@@ -56,19 +57,23 @@ export default function AllTagsPage() {
 						placeholder="Search your tags"
 					/>
 
-					<Flex flexWrap="wrap" gap="1.5">
-						{tags.map(tag => (
-							<NextLink
-								key={tag.id}
-								href={`/tags/${tag.name}`}
-								passHref
-							>
-								<Link>
-									<Tag>{tag.name}</Tag>
-								</Link>
-							</NextLink>
-						))}
-					</Flex>
+					{data!.tags.length === 0 ? (
+						<Empty>No tags.</Empty>
+					) : (
+						<Flex flexWrap="wrap" gap="1.5">
+							{tags.map(tag => (
+								<NextLink
+									key={tag.id}
+									href={`/tags/${tag.name}`}
+									passHref
+								>
+									<Link>
+										<Tag>{tag.name}</Tag>
+									</Link>
+								</NextLink>
+							))}
+						</Flex>
+					)}
 				</Stack>
 			)}
 		</>

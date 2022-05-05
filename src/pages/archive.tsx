@@ -32,7 +32,7 @@ export default function ArchivedBookmarksPage() {
 		<>
 			<Header>
 				<Box>
-					Archived Bookmarks{" "}
+					Archive{" "}
 					{data?.bookmarks?.length !== undefined &&
 						`(${data.bookmarks.length})`}
 				</Box>

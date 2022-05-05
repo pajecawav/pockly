@@ -4,10 +4,10 @@ import {
 	namedOperations,
 	UpdateBookmarkMutation,
 	UpdateBookmarkMutationVariables,
+	UpdateBookmarkMutation_BookmarkFragment,
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
 import {
-	HStack,
 	Icon,
 	IconButton,
 	Link,
@@ -43,6 +43,13 @@ export const BookmarksListEntry_bookmarkFragment = gql`
 	}
 `;
 
+const UpdateBookmarkMutation_bookmarkFragment = gql`
+	fragment UpdateBookmarkMutation_bookmark on Bookmark {
+		liked
+		archived
+	}
+`;
+
 export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 	const toast = useToast();
 
@@ -51,14 +58,16 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 		UpdateBookmarkMutationVariables
 	>(
 		gql`
+			${UpdateBookmarkMutation_bookmarkFragment}
+
 			mutation UpdateBookmark(
 				$id: String!
 				$input: UpdateBookmarkInput!
 			) {
 				updateBookmark(id: $id, input: $input) {
 					id
-					liked
-					archived
+					__typename
+					...UpdateBookmarkMutation_bookmark
 				}
 			}
 		`,
@@ -66,16 +75,20 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 			optimisticResponse: vars => ({
 				updateBookmark: {
 					id: bookmark.id,
+					__typename: "Bookmark",
 					liked: vars.input.liked ?? bookmark.liked,
 					archived: vars.input.archived ?? bookmark.archived,
 				},
 			}),
-			onCompleted: data => {
-				if (data.updateBookmark.archived) {
-					toast({
-						status: "success",
-						description: "Archived bookmark!",
-					});
+			update: (cache, response) => {
+				if (response.data?.updateBookmark) {
+					cache.writeFragment<UpdateBookmarkMutation_BookmarkFragment>(
+						{
+							id: cache.identify(bookmark),
+							fragment: UpdateBookmarkMutation_bookmarkFragment,
+							data: response.data.updateBookmark,
+						}
+					);
 				}
 			},
 		}
@@ -107,6 +120,12 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				namedOperations.Query.GetUnreadBookmarks,
 				namedOperations.Query.GetArchivedBookmarks,
 			],
+			onCompleted: () => {
+				toast({
+					status: "success",
+					description: "Archived bookmark!",
+				});
+			},
 		});
 	};
 
@@ -121,26 +140,36 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 			borderColor="gray.100"
 			_dark={{ borderColor: "gray.700" }}
 		>
-			<Link href={bookmark.url} isExternal>
-				<BookmarkImage title={bookmark.title} src={bookmark.image} />
-			</Link>
-
-			<Link
-				href={bookmark.url}
-				isExternal
-				flex="1"
-				w={{ base: "auto", sm: "0" }}
-				wordBreak="break-word"
+			<Stack
+				direction={{ base: "row-reverse", sm: "row" }}
+				flex={1}
+				alignItems="center"
+				spacing="4"
 			>
-				<Text as="div" isTruncated title={bookmark.title}>
-					{bookmark.title}
-				</Text>{" "}
-				<Text as="div" color="lightslategray">
-					{getHostnameFromUrl(bookmark.url)}
-				</Text>
-			</Link>
+				<Link href={bookmark.url} isExternal>
+					<BookmarkImage
+						title={bookmark.title}
+						src={bookmark.image}
+					/>
+				</Link>
 
-			<HStack spacing="1">
+				<Link
+					href={bookmark.url}
+					isExternal
+					flex="1"
+					w="0"
+					wordBreak="break-word"
+				>
+					<Text as="div" isTruncated title={bookmark.title}>
+						{bookmark.title}
+					</Text>{" "}
+					<Text as="div" color="lightslategray">
+						{getHostnameFromUrl(bookmark.url)}
+					</Text>
+				</Link>
+			</Stack>
+
+			<Stack direction="row" spacing="1">
 				<IconButton
 					size="sm"
 					icon={
@@ -181,7 +210,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					aria-label="Delete bookmark"
 					onClick={onDelete}
 				/>
-			</HStack>
+			</Stack>
 		</Stack>
 	);
 }

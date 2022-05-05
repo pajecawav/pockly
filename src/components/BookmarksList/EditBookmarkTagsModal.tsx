@@ -155,7 +155,7 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 
 				<ModalFooter>
 					<Button mr={3} variant="outline" size="md" onClick={close}>
-						Close
+						Cancel
 					</Button>
 					<Button
 						size="md"

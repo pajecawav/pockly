@@ -23,9 +23,8 @@ export function BookmarkImage({ title, src }: Props) {
 
 	return (
 		<Box
-			w="12"
-			h="8"
-			display={{ base: "none", sm: "block" }}
+			w="14"
+			h="9"
 			position="relative"
 			rounded="md"
 			overflow="hidden"

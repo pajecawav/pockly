@@ -52,7 +52,7 @@ export function DeleteBookmarkConfirmationModal({
 							_focus={{ boxShadow: "outline" }}
 							ref={cancelButtonRef}
 						>
-							Close
+							Cancel
 						</Button>
 						<Button
 							size="md"
