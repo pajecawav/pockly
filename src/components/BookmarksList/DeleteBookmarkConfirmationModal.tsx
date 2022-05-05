@@ -23,14 +23,16 @@ export function DeleteBookmarkConfirmationModal({
 	onConfirm,
 	onClose,
 }: Props) {
-	const cancelButtonRef = useRef<HTMLButtonElement | null>(null);
+	const deleteButtonRef = useRef<HTMLButtonElement | null>(null);
 
 	return (
 		<AlertDialog
 			isOpen={isOpen}
 			onClose={onClose}
 			isCentered
-			leastDestructiveRef={cancelButtonRef}
+			// delete button is not really a 'least destructive' button but it's
+			// more intuitive
+			leastDestructiveRef={deleteButtonRef}
 		>
 			<AlertDialogOverlay>
 				<AlertDialogContent>
@@ -50,7 +52,6 @@ export function DeleteBookmarkConfirmationModal({
 							size="md"
 							onClick={onClose}
 							_focus={{ boxShadow: "outline" }}
-							ref={cancelButtonRef}
 						>
 							Cancel
 						</Button>
@@ -60,6 +61,7 @@ export function DeleteBookmarkConfirmationModal({
 							isLoading={isDeleting}
 							_focus={{ boxShadow: "outline" }}
 							onClick={() => onConfirm()}
+							ref={deleteButtonRef}
 						>
 							Delete
 						</Button>

@@ -23,6 +23,7 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
+import { useRef } from "react";
 import { object, string } from "zod";
 
 interface Props {
@@ -44,6 +45,7 @@ const CREATE_BOOKMARK = gql`
 
 export function AddBookmarkModal({ isOpen, onClose }: Props) {
 	const toast = useToast();
+	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const form = useZodForm({
 		schema: object({
@@ -73,8 +75,15 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 		form.reset();
 	};
 
+	const { ref: urlInputRef, ...urlInputProps } = form.register("url");
+
 	return (
-		<Modal isOpen={isOpen} onClose={close} isCentered>
+		<Modal
+			isOpen={isOpen}
+			onClose={close}
+			isCentered
+			initialFocusRef={inputRef}
+		>
 			<ModalOverlay />
 			<ModalContent>
 				<ModalHeader>Add Bookmark</ModalHeader>
@@ -98,7 +107,11 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 								type="url"
 								required
 								placeholder="https://..."
-								{...form.register("url")}
+								{...urlInputProps}
+								ref={instance => {
+									urlInputRef(instance);
+									inputRef.current = instance;
+								}}
 							/>
 							<FormErrorMessage>
 								{form.formState.errors.url?.message}
