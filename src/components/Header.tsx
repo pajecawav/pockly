@@ -6,7 +6,7 @@ import {
 	Spacer,
 	useColorMode,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@heroicons/react/outline";
+import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { ReactNode } from "react";
 
 interface Props {
@@ -38,7 +38,9 @@ export function Header({ children }: Props) {
 				display="flex"
 				icon={
 					<Icon
-						as={colorMode === "light" ? MoonIcon : SunIcon}
+						as={
+							colorMode === "light" ? HiOutlineMoon : HiOutlineSun
+						}
 						boxSize="6"
 					/>
 				}

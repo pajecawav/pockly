@@ -1,4 +1,5 @@
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
+import { usePinnedTagsStore } from "@/stores/usePinnedTagsStore";
 import {
 	Avatar,
 	Box,
@@ -14,18 +15,18 @@ import {
 	useOutsideClick,
 	VStack,
 } from "@chakra-ui/react";
-import {
-	ArchiveIcon,
-	CollectionIcon,
-	HeartIcon,
-	MenuIcon,
-	PencilAltIcon,
-	SearchIcon,
-	TagIcon,
-} from "@heroicons/react/outline";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
+import {
+	HiOutlineArchive,
+	HiOutlineCollection,
+	HiOutlineHeart,
+	HiOutlineMenu,
+	HiOutlinePencilAlt,
+	HiOutlineSearch,
+	HiOutlineTag,
+} from "react-icons/hi";
 import { RemoveScroll } from "react-remove-scroll";
 import { AddBookmarkModal } from "./AddBookmarkModal";
 import { SidebarHeading } from "./SidebarHeading";
@@ -34,6 +35,8 @@ import { SidebarLink } from "./SidebarLink";
 export function Sidebar() {
 	const session = useSession<true>();
 	const router = useRouter();
+
+	const pinnedTags = usePinnedTagsStore(store => store.tags);
 
 	const isMediumOrLarger = useBreakpointValue({ base: false, md: true });
 	const sidebarRef = useRef<HTMLDivElement>(null);
@@ -109,7 +112,7 @@ export function Sidebar() {
 						display="grid"
 						placeItems="center"
 						size="sm"
-						icon={<Icon as={MenuIcon} boxSize="6" />}
+						icon={<Icon as={HiOutlineMenu} boxSize="6" />}
 						aria-label="Toggle sidebar"
 						onClick={sidebarState.onToggle}
 					/>
@@ -137,7 +140,7 @@ export function Sidebar() {
 					fontWeight="normal"
 					shadow="sm"
 					border="1px"
-					leftIcon={<PencilAltIcon width={16} />}
+					leftIcon={<HiOutlinePencilAlt width={16} />}
 					onClick={() => {
 						sidebarState.onClose();
 						addBookmarkModalState.onOpen();
@@ -152,21 +155,28 @@ export function Sidebar() {
 
 				<Stack direction="column" w="full" spacing="0.5">
 					<SidebarHeading>Bookmarks</SidebarHeading>
-					<SidebarLink href="/read" icon={CollectionIcon}>
+					<SidebarLink href="/read" icon={HiOutlineCollection}>
 						Reading List
 					</SidebarLink>
-					<SidebarLink href="/liked" icon={HeartIcon}>
+					<SidebarLink href="/liked" icon={HiOutlineHeart}>
 						Liked
 					</SidebarLink>
-					<SidebarLink href="/archive" icon={ArchiveIcon}>
+					<SidebarLink href="/archive" icon={HiOutlineArchive}>
 						Archive
 					</SidebarLink>
-					<SidebarLink href="/search" icon={SearchIcon}>
+					<SidebarLink href="/search" icon={HiOutlineSearch}>
 						Search
 					</SidebarLink>
-					<SidebarLink href="/tags" icon={TagIcon}>
+
+					<SidebarHeading mt="10">Tags</SidebarHeading>
+					<SidebarLink href="/tags" icon={HiOutlineTag}>
 						All Tags
 					</SidebarLink>
+					{pinnedTags.map(tag => (
+						<SidebarLink href={`/tags/${tag}`} key={tag}>
+							{tag}
+						</SidebarLink>
+					))}
 				</Stack>
 			</VStack>
 		</RemoveScroll>

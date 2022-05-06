@@ -43,3 +43,25 @@ builder.queryField("tags", t =>
 		},
 	})
 );
+
+builder.mutationField("deleteTag", t =>
+	t.field({
+		type: TagObject,
+		nullable: true,
+		authScopes: { user: true },
+		args: {
+			tag: t.arg.string({ required: true }),
+		},
+		resolve: async (_, args, { user }) => {
+			const tag = await db.tag.findFirst({
+				where: { name: args.tag, userId: user!.id },
+			});
+
+			if (!tag) {
+				return null;
+			}
+
+			return await db.tag.delete({ where: { id: tag.id } });
+		},
+	})
+);

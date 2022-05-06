@@ -42,12 +42,6 @@ const Link: ComponentStyleConfig = {
 	},
 };
 
-IconComponent.defaultProps = {
-	...IconComponent.defaultProps,
-	strokeWidth: "1.5",
-};
-const Icon: ComponentStyleConfig = {};
-
 const Modal: ComponentStyleConfig = {
 	baseStyle: {
 		dialog: {
@@ -78,7 +72,6 @@ export const theme = extendTheme({
 		Button,
 		IconButton,
 		Link,
-		Icon,
 		Modal,
 	},
 });

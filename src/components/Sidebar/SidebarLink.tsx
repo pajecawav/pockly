@@ -16,7 +16,7 @@ export function SidebarLink({
 
 	const bg = useColorModeValue("gray.100", "gray.700");
 
-	const isActive = router.pathname === href;
+	const isActive = router.asPath === href;
 
 	return (
 		<NextLink href={href} passHref>
@@ -30,9 +30,11 @@ export function SidebarLink({
 				bg={isActive ? bg : undefined}
 				_hover={{ bg }}
 			>
-				<chakra.div w={3.5} marginRight={2} display="inline-block">
-					{Icon && <Icon />}
-				</chakra.div>
+				{Icon && (
+					<chakra.div w={3.5} marginRight={2} display="inline-block">
+						<Icon />
+					</chakra.div>
+				)}
 				{children}
 			</Link>
 		</NextLink>

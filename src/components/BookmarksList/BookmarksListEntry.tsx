@@ -15,13 +15,13 @@ import {
 	Text,
 	useToast,
 } from "@chakra-ui/react";
-import {
-	ArchiveIcon,
-	HeartIcon,
-	TagIcon,
-	TrashIcon,
-} from "@heroicons/react/outline";
 import gql from "graphql-tag";
+import {
+	HiOutlineArchive,
+	HiOutlineHeart,
+	HiOutlineTag,
+	HiOutlineTrash,
+} from "react-icons/hi";
 import { FilledIcon } from "../FilledIcon";
 import { BookmarkImage } from "./BookmarkImage";
 
@@ -174,7 +174,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					size="sm"
 					icon={
 						<FilledIcon
-							as={HeartIcon}
+							as={HiOutlineHeart}
 							boxSize="6"
 							filled={bookmark.liked}
 						/>
@@ -187,7 +187,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					size="sm"
 					icon={
 						<FilledIcon
-							as={ArchiveIcon}
+							as={HiOutlineArchive}
 							boxSize="6"
 							filled={bookmark.archived}
 						/>
@@ -198,14 +198,14 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				/>
 				<IconButton
 					size="sm"
-					icon={<Icon as={TagIcon} boxSize="6" />}
+					icon={<Icon as={HiOutlineTag} boxSize="6" />}
 					title="Edit tags"
 					aria-label="Edit tags"
 					onClick={onEditTags}
 				/>
 				<IconButton
 					size="sm"
-					icon={<Icon as={TrashIcon} boxSize="6" />}
+					icon={<Icon as={HiOutlineTrash} boxSize="6" />}
 					title="Delete bookmark"
 					aria-label="Delete bookmark"
 					onClick={onDelete}

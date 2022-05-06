@@ -1,13 +1,17 @@
-import { Text } from "@chakra-ui/react";
+import { Text, TextProps } from "@chakra-ui/react";
 
-export function SidebarHeading({ children }: { children: string }) {
+interface Props extends TextProps {
+	children: string;
+}
+
+export function SidebarHeading({ children, ...props }: Props) {
 	return (
 		<Text
 			color="gray.600"
 			fontWeight="light"
 			px={2}
-			mb={1}
 			_dark={{ color: "gray.500" }}
+			{...props}
 		>
 			{children}
 		</Text>
