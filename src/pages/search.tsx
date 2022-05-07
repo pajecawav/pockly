@@ -51,7 +51,7 @@ export default function SearchBookmarksPage() {
 				}
 			}
 		`,
-		{ variables: query!, skip: !query }
+		{ variables: query!, skip: !query, fetchPolicy: "network-only" }
 	);
 
 	const handleSubmit = (values: Schema) => {
