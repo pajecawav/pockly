@@ -21,6 +21,7 @@ import {
 	HiOutlineAnnotation,
 	HiOutlineArchive,
 	HiOutlineHeart,
+	HiOutlinePlus,
 	HiOutlineTag,
 	HiOutlineTrash,
 } from "react-icons/hi";
@@ -74,14 +75,6 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 			}
 		`,
 		{
-			optimisticResponse: vars => ({
-				updateBookmark: {
-					id: bookmark.id,
-					__typename: "Bookmark",
-					liked: vars.input.liked ?? bookmark.liked,
-					archived: vars.input.archived ?? bookmark.archived,
-				},
-			}),
 			update: (cache, response) => {
 				if (response.data?.updateBookmark) {
 					cache.writeFragment<UpdateBookmarkMutation_BookmarkFragment>(
@@ -104,12 +97,20 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					liked: !bookmark.liked,
 				},
 			},
+			optimisticResponse: vars => ({
+				updateBookmark: {
+					id: bookmark.id,
+					__typename: "Bookmark",
+					liked: vars.input.liked ?? bookmark.liked,
+					archived: vars.input.archived ?? bookmark.archived,
+				},
+			}),
 			// TODO: modify cached data instead of refetching
 			refetchQueries: [namedOperations.Query.GetLikedBookmarks],
 		});
 	};
 
-	const onMoveToArchive = () => {
+	const onToggleArchived = () => {
 		mutateUpdate({
 			variables: {
 				id: bookmark.id,
@@ -122,10 +123,13 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				namedOperations.Query.GetUnreadBookmarks,
 				namedOperations.Query.GetArchivedBookmarks,
 			],
-			onCompleted: () => {
+			onCompleted: result => {
+				const wasArchived = result.updateBookmark.archived;
 				toast({
 					status: "success",
-					description: "Archived bookmark!",
+					description: wasArchived
+						? "Archived bookmark!"
+						: "Added to reading list!",
 				});
 			},
 		});
@@ -192,15 +196,26 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				/>
 				<IconButton
 					icon={
-						<FilledIcon
-							as={HiOutlineArchive}
+						<Icon
+							as={
+								bookmark.archived
+									? HiOutlinePlus
+									: HiOutlineArchive
+							}
 							boxSize="6"
-							filled={bookmark.archived}
 						/>
 					}
-					title="Move to archive"
-					aria-label="Move to archive"
-					onClick={onMoveToArchive}
+					title={
+						bookmark.archived
+							? "Add to reading list"
+							: "Move to archive"
+					}
+					aria-label={
+						bookmark.archived
+							? "Add to reading list"
+							: "Move to archive"
+					}
+					onClick={onToggleArchived}
 				/>
 				<IconButton
 					icon={<Icon as={HiOutlineTag} boxSize="6" />}
