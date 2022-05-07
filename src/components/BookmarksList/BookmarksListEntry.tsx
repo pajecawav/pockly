@@ -171,15 +171,14 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				</Link>
 			</Stack>
 
-			<Stack direction="row" spacing="1" alignItems="center">
+			<Stack direction="row" spacing="1.5" alignItems="center">
 				<NextLink href={`/b/${bookmark.id}`} passHref>
-					<Link display="grid">
+					<Link display="block">
 						{/* TODO: better icon */}
 						<Icon as={HiOutlineAnnotation} boxSize="6" />
 					</Link>
 				</NextLink>
 				<IconButton
-					size="sm"
 					icon={
 						<FilledIcon
 							as={HiOutlineHeart}
@@ -192,7 +191,6 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					onClick={onToggleLiked}
 				/>
 				<IconButton
-					size="sm"
 					icon={
 						<FilledIcon
 							as={HiOutlineArchive}
@@ -205,14 +203,12 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					onClick={onMoveToArchive}
 				/>
 				<IconButton
-					size="sm"
 					icon={<Icon as={HiOutlineTag} boxSize="6" />}
 					title="Edit tags"
 					aria-label="Edit tags"
 					onClick={onEditTags}
 				/>
 				<IconButton
-					size="sm"
 					icon={<Icon as={HiOutlineTrash} boxSize="6" />}
 					title="Delete bookmark"
 					aria-label="Delete bookmark"
