@@ -29,21 +29,24 @@ export default function ReadingListPage() {
 		{ fetchPolicy: "cache-and-network" }
 	);
 
+	const bookmarks = data?.bookmarks.filter(
+		bookmark => bookmark.archived === false
+	);
+
 	return (
 		<>
 			<Header>
 				<Box>
 					Reading List{" "}
-					{data?.bookmarks?.length !== undefined &&
-						`(${data.bookmarks.length})`}
+					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
 				</Box>
 			</Header>
-			{!data ? (
+			{!bookmarks ? (
 				<Center w="full" h="32">
 					<Spinner />
 				</Center>
 			) : (
-				<BookmarksList bookmarks={data.bookmarks} />
+				<BookmarksList bookmarks={bookmarks} />
 			)}
 		</>
 	);

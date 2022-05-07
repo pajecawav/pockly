@@ -68,7 +68,7 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 				}
 			}
 		`,
-		{ fetchPolicy: "cache-and-network" }
+		{ skip: !bookmark, fetchPolicy: "cache-and-network" }
 	);
 
 	const [mutate, { loading: isMutating }] = useMutation<
