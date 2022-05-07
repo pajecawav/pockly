@@ -45,7 +45,7 @@ export default function BookmarksWithTagPage() {
 				}
 			}
 		`,
-		{ variables: { tag }, skip: !tag }
+		{ variables: { tag }, skip: !tag, fetchPolicy: "cache-and-network" }
 	);
 
 	const [mutateDelete] = useMutation<

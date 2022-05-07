@@ -25,7 +25,8 @@ export default function ArchivedBookmarksPage() {
 					...BookmarksList_bookmark
 				}
 			}
-		`
+		`,
+		{ fetchPolicy: "cache-and-network" }
 	);
 
 	return (

@@ -25,7 +25,8 @@ export default function LikedBookmarksPage() {
 					...BookmarksList_bookmark
 				}
 			}
-		`
+		`,
+		{ fetchPolicy: "cache-and-network" }
 	);
 
 	return (

@@ -25,7 +25,8 @@ export default function ReadingListPage() {
 					...BookmarksList_bookmark
 				}
 			}
-		`
+		`,
+		{ fetchPolicy: "cache-and-network" }
 	);
 
 	return (

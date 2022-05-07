@@ -59,14 +59,17 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 
 	const selectRef = useRef<SelectInstance | null>(null);
 
-	const { data } = useQuery<EditBookmarkTagsModalQuery>(gql`
-		query EditBookmarkTagsModalQuery {
-			tags {
-				id
-				name
+	const { data } = useQuery<EditBookmarkTagsModalQuery>(
+		gql`
+			query EditBookmarkTagsModalQuery {
+				tags {
+					id
+					name
+				}
 			}
-		}
-	`);
+		`,
+		{ fetchPolicy: "cache-and-network" }
+	);
 
 	const [mutate, { loading: isMutating }] = useMutation<
 		UpdateBookmarkTagsMutation,
