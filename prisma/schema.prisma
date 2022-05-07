@@ -72,8 +72,8 @@ model Bookmark {
   id         String    @id @default(cuid())
   url        String
   title      String
-  body       String?
   image      String?
+  note       String?
   addedAt    DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   likedAt    DateTime?

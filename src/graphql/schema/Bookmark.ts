@@ -10,8 +10,8 @@ export const BookmarkObject = builder.prismaObject("Bookmark", {
 		id: t.exposeID("id"),
 		url: t.exposeString("url"),
 		title: t.exposeString("title"),
-		body: t.exposeString("body", { nullable: true }),
 		image: t.exposeString("image", { nullable: true }),
+		note: t.exposeString("note", { nullable: true }),
 		addedAt: t.expose("addedAt", { type: "DateTime" }),
 		updatedAt: t.expose("updatedAt", { type: "DateTime" }),
 		likedAt: t.expose("likedAt", { type: "DateTime", nullable: true }),
@@ -38,6 +38,21 @@ export const BookmarkObject = builder.prismaObject("Bookmark", {
 		}),
 	}),
 });
+
+builder.queryField("bookmark", t =>
+	t.prismaField({
+		authScopes: { user: true },
+		type: "Bookmark",
+		args: { id: t.arg.string({ required: true }) },
+		resolve: async (query, _root, { id }, { user }) => {
+			return db.bookmark.findFirst({
+				...query,
+				where: { id, userId: user!.id },
+				rejectOnNotFound: true,
+			});
+		},
+	})
+);
 
 const BookmarksFilterInput = builder.inputType("BookmarksFilterInput", {
 	fields: t => ({
@@ -159,6 +174,10 @@ const UpdateBookmarkInput = builder.inputType("UpdateBookmarkInput", {
 			required: false,
 			validate: { minLength: 1, maxLength: 100 },
 		}),
+		note: t.string({
+			required: false,
+			validate: { maxLength: 5000 },
+		}),
 		liked: t.boolean({ required: false }),
 		archived: t.boolean({ required: false }),
 	}),
@@ -186,6 +205,7 @@ builder.mutationField("updateBookmark", t =>
 				where: { id },
 				data: {
 					title: input.title ?? undefined,
+					note: input.note ?? undefined,
 					addedAt: input.archived === false ? new Date() : undefined,
 					likedAt: inputToDateValue(input.liked ?? undefined),
 					archivedAt: inputToDateValue(input.archived ?? undefined),

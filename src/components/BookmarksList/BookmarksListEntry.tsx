@@ -16,7 +16,9 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
+import NextLink from "next/link";
 import {
+	HiOutlineAnnotation,
 	HiOutlineArchive,
 	HiOutlineHeart,
 	HiOutlineTag,
@@ -169,7 +171,13 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				</Link>
 			</Stack>
 
-			<Stack direction="row" spacing="1">
+			<Stack direction="row" spacing="1" alignItems="center">
+				<NextLink href={`/b/${bookmark.id}`} passHref>
+					<Link display="grid">
+						{/* TODO: better icon */}
+						<Icon as={HiOutlineAnnotation} boxSize="6" />
+					</Link>
+				</NextLink>
 				<IconButton
 					size="sm"
 					icon={

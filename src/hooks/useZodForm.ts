@@ -1,6 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, UseFormProps } from "react-hook-form";
+import { useForm, UseFormProps, UseFormReturn } from "react-hook-form";
 import { TypeOf, ZodSchema } from "zod";
+
+export type InferFormValues<T extends UseFormReturn<any>> =
+	T extends UseFormReturn<infer V> ? V : never;
 
 interface UseZodFormArgs<T extends ZodSchema> extends UseFormProps<TypeOf<T>> {
 	schema: T;

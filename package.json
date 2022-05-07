@@ -64,6 +64,7 @@
 		"react-hook-form": "^7.30.0",
 		"react-icons": "^4.3.1",
 		"react-remove-scroll": "^2.5.3",
+		"react-textarea-autosize": "^8.3.3",
 		"zustand": "^4.0.0-rc.1"
 	},
 	"devDependencies": {

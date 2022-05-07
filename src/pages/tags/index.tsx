@@ -1,3 +1,7 @@
+import {
+	TagsList,
+	TagsList_tagFragment,
+} from "@/components/BookmarksList/TagsList";
 import { Empty } from "@/components/Empty";
 import { Header } from "@/components/Header";
 import {
@@ -5,18 +9,8 @@ import {
 	GetAllTagsQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
-import {
-	Box,
-	Center,
-	Flex,
-	Input,
-	Link,
-	Spinner,
-	Stack,
-	Tag,
-} from "@chakra-ui/react";
+import { Box, Center, Input, Spinner, Stack } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import NextLink from "next/link";
 import { useState } from "react";
 
 export default function AllTagsPage() {
@@ -24,10 +18,12 @@ export default function AllTagsPage() {
 
 	const { data } = useQuery<GetAllTagsQuery, GetAllTagsQueryVariables>(
 		gql`
+			${TagsList_tagFragment}
+
 			query GetAllTags {
 				tags {
 					id
-					name
+					...TagsList_tag
 				}
 			}
 		`
@@ -60,19 +56,7 @@ export default function AllTagsPage() {
 					{data!.tags.length === 0 ? (
 						<Empty>No tags.</Empty>
 					) : (
-						<Flex flexWrap="wrap" gap="1.5">
-							{tags.map(tag => (
-								<NextLink
-									key={tag.id}
-									href={`/tags/${tag.name}`}
-									passHref
-								>
-									<Link>
-										<Tag>{tag.name}</Tag>
-									</Link>
-								</NextLink>
-							))}
-						</Flex>
+						<TagsList tags={tags} />
 					)}
 				</Stack>
 			)}

@@ -100,7 +100,7 @@ export default function BookmarksWithTagPage() {
 			</Header>
 
 			<HStack my="2" fontWeight="semibold">
-				<Text as="h3">{tag}</Text>
+				<Text>{tag}</Text>
 				<IconButton
 					icon={isPinned ? <AiFillPushpin /> : <AiOutlinePushpin />}
 					onClick={onTogglePin}
