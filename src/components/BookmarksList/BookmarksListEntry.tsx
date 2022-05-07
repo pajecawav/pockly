@@ -75,6 +75,14 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 			}
 		`,
 		{
+			optimisticResponse: vars => ({
+				updateBookmark: {
+					id: bookmark.id,
+					__typename: "Bookmark",
+					liked: vars.input.liked ?? bookmark.liked,
+					archived: vars.input.archived ?? bookmark.archived,
+				},
+			}),
 			update: (cache, response) => {
 				if (response.data?.updateBookmark) {
 					cache.writeFragment<UpdateBookmarkMutation_BookmarkFragment>(
@@ -97,14 +105,6 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					liked: !bookmark.liked,
 				},
 			},
-			optimisticResponse: vars => ({
-				updateBookmark: {
-					id: bookmark.id,
-					__typename: "Bookmark",
-					liked: vars.input.liked ?? bookmark.liked,
-					archived: vars.input.archived ?? bookmark.archived,
-				},
-			}),
 			// TODO: modify cached data instead of refetching
 			refetchQueries: [namedOperations.Query.GetLikedBookmarks],
 		});
