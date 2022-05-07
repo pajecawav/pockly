@@ -41,7 +41,7 @@ export default function SearchBookmarksPage() {
 			) {
 				bookmarks(
 					filter: {
-						title: $query
+						query: $query
 						archived: $archived
 						liked: $liked
 					}

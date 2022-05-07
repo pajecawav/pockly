@@ -56,7 +56,7 @@ builder.queryField("bookmark", t =>
 
 const BookmarksFilterInput = builder.inputType("BookmarksFilterInput", {
 	fields: t => ({
-		title: t.string(),
+		query: t.string(),
 		liked: t.boolean({ defaultValue: undefined }),
 		archived: t.boolean({ defaultValue: undefined }),
 	}),
@@ -101,16 +101,17 @@ builder.queryField("bookmarks", t =>
 					.filter(Boolean)
 					.join(" & ");
 
+			const searchQuery = filter?.query
+				? queryStringToPostgresOperators(filter.query)
+				: null;
+
 			return db.bookmark.findMany({
 				...query,
 				where: {
 					userId: user!.id,
-					...(filter?.title && {
-						title: {
-							search: queryStringToPostgresOperators(
-								filter.title
-							),
-						},
+					...(searchQuery && {
+						title: { search: searchQuery },
+						note: { search: searchQuery },
 					}),
 					likedAt: filterToQueryOption(filter?.liked),
 					archivedAt: filterToQueryOption(filter?.archived),
