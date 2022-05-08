@@ -1,14 +1,11 @@
 import type { ComponentStyleConfig, ThemeConfig } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
 import {
+	extendTheme,
 	IconButton as IconButtonComponent,
-	Icon as IconComponent,
 } from "@chakra-ui/react";
 
-/** @type {import("@chakra-ui/react").ThemeConfig} */
 const config: ThemeConfig = {
-	initialColorMode: "light",
+	initialColorMode: "system",
 	useSystemColorMode: false,
 };
 
@@ -60,13 +57,6 @@ export const theme = extendTheme({
 	fonts: {
 		body: font,
 		heading: font,
-	},
-	styles: {
-		global: (props: any) => ({
-			body: {
-				bg: mode("white", "gray.800")(props),
-			},
-		}),
 	},
 	components: {
 		Button,
