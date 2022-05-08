@@ -8,6 +8,9 @@ import {
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
 import {
+	Box,
+	Flex,
+	HStack,
 	Icon,
 	IconButton,
 	Link,
@@ -27,6 +30,7 @@ import {
 } from "react-icons/hi";
 import { FilledIcon } from "../FilledIcon";
 import { BookmarkImage } from "./BookmarkImage";
+import { TagsList } from "./TagsList";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
@@ -43,6 +47,10 @@ export const BookmarksListEntry_bookmarkFragment = gql`
 		url
 		addedAt
 		image
+		tags {
+			id
+			name
+		}
 	}
 `;
 
@@ -136,18 +144,21 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 	};
 
 	return (
-		<Stack
+		<Flex
 			direction={{ base: "column", sm: "row" }}
-			alignItems={{ sm: "center" }}
+			alignItems={{ sm: "start" }}
+			flexWrap="wrap"
 			py="1.5"
 			pr="2"
-			spacing="4"
+			columnGap="4"
+			rowGap="1"
 			borderBottom="1px"
 			borderColor="gray.100"
 			_dark={{ borderColor: "gray.700" }}
 		>
 			<Stack
 				direction={{ base: "row-reverse", sm: "row" }}
+				w="full"
 				flex={1}
 				alignItems="center"
 				spacing="4"
@@ -175,9 +186,15 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				</Link>
 			</Stack>
 
-			<Stack direction="row" spacing="1.5" alignItems="center">
+			<HStack
+				direction="row"
+				spacing="1.5"
+				mt="1"
+				alignItems="center"
+				order={{ base: 3, sm: "initial" }}
+			>
 				<NextLink href={`/b/${bookmark.id}`} passHref>
-					<Link display="block">
+					<Link display="block" lineHeight="0">
 						{/* TODO: better icon */}
 						<Icon as={HiOutlineAnnotation} boxSize="6" />
 					</Link>
@@ -190,6 +207,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 							filled={bookmark.liked}
 						/>
 					}
+					lineHeight="0"
 					title="Toggle liked"
 					aria-label="Toggle liked"
 					onClick={onToggleLiked}
@@ -205,6 +223,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 							boxSize="6"
 						/>
 					}
+					lineHeight="0"
 					title={
 						bookmark.archived
 							? "Add to reading list"
@@ -219,17 +238,25 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				/>
 				<IconButton
 					icon={<Icon as={HiOutlineTag} boxSize="6" />}
+					lineHeight="0"
 					title="Edit tags"
 					aria-label="Edit tags"
 					onClick={onEditTags}
 				/>
 				<IconButton
 					icon={<Icon as={HiOutlineTrash} boxSize="6" />}
+					lineHeight="0"
 					title="Delete bookmark"
 					aria-label="Delete bookmark"
 					onClick={onDelete}
 				/>
-			</Stack>
-		</Stack>
+			</HStack>
+
+			{bookmark.tags.length !== 0 && (
+				<Box w="full">
+					<TagsList tags={bookmark.tags} />
+				</Box>
+			)}
+		</Flex>
 	);
 }

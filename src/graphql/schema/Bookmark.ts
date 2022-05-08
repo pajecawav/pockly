@@ -2,7 +2,6 @@ import { getPageMetadata } from "@/lib/metadata";
 import { getHostnameFromUrl } from "@/utils";
 import { db } from "prisma/client";
 import { builder } from "../builder";
-import { TagObject } from "./Tag";
 
 export const BookmarkObject = builder.prismaObject("Bookmark", {
 	findUnique: bookmark => ({ id: bookmark.id }),
@@ -27,15 +26,7 @@ export const BookmarkObject = builder.prismaObject("Bookmark", {
 			type: "Boolean",
 			resolve: bookmark => !!bookmark.archivedAt,
 		}),
-		tags: t.field({
-			type: [TagObject],
-			resolve: bookmark =>
-				db.bookmark
-					.findUnique({
-						where: { id: bookmark.id },
-					})
-					.tags(),
-		}),
+		tags: t.relation("tags"),
 	}),
 });
 
