@@ -77,7 +77,7 @@ export function BookmarksList({ bookmarks }: Props) {
 
 	return (
 		<>
-			<Stack direction="column" spacing="0">
+			<Stack direction="column" spacing="0" mt="2">
 				{bookmarks.length ? (
 					bookmarks.map(bookmark => (
 						<BookmarksListEntry

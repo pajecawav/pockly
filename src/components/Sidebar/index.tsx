@@ -74,13 +74,13 @@ export function Sidebar() {
 
 			<VStack
 				as="nav"
-				w="52"
+				w="48"
 				h={{ base: "100vh", md: "max-content" }}
 				zIndex="overlay"
 				position={{ base: "fixed", md: "sticky" }}
 				top="0"
 				left={{
-					base: sidebarState.isOpen ? "0" : "-52",
+					base: sidebarState.isOpen ? "0" : "-48",
 					md: undefined,
 				}}
 				transition="left 0.25s ease-out"
