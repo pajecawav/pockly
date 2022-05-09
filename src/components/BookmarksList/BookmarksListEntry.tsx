@@ -48,7 +48,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 	const toast = useToast();
 	const ref = useRef<HTMLDivElement | null>(null);
 
-	useAutoHotkeys(ref);
+	useAutoHotkeys({ ref });
 
 	const [mutateUpdate] = useMutation<
 		UpdateBookmarkMutation,

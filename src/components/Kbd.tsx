@@ -10,7 +10,7 @@ export function Kbd({ children, ...props }: Props) {
 			bg="gray.200"
 			fontSize="0.9em"
 			borderRadius="md"
-			fontWeight="bold"
+			fontWeight="medium"
 			px="0.5em"
 			py="0.1em"
 			lineHeight="normal"

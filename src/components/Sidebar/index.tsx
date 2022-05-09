@@ -1,3 +1,4 @@
+import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
 import { usePinnedTagsStore } from "@/stores/usePinnedTagsStore";
 import {
@@ -28,6 +29,8 @@ import {
 	HiOutlineTag,
 } from "react-icons/hi";
 import { RemoveScroll } from "react-remove-scroll";
+import { Kbd } from "../Kbd";
+import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { AddBookmarkModal } from "./AddBookmarkModal";
 import { SidebarHeading } from "./SidebarHeading";
 import { SidebarLink } from "./SidebarLink";
@@ -36,10 +39,17 @@ export function Sidebar() {
 	const session = useSession<true>();
 	const router = useRouter();
 
+	const sidebarRef = useRef<HTMLDivElement>(null);
+
+	useAutoHotkeys({
+		ref: document.body,
+		scopeRef: sidebarRef,
+		options: { capture: true },
+	});
+
 	const pinnedTags = usePinnedTagsStore(store => store.tags);
 
 	const isMediumOrLarger = useBreakpointValue({ base: false, md: true });
-	const sidebarRef = useRef<HTMLDivElement>(null);
 	const sidebarState = useDisclosure({ defaultIsOpen: false });
 	const sidebarIsOpen = sidebarState.isOpen && !isMediumOrLarger;
 
@@ -155,21 +165,71 @@ export function Sidebar() {
 
 				<Stack direction="column" w="full" spacing="0.5">
 					<SidebarHeading>Bookmarks</SidebarHeading>
-					<SidebarLink href="/read" icon={HiOutlineCollection}>
+					<SidebarLink
+						href="/read"
+						icon={HiOutlineCollection}
+						hotkey="g r"
+						label={
+							<TooltipLabel>
+								Go to reading list &middot; <Kbd>G</Kbd> then{" "}
+								<Kbd>R</Kbd>
+							</TooltipLabel>
+						}
+					>
 						Reading List
 					</SidebarLink>
-					<SidebarLink href="/liked" icon={HiOutlineHeart}>
+					<SidebarLink
+						href="/liked"
+						icon={HiOutlineHeart}
+						hotkey="g l"
+						label={
+							<TooltipLabel>
+								Go to liked &middot; <Kbd>G</Kbd> then{" "}
+								<Kbd>L</Kbd>
+							</TooltipLabel>
+						}
+					>
 						Liked
 					</SidebarLink>
-					<SidebarLink href="/archive" icon={HiOutlineArchive}>
+					<SidebarLink
+						href="/archive"
+						icon={HiOutlineArchive}
+						hotkey="g a"
+						label={
+							<TooltipLabel>
+								Go to archive &middot; <Kbd>G</Kbd> then{" "}
+								<Kbd>A</Kbd>
+							</TooltipLabel>
+						}
+					>
 						Archive
 					</SidebarLink>
-					<SidebarLink href="/search" icon={HiOutlineSearch}>
+					<SidebarLink
+						href="/search"
+						icon={HiOutlineSearch}
+						hotkey="g s"
+						label={
+							<TooltipLabel>
+								Go to search &middot; <Kbd>G</Kbd> then{" "}
+								<Kbd>S</Kbd>
+							</TooltipLabel>
+						}
+					>
 						Search
 					</SidebarLink>
 
 					<SidebarHeading mt="10">Tags</SidebarHeading>
-					<SidebarLink href="/tags" icon={HiOutlineTag}>
+					<SidebarLink
+						href="/tags"
+						icon={HiOutlineTag}
+						hotkey="g t"
+						label={
+							<TooltipLabel>
+								Go to tags &middot; <Kbd>G</Kbd> then{" "}
+								<Kbd>T</Kbd>
+							</TooltipLabel>
+						}
+					>
 						All Tags
 					</SidebarLink>
 					{pinnedTags.map(tag => (

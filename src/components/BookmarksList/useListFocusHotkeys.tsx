@@ -68,8 +68,8 @@ export function useListFocusHotkeys<T extends HTMLElement>({
 			}
 		}
 
-		document.body.addEventListener("keypress", handler);
-		return () => document.body.removeEventListener("keypress", handler);
+		document.body.addEventListener("keydown", handler);
+		return () => document.body.removeEventListener("keydown", handler);
 	}, [ref]);
 
 	const reset = useCallback(() => {
