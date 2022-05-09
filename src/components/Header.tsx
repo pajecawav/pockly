@@ -1,5 +1,6 @@
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
 import {
+	Box,
 	HStack,
 	Icon,
 	IconButton,
@@ -17,40 +18,47 @@ export function Header({ children }: Props) {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
-		<HStack
+		<Box
 			position="sticky"
 			top="0"
 			zIndex="sticky"
-			h="14"
-			py="3"
-			pl={{ base: "10", md: "0" }}
 			bg={useDefaultBackgroundColor()}
-			borderBottom="1px"
-			borderColor="gray.100"
-			_dark={{ borderColor: "gray.700" }}
-			fontWeight="semibold"
+			mx="-2"
 		>
-			{children}
+			<HStack
+				h="14"
+				pl={{ base: "10", md: "0" }}
+				py="3"
+				mx="2"
+				borderBottom="1px"
+				borderColor="gray.100"
+				_dark={{ borderColor: "gray.700" }}
+				fontWeight="semibold"
+			>
+				{children}
 
-			<Spacer />
+				<Spacer />
 
-			<IconButton
-				display="flex"
-				icon={
-					<Icon
-						as={
-							colorMode === "light" ? HiOutlineMoon : HiOutlineSun
-						}
-						boxSize="6"
-					/>
-				}
-				alignSelf="flex-end"
-				size="sm"
-				variant="ghost"
-				onClick={() => toggleColorMode()}
-				title="Toggle theme"
-				aria-label="Toggle theme"
-			/>
-		</HStack>
+				<IconButton
+					display="flex"
+					icon={
+						<Icon
+							as={
+								colorMode === "light"
+									? HiOutlineMoon
+									: HiOutlineSun
+							}
+							boxSize="6"
+						/>
+					}
+					alignSelf="flex-end"
+					size="sm"
+					variant="ghost"
+					onClick={() => toggleColorMode()}
+					title="Toggle theme"
+					aria-label="Toggle theme"
+				/>
+			</HStack>
+		</Box>
 	);
 }
