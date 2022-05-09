@@ -30,6 +30,9 @@ import {
 	HiOutlineTrash,
 } from "react-icons/hi";
 import { FilledIcon } from "../FilledIcon";
+import { Kbd } from "../Kbd";
+import { Tooltip } from "../Tooltip";
+import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { BookmarkImage } from "./BookmarkImage";
 import { TagsList } from "./TagsList";
 
@@ -227,67 +230,112 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				alignItems="center"
 				order={{ base: 3, sm: "initial" }}
 			>
-				<NextLink href={`/b/${bookmark.id}`} passHref>
-					<Link display="block" lineHeight="0" data-hotkey="n">
-						{/* TODO: better icon */}
-						<Icon as={HiOutlineAnnotation} boxSize="6" />
-					</Link>
-				</NextLink>
-				<IconButton
-					icon={
-						<FilledIcon
-							as={HiOutlineHeart}
-							boxSize="6"
-							filled={bookmark.liked}
-						/>
+				<Tooltip
+					label={
+						<TooltipLabel>
+							Open notes &middot; <Kbd>N</Kbd>
+						</TooltipLabel>
 					}
-					lineHeight="0"
-					title="Toggle liked"
-					aria-label="Toggle liked"
-					data-hotkey="l"
-					onClick={onToggleLiked}
-				/>
-				<IconButton
-					icon={
-						<Icon
-							as={
-								bookmark.archived
-									? HiOutlinePlus
-									: HiOutlineArchive
-							}
-							boxSize="6"
-						/>
+				>
+					<span>
+						<NextLink href={`/b/${bookmark.id}`} passHref>
+							<Link
+								display="block"
+								lineHeight="0"
+								data-hotkey="n"
+							>
+								{/* TODO: better icon */}
+								<Icon as={HiOutlineAnnotation} boxSize="6" />
+							</Link>
+						</NextLink>
+					</span>
+				</Tooltip>
+
+				<Tooltip
+					label={
+						<TooltipLabel>
+							Toggle like &middot; <Kbd>L</Kbd>
+						</TooltipLabel>
 					}
-					lineHeight="0"
-					title={
-						bookmark.archived
-							? "Add to reading list"
-							: "Move to archive"
+				>
+					<IconButton
+						icon={
+							<FilledIcon
+								as={HiOutlineHeart}
+								boxSize="6"
+								filled={bookmark.liked}
+							/>
+						}
+						lineHeight="0"
+						aria-label="Toggle liked"
+						data-hotkey="l"
+						onClick={onToggleLiked}
+					/>
+				</Tooltip>
+
+				<Tooltip
+					label={
+						<TooltipLabel>
+							{bookmark.archived
+								? "Add to reading list"
+								: "Move to archive"}{" "}
+							&middot; <Kbd>A</Kbd>
+						</TooltipLabel>
 					}
-					aria-label={
-						bookmark.archived
-							? "Add to reading list"
-							: "Move to archive"
+				>
+					<IconButton
+						icon={
+							<Icon
+								as={
+									bookmark.archived
+										? HiOutlinePlus
+										: HiOutlineArchive
+								}
+								boxSize="6"
+							/>
+						}
+						lineHeight="0"
+						aria-label={
+							bookmark.archived
+								? "Add to reading list"
+								: "Move to archive"
+						}
+						data-hotkey="a"
+						onClick={onToggleArchived}
+					/>
+				</Tooltip>
+
+				<Tooltip
+					label={
+						<TooltipLabel>
+							Edit tags &middot; <Kbd>T</Kbd>
+						</TooltipLabel>
 					}
-					data-hotkey="a"
-					onClick={onToggleArchived}
-				/>
-				<IconButton
-					icon={<Icon as={HiOutlineTag} boxSize="6" />}
-					lineHeight="0"
-					title="Edit tags"
-					aria-label="Edit tags"
-					data-hotkey="t"
-					onClick={onEditTags}
-				/>
-				<IconButton
-					icon={<Icon as={HiOutlineTrash} boxSize="6" />}
-					lineHeight="0"
-					title="Delete bookmark"
-					aria-label="Delete bookmark"
-					data-hotkey="d"
-					onClick={onDelete}
-				/>
+				>
+					<IconButton
+						icon={<Icon as={HiOutlineTag} boxSize="6" />}
+						lineHeight="0"
+						aria-label="Edit tags"
+						data-hotkey="t"
+						onClick={onEditTags}
+					/>
+				</Tooltip>
+
+				<Tooltip
+					label={
+						<TooltipLabel>
+							Delete &middot; <Kbd>D</Kbd>
+						</TooltipLabel>
+					}
+				>
+					<IconButton
+						icon={<Icon as={HiOutlineTrash} boxSize="6" />}
+						lineHeight="0"
+						aria-label="Delete bookmark"
+						data-hotkey="d"
+						onClick={onDelete}
+					/>
+				</Tooltip>
 			</HStack>
 
 			{bookmark.tags.length !== 0 && (
