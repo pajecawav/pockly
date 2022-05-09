@@ -185,6 +185,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 						isTruncated
 						title={bookmark.title}
 						data-focus-list-target
+						data-hotkey="o"
 					>
 						{bookmark.title}
 					</Link>

@@ -147,7 +147,7 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 									backspaceRemovesValue={true}
 									tabSelectsValue={false}
 									escapeClearsValue={false}
-									closeMenuOnSelect={false}
+									closeMenuOnSelect={true}
 									components={{ DropdownIndicator: null }}
 									ref={selectRef}
 								/>
