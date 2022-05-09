@@ -29,6 +29,7 @@ import {
 	HiOutlineTag,
 } from "react-icons/hi";
 import { RemoveScroll } from "react-remove-scroll";
+import { Hotkey } from "../Hotkey";
 import { Kbd } from "../Kbd";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { AddBookmarkModal } from "./AddBookmarkModal";
@@ -171,8 +172,8 @@ export function Sidebar() {
 						hotkey="g r"
 						label={
 							<TooltipLabel>
-								Go to reading list &middot; <Kbd>G</Kbd> then{" "}
-								<Kbd>R</Kbd>
+								Go to reading list &middot;{" "}
+								<Hotkey value="G R" />
 							</TooltipLabel>
 						}
 					>
@@ -184,8 +185,7 @@ export function Sidebar() {
 						hotkey="g l"
 						label={
 							<TooltipLabel>
-								Go to liked &middot; <Kbd>G</Kbd> then{" "}
-								<Kbd>L</Kbd>
+								Go to liked &middot; <Hotkey value="G L" />
 							</TooltipLabel>
 						}
 					>
@@ -197,8 +197,7 @@ export function Sidebar() {
 						hotkey="g a"
 						label={
 							<TooltipLabel>
-								Go to archive &middot; <Kbd>G</Kbd> then{" "}
-								<Kbd>A</Kbd>
+								Go to archive &middot; <Hotkey value="G A" />
 							</TooltipLabel>
 						}
 					>
@@ -210,8 +209,7 @@ export function Sidebar() {
 						hotkey="g s"
 						label={
 							<TooltipLabel>
-								Go to search &middot; <Kbd>G</Kbd> then{" "}
-								<Kbd>S</Kbd>
+								Go to search &middot; <Hotkey value="G S" />
 							</TooltipLabel>
 						}
 					>
@@ -225,8 +223,7 @@ export function Sidebar() {
 						hotkey="g t"
 						label={
 							<TooltipLabel>
-								Go to tags &middot; <Kbd>G</Kbd> then{" "}
-								<Kbd>T</Kbd>
+								Go to tags &middot; <Hotkey value="G T" />
 							</TooltipLabel>
 						}
 					>

@@ -7,7 +7,7 @@ interface Props extends ChakraProps {
 
 export function TooltipLabel({ children, ...props }: Props) {
 	return (
-		<chakra.span color="black" _dark={{ color: "white" }} {...props}>
+		<chakra.span color="gray.800" _dark={{ color: "white" }} {...props}>
 			{children}
 		</chakra.span>
 	);

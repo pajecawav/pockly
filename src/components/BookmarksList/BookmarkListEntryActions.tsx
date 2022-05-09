@@ -9,6 +9,7 @@ import {
 	HiOutlineTrash,
 } from "react-icons/hi";
 import { FilledIcon } from "../FilledIcon";
+import { Hotkey } from "../Hotkey";
 import { Kbd } from "../Kbd";
 import { Tooltip } from "../Tooltip";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
@@ -37,7 +38,7 @@ export function BookmarksListEntryActions({
 			<Tooltip
 				label={
 					<TooltipLabel>
-						Open notes &middot; <Kbd>N</Kbd>
+						Open notes &middot; <Hotkey value="N" />
 					</TooltipLabel>
 				}
 			>
@@ -54,7 +55,7 @@ export function BookmarksListEntryActions({
 			<Tooltip
 				label={
 					<TooltipLabel>
-						Toggle like &middot; <Kbd>L</Kbd>
+						Toggle like &middot; <Hotkey value="L" />
 					</TooltipLabel>
 				}
 			>
@@ -77,7 +78,7 @@ export function BookmarksListEntryActions({
 				label={
 					<TooltipLabel>
 						{archived ? "Add to reading list" : "Move to archive"}{" "}
-						&middot; <Kbd>A</Kbd>
+						&middot; <Hotkey value="A" />
 					</TooltipLabel>
 				}
 			>
@@ -100,7 +101,7 @@ export function BookmarksListEntryActions({
 			<Tooltip
 				label={
 					<TooltipLabel>
-						Edit tags &middot; <Kbd>T</Kbd>
+						Edit tags &middot; <Hotkey value="T" />
 					</TooltipLabel>
 				}
 			>
@@ -116,7 +117,7 @@ export function BookmarksListEntryActions({
 			<Tooltip
 				label={
 					<TooltipLabel>
-						Delete &middot; <Kbd>D</Kbd>
+						Delete &middot; <Hotkey value="D" />
 					</TooltipLabel>
 				}
 			>
