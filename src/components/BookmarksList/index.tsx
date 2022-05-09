@@ -6,7 +6,7 @@ import {
 import { useMutation } from "@apollo/client";
 import { Stack, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	BookmarksListEntry,
 	BookmarksListEntry_bookmarkFragment,
@@ -17,6 +17,7 @@ import {
 	EditBookmarkTagsModal_bookmarkFragment,
 } from "./EditBookmarkTagsModal";
 import { EmptyBookmarks } from "./EmptyBookmarks";
+import { useListFocusHotkeys } from "./useListFocusHotkeys";
 
 interface Props {
 	bookmarks: BookmarksList_BookmarkFragment[];
@@ -75,9 +76,15 @@ export function BookmarksList({ bookmarks }: Props) {
 		setEditingTagsBookmark(null);
 	};
 
+	const ref = useRef<HTMLDivElement | null>(null);
+	const { reset: resetFocusState } = useListFocusHotkeys({ ref });
+	useEffect(() => {
+		resetFocusState();
+	}, [bookmarks, resetFocusState]);
+
 	return (
 		<>
-			<Stack direction="column" spacing="0" mt="2">
+			<Stack direction="column" spacing="0" mt="2" ref={ref}>
 				{bookmarks.length ? (
 					bookmarks.map(bookmark => (
 						<BookmarksListEntry

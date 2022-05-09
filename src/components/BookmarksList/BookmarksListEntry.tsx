@@ -157,6 +157,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 			borderColor="gray.100"
 			_dark={{ borderColor: "gray.700" }}
 			data-group=""
+			data-focus-list-item
 		>
 			<Box
 				zIndex="-1"
@@ -196,6 +197,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 						wordBreak="break-word"
 						isTruncated
 						title={bookmark.title}
+						data-focus-list-target
 					>
 						{bookmark.title}
 					</Link>

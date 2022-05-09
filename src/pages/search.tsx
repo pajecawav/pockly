@@ -91,6 +91,7 @@ export default function SearchBookmarksPage() {
 					{...form.register("query")}
 					type="search"
 					placeholder="Search"
+					autoFocus
 				/>
 				<Select
 					{...form.register("scope")}
