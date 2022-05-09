@@ -8,32 +8,11 @@ import {
 	UpdateBookmarkMutation_BookmarkFragment,
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
-import {
-	Box,
-	Flex,
-	HStack,
-	Icon,
-	IconButton,
-	Link,
-	Stack,
-	useToast,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, Link, Stack, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import NextLink from "next/link";
 import { useRef } from "react";
-import {
-	HiOutlineAnnotation,
-	HiOutlineArchive,
-	HiOutlineHeart,
-	HiOutlinePlus,
-	HiOutlineTag,
-	HiOutlineTrash,
-} from "react-icons/hi";
-import { FilledIcon } from "../FilledIcon";
-import { Kbd } from "../Kbd";
-import { Tooltip } from "../Tooltip";
-import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { BookmarkImage } from "./BookmarkImage";
+import { BookmarksListEntryActions } from "./BookmarkListEntryActions";
 import { TagsList } from "./TagsList";
 
 interface Props {
@@ -230,112 +209,15 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				alignItems="center"
 				order={{ base: 3, sm: "initial" }}
 			>
-				<Tooltip
-					label={
-						<TooltipLabel>
-							Open notes &middot; <Kbd>N</Kbd>
-						</TooltipLabel>
-					}
-				>
-					<span>
-						<NextLink href={`/b/${bookmark.id}`} passHref>
-							<Link
-								display="block"
-								lineHeight="0"
-								data-hotkey="n"
-							>
-								{/* TODO: better icon */}
-								<Icon as={HiOutlineAnnotation} boxSize="6" />
-							</Link>
-						</NextLink>
-					</span>
-				</Tooltip>
-
-				<Tooltip
-					label={
-						<TooltipLabel>
-							Toggle like &middot; <Kbd>L</Kbd>
-						</TooltipLabel>
-					}
-				>
-					<IconButton
-						icon={
-							<FilledIcon
-								as={HiOutlineHeart}
-								boxSize="6"
-								filled={bookmark.liked}
-							/>
-						}
-						lineHeight="0"
-						aria-label="Toggle liked"
-						data-hotkey="l"
-						onClick={onToggleLiked}
-					/>
-				</Tooltip>
-
-				<Tooltip
-					label={
-						<TooltipLabel>
-							{bookmark.archived
-								? "Add to reading list"
-								: "Move to archive"}{" "}
-							&middot; <Kbd>A</Kbd>
-						</TooltipLabel>
-					}
-				>
-					<IconButton
-						icon={
-							<Icon
-								as={
-									bookmark.archived
-										? HiOutlinePlus
-										: HiOutlineArchive
-								}
-								boxSize="6"
-							/>
-						}
-						lineHeight="0"
-						aria-label={
-							bookmark.archived
-								? "Add to reading list"
-								: "Move to archive"
-						}
-						data-hotkey="a"
-						onClick={onToggleArchived}
-					/>
-				</Tooltip>
-
-				<Tooltip
-					label={
-						<TooltipLabel>
-							Edit tags &middot; <Kbd>T</Kbd>
-						</TooltipLabel>
-					}
-				>
-					<IconButton
-						icon={<Icon as={HiOutlineTag} boxSize="6" />}
-						lineHeight="0"
-						aria-label="Edit tags"
-						data-hotkey="t"
-						onClick={onEditTags}
-					/>
-				</Tooltip>
-
-				<Tooltip
-					label={
-						<TooltipLabel>
-							Delete &middot; <Kbd>D</Kbd>
-						</TooltipLabel>
-					}
-				>
-					<IconButton
-						icon={<Icon as={HiOutlineTrash} boxSize="6" />}
-						lineHeight="0"
-						aria-label="Delete bookmark"
-						data-hotkey="d"
-						onClick={onDelete}
-					/>
-				</Tooltip>
+				<BookmarksListEntryActions
+					id={bookmark.id}
+					liked={bookmark.liked}
+					archived={bookmark.archived}
+					onToggleLiked={onToggleLiked}
+					onToggleArchived={onToggleArchived}
+					onEditTags={onEditTags}
+					onDelete={onDelete}
+				/>
 			</HStack>
 
 			{bookmark.tags.length !== 0 && (
