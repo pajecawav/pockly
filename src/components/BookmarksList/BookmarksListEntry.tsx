@@ -1,3 +1,4 @@
+import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { getHostnameFromUrl } from "@/utils";
 import {
 	BookmarksListEntry_BookmarkFragment,
@@ -15,11 +16,11 @@ import {
 	IconButton,
 	Link,
 	Stack,
-	Text,
 	useToast,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import NextLink from "next/link";
+import { useRef } from "react";
 import {
 	HiOutlineAnnotation,
 	HiOutlineArchive,
@@ -63,6 +64,9 @@ const UpdateBookmarkMutation_bookmarkFragment = gql`
 
 export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 	const toast = useToast();
+	const ref = useRef<HTMLDivElement | null>(null);
+
+	useAutoHotkeys(ref);
 
 	const [mutateUpdate] = useMutation<
 		UpdateBookmarkMutation,
@@ -158,6 +162,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 			_dark={{ borderColor: "gray.700" }}
 			data-group=""
 			data-focus-list-item
+			ref={ref}
 		>
 			<Box
 				zIndex="-1"
@@ -223,7 +228,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				order={{ base: 3, sm: "initial" }}
 			>
 				<NextLink href={`/b/${bookmark.id}`} passHref>
-					<Link display="block" lineHeight="0">
+					<Link display="block" lineHeight="0" data-hotkey="n">
 						{/* TODO: better icon */}
 						<Icon as={HiOutlineAnnotation} boxSize="6" />
 					</Link>
@@ -239,6 +244,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					lineHeight="0"
 					title="Toggle liked"
 					aria-label="Toggle liked"
+					data-hotkey="l"
 					onClick={onToggleLiked}
 				/>
 				<IconButton
@@ -263,6 +269,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 							? "Add to reading list"
 							: "Move to archive"
 					}
+					data-hotkey="a"
 					onClick={onToggleArchived}
 				/>
 				<IconButton
@@ -270,6 +277,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					lineHeight="0"
 					title="Edit tags"
 					aria-label="Edit tags"
+					data-hotkey="t"
 					onClick={onEditTags}
 				/>
 				<IconButton
@@ -277,6 +285,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 					lineHeight="0"
 					title="Delete bookmark"
 					aria-label="Delete bookmark"
+					data-hotkey="d"
 					onClick={onDelete}
 				/>
 			</HStack>
