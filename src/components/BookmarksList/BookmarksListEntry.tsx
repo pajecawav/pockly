@@ -168,7 +168,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				alignItems="center"
 				spacing="4"
 			>
-				<Link href={bookmark.url} isExternal>
+				<Link href={bookmark.url} isExternal tabIndex={-1}>
 					<BookmarkImage
 						title={bookmark.title}
 						src={bookmark.image}
@@ -197,6 +197,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 						color="lightslategray"
 						wordBreak="break-word"
 						isTruncated
+						tabIndex={-1}
 					>
 						{getHostnameFromUrl(bookmark.url)}
 					</Link>
