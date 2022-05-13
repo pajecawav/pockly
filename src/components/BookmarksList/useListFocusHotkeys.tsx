@@ -1,5 +1,29 @@
 import { RefObject, useCallback, useEffect, useRef } from "react";
 
+function shouldIgnoreEventTarget(target: HTMLElement): boolean {
+	return (
+		["input", "textarea", "select"].includes(
+			target.tagName.toLowerCase()
+		) || target.isContentEditable
+	);
+}
+
+function focusListItem(item: HTMLElement) {
+	const itemTarget = item.querySelector<HTMLElement>(
+		"[data-focus-list-target]"
+	);
+	if (itemTarget) {
+		itemTarget.focus();
+		itemTarget.scrollIntoView({ block: "center" });
+	}
+}
+
+function getAllItems(list: HTMLElement): HTMLElement[] {
+	return Array.from(
+		list.querySelectorAll<HTMLElement>("[data-focus-list-item]")
+	);
+}
+
 export function useListFocusHotkeys<T extends HTMLElement>({
 	ref,
 }: {
@@ -14,23 +38,8 @@ export function useListFocusHotkeys<T extends HTMLElement>({
 			}
 
 			const target = event.target as HTMLElement;
-			if (
-				["input", "textarea", "select"].includes(
-					target.tagName.toLowerCase()
-				) ||
-				target.isContentEditable
-			) {
+			if (shouldIgnoreEventTarget(target)) {
 				return;
-			}
-
-			function focusItem(item: HTMLElement) {
-				const itemTarget = item.querySelector<HTMLElement>(
-					"[data-focus-list-target]"
-				);
-				if (itemTarget) {
-					itemTarget.focus();
-					itemTarget.scrollIntoView({ block: "center" });
-				}
 			}
 
 			if (event.key !== "j" && event.key !== "k") {
@@ -38,32 +47,39 @@ export function useListFocusHotkeys<T extends HTMLElement>({
 			}
 			const selectNext = event.key === "j";
 
-			const allItems = Array.from(
-				ref.current.querySelectorAll<HTMLElement>(
-					"[data-focus-list-item]"
-				)
+			const allItems = getAllItems(ref.current);
+			if (allItems.length === 0) {
+				return;
+			}
+
+			// refocus last focused element
+			if (
+				lastFocusedItemRef.current &&
+				!lastFocusedItemRef.current.contains(document.activeElement)
+			) {
+				focusListItem(lastFocusedItemRef.current);
+				return;
+			}
+
+			const currentItem = target.closest<HTMLElement>(
+				"[data-focus-list-item]"
+			);
+			const currentIndex = allItems.findIndex(
+				item => item === currentItem
 			);
 
-			let nextIndex;
-			if (ref.current.contains(target)) {
-				const currentItem = target.closest<HTMLElement>(
-					"[data-focus-list-item]"
-				);
-				const index = allItems.findIndex(item => item === currentItem);
-				nextIndex = selectNext
-					? Math.min(index + 1, allItems.length - 1)
-					: Math.max(index - 1, 0);
-			} else if (lastFocusedItemRef.current) {
-				nextIndex = allItems.findIndex(
-					item => item === lastFocusedItemRef.current
-				);
-			} else {
+			let nextIndex: number;
+			if (currentIndex === -1) {
 				nextIndex = 0;
+			} else if (selectNext) {
+				nextIndex = Math.min(currentIndex + 1, allItems.length - 1);
+			} else {
+				nextIndex = Math.max(currentIndex - 1, 0);
 			}
 
 			const nextItem = allItems[nextIndex];
 			if (nextItem) {
-				focusItem(nextItem);
+				focusListItem(nextItem);
 				lastFocusedItemRef.current = nextItem as T;
 			}
 		}
