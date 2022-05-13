@@ -15,7 +15,7 @@ export function DefaultAppShell({ children }: Props) {
 			direction="row"
 			px="3"
 			pb="3"
-			spacing={{ base: "0", md: "4" }}
+			spacing={{ base: "0", md: "2" }}
 		>
 			<Sidebar />
 			<Box as="main" flex="1" w="0">

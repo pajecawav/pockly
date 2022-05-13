@@ -182,7 +182,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 						display="block"
 						maxW="max-content"
 						wordBreak="break-word"
-						isTruncated
+						noOfLines={1}
 						title={bookmark.title}
 						data-focus-list-target
 						data-hotkey="o"
@@ -196,7 +196,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 						maxW="max-content"
 						color="lightslategray"
 						wordBreak="break-word"
-						isTruncated
+						noOfLines={1}
 						tabIndex={-1}
 					>
 						{getHostnameFromUrl(bookmark.url)}

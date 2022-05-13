@@ -141,7 +141,7 @@ export function Sidebar() {
 							size="xs"
 							src={session.data?.user.image ?? undefined}
 						/>
-						<Text isTruncated>{session.data?.user?.name}</Text>
+						<Text noOfLines={1}>{session.data?.user?.name}</Text>
 					</Button>
 				</HStack>
 

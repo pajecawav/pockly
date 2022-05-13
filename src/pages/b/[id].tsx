@@ -44,7 +44,7 @@ export default function BookmarkPage() {
 		<>
 			<Header>
 				{bookmark && (
-					<Text isTruncated title={bookmark?.title}>
+					<Text noOfLines={1} title={bookmark?.title}>
 						{bookmark.title}
 					</Text>
 				)}
