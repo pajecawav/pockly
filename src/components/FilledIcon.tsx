@@ -6,5 +6,11 @@ interface Props extends ComponentProps<typeof Icon> {
 }
 
 export function FilledIcon({ filled, ...props }: Props) {
-	return <Icon fill={filled ? "cyan.100" : undefined} {...props} />;
+	return (
+		<Icon
+			fill={filled ? "cyan.100" : undefined}
+			_dark={{ stroke: filled ? "whiteAlpha.700" : undefined }}
+			{...props}
+		/>
+	);
 }

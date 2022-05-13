@@ -17,3 +17,7 @@ body,
 #nprogress .peg {
 	display: none;
 }
+
+svg path {
+	stroke-width: 1.75 !important;
+}
