@@ -6,7 +6,7 @@ import {
 import { useMutation } from "@apollo/client";
 import { Stack, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
 	BookmarksListEntry,
 	BookmarksListEntry_bookmarkFragment,
@@ -77,10 +77,7 @@ export function BookmarksList({ bookmarks }: Props) {
 	};
 
 	const ref = useRef<HTMLDivElement | null>(null);
-	const { reset: resetFocusState } = useListFocusHotkeys({ ref });
-	useEffect(() => {
-		resetFocusState();
-	}, [bookmarks, resetFocusState]);
+	useListFocusHotkeys({ ref });
 
 	return (
 		<>

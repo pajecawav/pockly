@@ -1,7 +1,7 @@
 import { db } from "./client";
 import faker from "@faker-js/faker";
 
-faker.seed(123);
+// faker.seed(123);
 
 async function main() {
 	const user = await db.user.findFirst();

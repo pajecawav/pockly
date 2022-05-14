@@ -1,5 +1,10 @@
 import { RefObject, useCallback, useEffect, useRef } from "react";
 
+enum FocusDirection {
+	Next,
+	Prev,
+}
+
 function shouldIgnoreEventTarget(target: HTMLElement): boolean {
 	return (
 		["input", "textarea", "select"].includes(
@@ -24,12 +29,43 @@ function getAllItems(list: HTMLElement): HTMLElement[] {
 	);
 }
 
-export function useListFocusHotkeys<T extends HTMLElement>({
-	ref,
-}: {
-	ref: RefObject<T>;
-}) {
-	const lastFocusedItemRef = useRef<T | null>(null);
+export function useListFocusHotkeys({ ref }: { ref: RefObject<HTMLElement> }) {
+	const lastFocusedIndexRef = useRef<number | null>(null);
+
+	// TODO: this hook needs a complete rehaul
+	const moveFocus = useCallback(
+		(direction: FocusDirection) => {
+			if (!ref.current) {
+				return;
+			}
+
+			const allItems = getAllItems(ref.current);
+			if (allItems.length === 0) {
+				return;
+			}
+
+			const currentIndex = lastFocusedIndexRef.current ?? -1;
+
+			let nextIndex: number;
+			if (currentIndex === -1) {
+				nextIndex = 0;
+			} else if (!ref.current.contains(document.activeElement)) {
+				nextIndex = currentIndex;
+			} else if (direction === FocusDirection.Next) {
+				nextIndex = currentIndex + 1;
+			} else {
+				nextIndex = currentIndex - 1;
+			}
+			nextIndex = Math.max(0, Math.min(allItems.length - 1, nextIndex));
+
+			const nextItem = allItems[nextIndex];
+			if (nextItem) {
+				focusListItem(nextItem);
+				lastFocusedIndexRef.current = nextIndex;
+			}
+		},
+		[ref]
+	);
 
 	useEffect(() => {
 		function handler(event: KeyboardEvent) {
@@ -45,52 +81,27 @@ export function useListFocusHotkeys<T extends HTMLElement>({
 			if (event.key !== "j" && event.key !== "k") {
 				return;
 			}
-			const selectNext = event.key === "j";
 
-			const allItems = getAllItems(ref.current);
-			if (allItems.length === 0) {
-				return;
-			}
-
-			// refocus last focused element
-			if (
-				lastFocusedItemRef.current &&
-				!lastFocusedItemRef.current.contains(document.activeElement)
-			) {
-				focusListItem(lastFocusedItemRef.current);
-				return;
-			}
-
-			const currentItem = target.closest<HTMLElement>(
-				"[data-focus-list-item]"
-			);
-			const currentIndex = allItems.findIndex(
-				item => item === currentItem
-			);
-
-			let nextIndex: number;
-			if (currentIndex === -1) {
-				nextIndex = 0;
-			} else if (selectNext) {
-				nextIndex = Math.min(currentIndex + 1, allItems.length - 1);
-			} else {
-				nextIndex = Math.max(currentIndex - 1, 0);
-			}
-
-			const nextItem = allItems[nextIndex];
-			if (nextItem) {
-				focusListItem(nextItem);
-				lastFocusedItemRef.current = nextItem as T;
-			}
+			const direction =
+				event.key === "j" ? FocusDirection.Next : FocusDirection.Prev;
+			moveFocus(direction);
 		}
 
 		document.body.addEventListener("keydown", handler);
 		return () => document.body.removeEventListener("keydown", handler);
-	}, [ref]);
+	}, [ref, moveFocus]);
 
 	const reset = useCallback(() => {
-		lastFocusedItemRef.current = null;
+		lastFocusedIndexRef.current = null;
 	}, []);
 
-	return { reset };
+	const focusNextItem = useCallback(() => {
+		moveFocus(FocusDirection.Next);
+	}, [moveFocus]);
+
+	const focusPrevItem = useCallback(() => {
+		moveFocus(FocusDirection.Prev);
+	}, [moveFocus]);
+
+	return { reset, focusNextItem, focusPrevItem };
 }
