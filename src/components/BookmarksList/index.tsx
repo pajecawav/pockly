@@ -6,7 +6,7 @@ import {
 import { useMutation } from "@apollo/client";
 import { Stack, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
 	BookmarksListEntry,
 	BookmarksListEntry_bookmarkFragment,
@@ -79,6 +79,18 @@ export function BookmarksList({ bookmarks }: Props) {
 	const ref = useRef<HTMLDivElement | null>(null);
 	useListFocusHotkeys({ ref });
 
+	const onDelete = useCallback(
+		(bookmark: BookmarksList_BookmarkFragment) =>
+			setDeletingBookmark(bookmark),
+		[]
+	);
+
+	const onEditTags = useCallback(
+		(bookmark: BookmarksList_BookmarkFragment) =>
+			setEditingTagsBookmark(bookmark),
+		[]
+	);
+
 	return (
 		<>
 			<Stack direction="column" spacing="0" mt="2" ref={ref}>
@@ -87,8 +99,8 @@ export function BookmarksList({ bookmarks }: Props) {
 						<BookmarksListEntry
 							key={bookmark.id}
 							bookmark={bookmark}
-							onDelete={() => setDeletingBookmark(bookmark)}
-							onEditTags={() => setEditingTagsBookmark(bookmark)}
+							onDelete={onDelete}
+							onEditTags={onEditTags}
 						/>
 					))
 				) : (

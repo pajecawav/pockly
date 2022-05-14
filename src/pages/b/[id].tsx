@@ -49,6 +49,7 @@ export default function BookmarkPage() {
 					</Text>
 				)}
 			</Header>
+
 			{!bookmark ? (
 				<Center w="full" h="32">
 					<Spinner />

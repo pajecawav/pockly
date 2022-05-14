@@ -43,6 +43,7 @@ export default function LikedBookmarksPage() {
 					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
 				</Box>
 			</Header>
+
 			{!bookmarks ? (
 				<Center w="full" h="32">
 					<Spinner />

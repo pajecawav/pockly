@@ -1,24 +1,17 @@
 import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { getHostnameFromUrl } from "@/utils";
-import {
-	BookmarksListEntry_BookmarkFragment,
-	namedOperations,
-	UpdateBookmarkMutation,
-	UpdateBookmarkMutationVariables,
-	UpdateBookmarkMutation_BookmarkFragment,
-} from "@/__generated__/operations";
-import { useMutation } from "@apollo/client";
-import { Box, Flex, HStack, Link, Stack, useToast } from "@chakra-ui/react";
+import { BookmarksListEntry_BookmarkFragment } from "@/__generated__/operations";
+import { Box, Flex, HStack, Link, Stack } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { BookmarkImage } from "./BookmarkImage";
 import { BookmarksListEntryActions } from "./BookmarkListEntryActions";
 import { TagsList } from "./TagsList";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
-	onDelete: () => void;
-	onEditTags: () => void;
+	onDelete: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
+	onEditTags: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
 }
 
 export const BookmarksListEntry_bookmarkFragment = gql`
@@ -37,97 +30,14 @@ export const BookmarksListEntry_bookmarkFragment = gql`
 	}
 `;
 
-const UpdateBookmarkMutation_bookmarkFragment = gql`
-	fragment UpdateBookmarkMutation_bookmark on Bookmark {
-		liked
-		archived
-	}
-`;
-
-export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
-	const toast = useToast();
+export const BookmarksListEntry = memo(function BookmarksListEntry({
+	bookmark,
+	onEditTags,
+	onDelete,
+}: Props) {
 	const ref = useRef<HTMLDivElement | null>(null);
 
 	useAutoHotkeys({ ref });
-
-	const [mutateUpdate] = useMutation<
-		UpdateBookmarkMutation,
-		UpdateBookmarkMutationVariables
-	>(
-		gql`
-			${UpdateBookmarkMutation_bookmarkFragment}
-
-			mutation UpdateBookmark(
-				$id: String!
-				$input: UpdateBookmarkInput!
-			) {
-				updateBookmark(id: $id, input: $input) {
-					id
-					__typename
-					...UpdateBookmarkMutation_bookmark
-				}
-			}
-		`,
-		{
-			optimisticResponse: vars => ({
-				updateBookmark: {
-					id: bookmark.id,
-					__typename: "Bookmark",
-					liked: vars.input.liked ?? bookmark.liked,
-					archived: vars.input.archived ?? bookmark.archived,
-				},
-			}),
-			update: (cache, response) => {
-				if (response.data?.updateBookmark) {
-					cache.writeFragment<UpdateBookmarkMutation_BookmarkFragment>(
-						{
-							id: cache.identify(bookmark),
-							fragment: UpdateBookmarkMutation_bookmarkFragment,
-							data: response.data.updateBookmark,
-						}
-					);
-				}
-			},
-		}
-	);
-
-	const onToggleLiked = () => {
-		mutateUpdate({
-			variables: {
-				id: bookmark.id,
-				input: {
-					liked: !bookmark.liked,
-				},
-			},
-			// TODO: modify cached data instead of refetching
-			refetchQueries: [namedOperations.Query.GetLikedBookmarks],
-		});
-	};
-
-	const onToggleArchived = () => {
-		mutateUpdate({
-			variables: {
-				id: bookmark.id,
-				input: {
-					archived: !bookmark.archived,
-				},
-			},
-			// TODO: modify cached data instead of refetching
-			refetchQueries: [
-				namedOperations.Query.GetUnreadBookmarks,
-				namedOperations.Query.GetArchivedBookmarks,
-			],
-			onCompleted: result => {
-				const wasArchived = result.updateBookmark.archived;
-				toast({
-					status: "success",
-					description: wasArchived
-						? "Archived bookmark!"
-						: "Added to reading list!",
-				});
-			},
-		});
-	};
 
 	return (
 		<Flex
@@ -212,11 +122,7 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 				order={{ base: 3, sm: "initial" }}
 			>
 				<BookmarksListEntryActions
-					id={bookmark.id}
-					liked={bookmark.liked}
-					archived={bookmark.archived}
-					onToggleLiked={onToggleLiked}
-					onToggleArchived={onToggleArchived}
+					bookmark={bookmark}
 					onEditTags={onEditTags}
 					onDelete={onDelete}
 				/>
@@ -229,4 +135,4 @@ export function BookmarksListEntry({ bookmark, onEditTags, onDelete }: Props) {
 			)}
 		</Flex>
 	);
-}
+});
