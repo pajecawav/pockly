@@ -10,7 +10,6 @@ import {
 } from "react-icons/hi";
 import { FilledIcon } from "../FilledIcon";
 import { Hotkey } from "../Hotkey";
-import { Kbd } from "../Kbd";
 import { Tooltip } from "../Tooltip";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
 

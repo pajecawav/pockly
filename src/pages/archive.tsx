@@ -10,6 +10,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { Box, Center, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
+import { useMemo } from "react";
 
 export default function ArchivedBookmarksPage() {
 	const { data } = useQuery<
@@ -29,7 +30,10 @@ export default function ArchivedBookmarksPage() {
 		{ fetchPolicy: "cache-and-network" }
 	);
 
-	const bookmarks = data?.bookmarks.filter(bookmark => bookmark.archived);
+	const bookmarks = useMemo(
+		() => data?.bookmarks.filter(bookmark => bookmark.archived),
+		[data?.bookmarks]
+	);
 
 	return (
 		<>

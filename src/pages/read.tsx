@@ -10,6 +10,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { Box, Center, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
+import { useMemo } from "react";
 
 export default function ReadingListPage() {
 	const { data } = useQuery<
@@ -29,8 +30,9 @@ export default function ReadingListPage() {
 		{ fetchPolicy: "cache-and-network" }
 	);
 
-	const bookmarks = data?.bookmarks.filter(
-		bookmark => bookmark.archived === false
+	const bookmarks = useMemo(
+		() => data?.bookmarks.filter(bookmark => bookmark.archived === false),
+		[data?.bookmarks]
 	);
 
 	return (
@@ -41,6 +43,7 @@ export default function ReadingListPage() {
 					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
 				</Box>
 			</Header>
+
 			{!bookmarks ? (
 				<Center w="full" h="32">
 					<Spinner />

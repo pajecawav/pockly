@@ -65,14 +65,14 @@ export default function SearchBookmarksPage() {
 	};
 
 	const currentData = data ?? previousData;
+	const bookmarks = currentData?.bookmarks;
 
 	return (
 		<>
 			<Header>
 				<Box>
 					Search Bookmarks{" "}
-					{currentData?.bookmarks?.length !== undefined &&
-						`(${currentData.bookmarks.length})`}
+					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
 				</Box>
 			</Header>
 
@@ -108,7 +108,7 @@ export default function SearchBookmarksPage() {
 				</Button>
 			</Grid>
 
-			{currentData && <BookmarksList bookmarks={currentData.bookmarks} />}
+			{bookmarks && <BookmarksList bookmarks={bookmarks} />}
 		</>
 	);
 }
