@@ -39,3 +39,9 @@ yarn-error.log*
 
 # generated files
 src/__generated__
+
+# service worker
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map

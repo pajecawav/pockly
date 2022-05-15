@@ -19,22 +19,27 @@ export default function MyApp({
 	const Wrapper = (Component as any).public ? Fragment : Auth;
 
 	return (
-		<ChakraProvider resetCSS={true} theme={theme}>
-			<SessionProvider session={session}>
-				<ApolloProvider client={client}>
-					<Head>
-						<title>pockly</title>
-					</Head>
+		<>
+			<Head>
+				<title>pockly</title>
+				<meta
+					name="viewport"
+					content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+				/>
+			</Head>
+			<ChakraProvider resetCSS={true} theme={theme}>
+				<SessionProvider session={session}>
+					<ApolloProvider client={client}>
+						<NProgress />
 
-					<NProgress />
-
-					<Wrapper>
-						<AppShell>
-							<Component {...pageProps} />
-						</AppShell>
-					</Wrapper>
-				</ApolloProvider>
-			</SessionProvider>
-		</ChakraProvider>
+						<Wrapper>
+							<AppShell>
+								<Component {...pageProps} />
+							</AppShell>
+						</Wrapper>
+					</ApolloProvider>
+				</SessionProvider>
+			</ChakraProvider>
+		</>
 	);
 }

@@ -1,4 +1,9 @@
 const path = require("path");
+const withPWA = require("next-pwa");
+
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+	enabled: ["true", "1"].includes(process.env.ANALYZE),
+});
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -9,11 +14,13 @@ const config = {
 	},
 };
 
-if (["true", "1"].includes(process.env.ANALYZE)) {
-	const withBundleAnalyzer = require("@next/bundle-analyzer")({
-		enabled: true,
-	});
-	module.exports = withBundleAnalyzer(config);
-} else {
-	module.exports = config;
-}
+module.exports = withBundleAnalyzer(
+	withPWA({
+		...config,
+		pwa: {
+			dest: "public",
+			dynamicStartUrl: true,
+			dynamicStartUrlRedirect: "/login",
+		},
+	})
+);
