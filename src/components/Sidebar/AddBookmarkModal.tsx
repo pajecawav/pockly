@@ -3,7 +3,7 @@ import { optionalTextInputSchema } from "@/utils/schemas";
 import {
 	CreateBookmarkMutation,
 	CreateBookmarkMutationVariables,
-	namedOperations,
+	GetUnreadBookmarksDocument,
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
 import {
@@ -31,14 +31,21 @@ interface Props {
 	onClose: () => void;
 }
 
+// TODO: figure out how to keep fetched data in sync with `GetUnreadBookmarksQuery`;
 const CREATE_BOOKMARK = gql`
 	mutation CreateBookmark($input: CreateBookmarkInput!) {
 		createBookmark(input: $input) {
 			id
-			url
 			title
 			liked
 			archived
+			url
+			addedAt
+			image
+			tags {
+				id
+				name
+			}
 		}
 	}
 `;
@@ -66,8 +73,22 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 				description: "Saved bookmark!",
 			});
 		},
-		// TODO: update cached data instead of refetching
-		refetchQueries: [namedOperations.Query.GetUnreadBookmarks],
+		update: (cache, response) => {
+			if (!response.data) return;
+
+			const newBookmark = response.data.createBookmark;
+
+			cache.updateQuery({ query: GetUnreadBookmarksDocument }, data => {
+				if (!data) return data;
+
+				const bookmarks = data.bookmarks.filter(
+					b => b.id !== newBookmark.id
+				);
+				bookmarks.unshift(newBookmark);
+
+				return { ...data, bookmarks };
+			});
+		},
 	});
 
 	const close = () => {

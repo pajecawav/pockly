@@ -75,6 +75,7 @@
 		"@graphql-codegen/cli": "^2.3.0",
 		"@graphql-codegen/named-operations-object": "^2.2.1",
 		"@graphql-codegen/schema-ast": "^2.4.0",
+		"@graphql-codegen/typed-document-node": "^2.2.11",
 		"@graphql-codegen/typescript": "^2.4.11",
 		"@graphql-codegen/typescript-operations": "^2.4.0",
 		"@graphql-codegen/typescript-react-apollo": "^3.2.14",

@@ -21,6 +21,7 @@ module.exports = withBundleAnalyzer(
 			dest: "public",
 			dynamicStartUrl: true,
 			dynamicStartUrlRedirect: "/login",
+			disable: process.env.NODE_ENV === "development",
 		},
 	})
 );

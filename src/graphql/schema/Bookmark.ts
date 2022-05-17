@@ -151,7 +151,7 @@ builder.mutationField("createBookmark", t =>
 				// move bookmark to the top of the reading list if it already exists
 				update: {
 					title,
-					image: metadata.image,
+					image: metadata.image ?? undefined,
 					addedAt: new Date(),
 					archivedAt: null,
 				},
