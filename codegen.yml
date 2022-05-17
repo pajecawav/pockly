@@ -12,7 +12,8 @@ generates:
         plugins:
             - typescript
             - typescript-operations:
-                  dedupeOperationSuffix: true
             - named-operations-object
             - typed-document-node
             # - typescript-react-apollo
+        config:
+            dedupeOperationSuffix: true
