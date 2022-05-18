@@ -11,7 +11,6 @@ import { TagsList } from "./TagsList";
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
 	onDelete: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
-	onEditTags: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
 }
 
 export const BookmarksListEntry_bookmarkFragment = gql`
@@ -32,7 +31,6 @@ export const BookmarksListEntry_bookmarkFragment = gql`
 
 export const BookmarksListEntry = memo(function BookmarksListEntry({
 	bookmark,
-	onEditTags,
 	onDelete,
 }: Props) {
 	const ref = useRef<HTMLDivElement | null>(null);
@@ -123,7 +121,6 @@ export const BookmarksListEntry = memo(function BookmarksListEntry({
 			>
 				<BookmarksListEntryActions
 					bookmark={bookmark}
-					onEditTags={onEditTags}
 					onDelete={onDelete}
 				/>
 			</HStack>

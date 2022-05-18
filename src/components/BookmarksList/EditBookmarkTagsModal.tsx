@@ -39,21 +39,6 @@ export const EditBookmarkTagsModal_bookmarkFragment = gql`
 	}
 `;
 
-const UPDATE_BOOKMARK_TAGS = gql`
-	mutation UpdateBookmarkTags(
-		$id: String!
-		$input: UpdateBookmarkTagsInput!
-	) {
-		updateBookmarkTags(id: $id, input: $input) {
-			id
-			tags {
-				id
-				name
-			}
-		}
-	}
-`;
-
 export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 	const toast = useToast();
 
@@ -74,18 +59,34 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 	const [mutate, { loading: isMutating }] = useMutation<
 		UpdateBookmarkTagsMutation,
 		UpdateBookmarkTagsMutationVariables
-	>(UPDATE_BOOKMARK_TAGS, {
-		// TODO: should invalidate root query `tags` field with `update` method
-		// but it doesn't work for some reason
-		refetchQueries: [namedOperations.Query.GetAllTags],
-		onCompleted: () => {
-			close();
-			toast({
-				status: "success",
-				description: "Updated tags!",
-			});
-		},
-	});
+	>(
+		gql`
+			mutation UpdateBookmarkTags(
+				$id: String!
+				$input: UpdateBookmarkTagsInput!
+			) {
+				updateBookmarkTags(id: $id, input: $input) {
+					id
+					tags {
+						id
+						name
+					}
+				}
+			}
+		`,
+		{
+			// TODO: should invalidate root query `tags` field with `update` method
+			// but it doesn't work for some reason
+			refetchQueries: [namedOperations.Query.GetAllTags],
+			onCompleted: () => {
+				close();
+				toast({
+					status: "success",
+					description: "Updated tags!",
+				});
+			},
+		}
+	);
 
 	const createOption = (tag: string) => ({ label: tag, value: tag });
 

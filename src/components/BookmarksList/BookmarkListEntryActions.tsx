@@ -1,6 +1,5 @@
 import {
 	BookmarksListEntry_BookmarkFragment,
-	namedOperations,
 	UpdateBookmarkMutation,
 	UpdateBookmarkMutationVariables,
 	UpdateBookmarkMutation_BookmarkFragment,
@@ -9,6 +8,7 @@ import { useMutation } from "@apollo/client";
 import { Icon, IconButton, Link, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import NextLink from "next/link";
+import { useState } from "react";
 import {
 	HiOutlineAnnotation,
 	HiOutlineArchive,
@@ -21,10 +21,10 @@ import { FilledIcon } from "../FilledIcon";
 import { Hotkey } from "../Hotkey";
 import { Tooltip } from "../Tooltip";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
+import { EditBookmarkTagsModal } from "./EditBookmarkTagsModal";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
-	onEditTags: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
 	onDelete: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
 }
 
@@ -35,12 +35,10 @@ const UpdateBookmarkMutation_bookmarkFragment = gql`
 	}
 `;
 
-export function BookmarksListEntryActions({
-	bookmark,
-	onEditTags,
-	onDelete,
-}: Props) {
+export function BookmarksListEntryActions({ bookmark, onDelete }: Props) {
 	const toast = useToast();
+
+	const [isEditingTags, setIsEditingTags] = useState(false);
 
 	const [mutateUpdate] = useMutation<
 		UpdateBookmarkMutation,
@@ -199,7 +197,7 @@ export function BookmarksListEntryActions({
 					lineHeight="0"
 					aria-label="Edit tags"
 					data-hotkey="t"
-					onClick={() => onEditTags(bookmark)}
+					onClick={() => setIsEditingTags(true)}
 				/>
 			</Tooltip>
 
@@ -218,6 +216,11 @@ export function BookmarksListEntryActions({
 					onClick={() => onDelete(bookmark)}
 				/>
 			</Tooltip>
+
+			<EditBookmarkTagsModal
+				bookmark={isEditingTags ? bookmark : null}
+				onClose={() => setIsEditingTags(false)}
+			/>
 		</>
 	);
 }

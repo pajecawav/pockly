@@ -12,10 +12,6 @@ import {
 	BookmarksListEntry_bookmarkFragment,
 } from "./BookmarksListEntry";
 import { DeleteBookmarkConfirmationModal } from "./DeleteBookmarkConfirmationModal";
-import {
-	EditBookmarkTagsModal,
-	EditBookmarkTagsModal_bookmarkFragment,
-} from "./EditBookmarkTagsModal";
 import { EmptyBookmarks } from "./EmptyBookmarks";
 import { useListFocusHotkeys } from "./useListFocusHotkeys";
 
@@ -25,11 +21,9 @@ interface Props {
 
 export const BookmarksList_bookmarkFragment = gql`
 	${BookmarksListEntry_bookmarkFragment}
-	${EditBookmarkTagsModal_bookmarkFragment}
 
 	fragment BookmarksList_bookmark on Bookmark {
 		...BookmarksListEntry_bookmark
-		...EditBookmarkTagsModal_bookmark
 	}
 `;
 
@@ -37,8 +31,6 @@ export function BookmarksList({ bookmarks }: Props) {
 	const toast = useToast();
 
 	const [deletingBookmark, setDeletingBookmark] =
-		useState<BookmarksList_BookmarkFragment | null>(null);
-	const [editingTagsBookmark, setEditingTagsBookmark] =
 		useState<BookmarksList_BookmarkFragment | null>(null);
 
 	const [mutateDelete, { loading: isDeleting }] = useMutation<
@@ -73,7 +65,6 @@ export function BookmarksList({ bookmarks }: Props) {
 
 	const reset = () => {
 		setDeletingBookmark(null);
-		setEditingTagsBookmark(null);
 	};
 
 	const ref = useRef<HTMLDivElement | null>(null);
@@ -82,12 +73,6 @@ export function BookmarksList({ bookmarks }: Props) {
 	const onDelete = useCallback(
 		(bookmark: BookmarksList_BookmarkFragment) =>
 			setDeletingBookmark(bookmark),
-		[]
-	);
-
-	const onEditTags = useCallback(
-		(bookmark: BookmarksList_BookmarkFragment) =>
-			setEditingTagsBookmark(bookmark),
 		[]
 	);
 
@@ -100,7 +85,6 @@ export function BookmarksList({ bookmarks }: Props) {
 							key={bookmark.id}
 							bookmark={bookmark}
 							onDelete={onDelete}
-							onEditTags={onEditTags}
 						/>
 					))
 				) : (
@@ -119,11 +103,6 @@ export function BookmarksList({ bookmarks }: Props) {
 						});
 					}
 				}}
-			/>
-
-			<EditBookmarkTagsModal
-				bookmark={editingTagsBookmark}
-				onClose={reset}
 			/>
 		</>
 	);
