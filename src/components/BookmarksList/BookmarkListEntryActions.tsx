@@ -1,5 +1,7 @@
 import {
 	BookmarksListEntry_BookmarkFragment,
+	DeleteBookmarkMutation,
+	DeleteBookmarkMutationVariables,
 	UpdateBookmarkMutation,
 	UpdateBookmarkMutationVariables,
 	UpdateBookmarkMutation_BookmarkFragment,
@@ -21,11 +23,12 @@ import { FilledIcon } from "../FilledIcon";
 import { Hotkey } from "../Hotkey";
 import { Tooltip } from "../Tooltip";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
+import { DeleteBookmarkConfirmationModal } from "./DeleteBookmarkConfirmationModal";
 import { EditBookmarkTagsModal } from "./EditBookmarkTagsModal";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
-	onDelete: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
+	afterDelete?: () => void;
 }
 
 const UpdateBookmarkMutation_bookmarkFragment = gql`
@@ -35,10 +38,12 @@ const UpdateBookmarkMutation_bookmarkFragment = gql`
 	}
 `;
 
-export function BookmarksListEntryActions({ bookmark, onDelete }: Props) {
+export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
 	const toast = useToast();
 
-	const [isEditingTags, setIsEditingTags] = useState(false);
+	const [currentAction, setCurrentAction] = useState<
+		"editTags" | "delete" | null
+	>(null);
 
 	const [mutateUpdate] = useMutation<
 		UpdateBookmarkMutation,
@@ -81,6 +86,37 @@ export function BookmarksListEntryActions({ bookmark, onDelete }: Props) {
 		}
 	);
 
+	// probably should move this to the `DeleteBookmarkConfirmationModal`
+	const [mutateDelete, { loading: isDeleting }] = useMutation<
+		DeleteBookmarkMutation,
+		DeleteBookmarkMutationVariables
+	>(
+		gql`
+			mutation DeleteBookmark($id: String!) {
+				deleteBookmark(id: $id) {
+					id
+				}
+			}
+		`,
+		{
+			optimisticResponse: vars => ({ deleteBookmark: { id: vars.id } }),
+			onCompleted: () => {
+				toast({
+					status: "success",
+					description: "Deleted bookmark!",
+				});
+				afterDelete?.();
+			},
+			update: (cache, result) => {
+				if (result.data?.deleteBookmark) {
+					cache.evict({
+						id: cache.identify(result.data.deleteBookmark),
+					});
+				}
+			},
+		}
+	);
+
 	const onToggleLiked = () => {
 		mutateUpdate({
 			variables: {
@@ -89,6 +125,12 @@ export function BookmarksListEntryActions({ bookmark, onDelete }: Props) {
 					liked: !bookmark.liked,
 				},
 			},
+		});
+	};
+
+	const onDelete = () => {
+		mutateDelete({
+			variables: { id: bookmark.id },
 		});
 	};
 
@@ -197,7 +239,7 @@ export function BookmarksListEntryActions({ bookmark, onDelete }: Props) {
 					lineHeight="0"
 					aria-label="Edit tags"
 					data-hotkey="t"
-					onClick={() => setIsEditingTags(true)}
+					onClick={() => setCurrentAction("editTags")}
 				/>
 			</Tooltip>
 
@@ -213,13 +255,20 @@ export function BookmarksListEntryActions({ bookmark, onDelete }: Props) {
 					lineHeight="0"
 					aria-label="Delete bookmark"
 					data-hotkey="d"
-					onClick={() => onDelete(bookmark)}
+					onClick={() => setCurrentAction("delete")}
 				/>
 			</Tooltip>
 
 			<EditBookmarkTagsModal
-				bookmark={isEditingTags ? bookmark : null}
-				onClose={() => setIsEditingTags(false)}
+				bookmark={currentAction === "editTags" ? bookmark : null}
+				onClose={() => setCurrentAction(null)}
+			/>
+
+			<DeleteBookmarkConfirmationModal
+				isOpen={currentAction === "delete"}
+				isDeleting={isDeleting}
+				onConfirm={onDelete}
+				onClose={() => setCurrentAction(null)}
 			/>
 		</>
 	);

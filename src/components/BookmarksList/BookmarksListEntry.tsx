@@ -10,7 +10,7 @@ import { TagsList } from "./TagsList";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;
-	onDelete: (bookmark: BookmarksListEntry_BookmarkFragment) => void;
+	afterDelete?: () => void;
 }
 
 export const BookmarksListEntry_bookmarkFragment = gql`
@@ -31,7 +31,7 @@ export const BookmarksListEntry_bookmarkFragment = gql`
 
 export const BookmarksListEntry = memo(function BookmarksListEntry({
 	bookmark,
-	onDelete,
+	afterDelete,
 }: Props) {
 	const ref = useRef<HTMLDivElement | null>(null);
 
@@ -121,7 +121,7 @@ export const BookmarksListEntry = memo(function BookmarksListEntry({
 			>
 				<BookmarksListEntryActions
 					bookmark={bookmark}
-					onDelete={onDelete}
+					afterDelete={afterDelete}
 				/>
 			</HStack>
 
