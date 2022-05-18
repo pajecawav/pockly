@@ -32,7 +32,6 @@ function getAllItems(list: HTMLElement): HTMLElement[] {
 export function useListFocusHotkeys({ ref }: { ref: RefObject<HTMLElement> }) {
 	const lastFocusedIndexRef = useRef<number | null>(null);
 
-	// TODO: this hook needs a complete rehaul
 	const moveFocus = useCallback(
 		(direction: FocusDirection) => {
 			if (!ref.current) {

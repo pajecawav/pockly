@@ -31,7 +31,7 @@ interface Props {
 	onClose: () => void;
 }
 
-// TODO: figure out how to keep fetched data in sync with `GetUnreadBookmarksQuery`;
+// TODO: figure out how to keep required data fragment in sync with `GetUnreadBookmarksQuery`;
 const CREATE_BOOKMARK = gql`
 	mutation CreateBookmark($input: CreateBookmarkInput!) {
 		createBookmark(input: $input) {

@@ -91,8 +91,6 @@ export function BookmarksListEntryActions({
 					liked: !bookmark.liked,
 				},
 			},
-			// TODO: modify cached data instead of refetching
-			refetchQueries: [namedOperations.Query.GetLikedBookmarks],
 		});
 	};
 
@@ -104,11 +102,6 @@ export function BookmarksListEntryActions({
 					archived: !bookmark.archived,
 				},
 			},
-			// TODO: modify cached data instead of refetching
-			refetchQueries: [
-				namedOperations.Query.GetUnreadBookmarks,
-				namedOperations.Query.GetArchivedBookmarks,
-			],
 			onCompleted: result => {
 				const wasArchived = result.updateBookmark.archived;
 				toast({
