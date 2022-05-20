@@ -18,5 +18,14 @@
 	"background_color": "#ffffff",
 	"start_url": "/",
 	"display": "standalone",
-	"orientation": "portrait"
+	"orientation": "portrait",
+	"share_target": {
+		"method": "GET",
+		"action": "/_share",
+		"enctype": "application/x-www-form-urlencoded",
+		"params": {
+			"text": "text",
+			"url": "url"
+		}
+	}
 }
