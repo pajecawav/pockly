@@ -1,7 +1,5 @@
 import {
 	BookmarksListEntry_BookmarkFragment,
-	DeleteBookmarkMutation,
-	DeleteBookmarkMutationVariables,
 	UpdateBookmarkMutation,
 	UpdateBookmarkMutationVariables,
 	UpdateBookmarkMutation_BookmarkFragment,
@@ -19,7 +17,7 @@ import {
 	HiOutlineTag,
 	HiOutlineTrash,
 } from "react-icons/hi";
-import { DeleteBookmarkConfirmationModal } from "./DeleteBookmarkConfirmationModal";
+import { DeleteBookmarkConfirmationModal } from "./DeleteBookmarkModal";
 import { EditBookmarkTagsModal } from "./EditBookmarkTagsModal";
 import { FilledIcon } from "./FilledIcon";
 import { Hotkey } from "./Hotkey";
@@ -86,38 +84,7 @@ export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
 		}
 	);
 
-	// probably should move this to the `DeleteBookmarkConfirmationModal`
-	const [mutateDelete, { loading: isDeleting }] = useMutation<
-		DeleteBookmarkMutation,
-		DeleteBookmarkMutationVariables
-	>(
-		gql`
-			mutation DeleteBookmark($id: String!) {
-				deleteBookmark(id: $id) {
-					id
-				}
-			}
-		`,
-		{
-			optimisticResponse: vars => ({ deleteBookmark: { id: vars.id } }),
-			onCompleted: () => {
-				toast({
-					status: "success",
-					description: "Deleted bookmark!",
-				});
-				afterDelete?.();
-			},
-			update: (cache, result) => {
-				if (result.data?.deleteBookmark) {
-					cache.evict({
-						id: cache.identify(result.data.deleteBookmark),
-					});
-				}
-			},
-		}
-	);
-
-	const onToggleLiked = () => {
+	const handleToggleLiked = () => {
 		mutateUpdate({
 			variables: {
 				id: bookmark.id,
@@ -128,13 +95,7 @@ export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
 		});
 	};
 
-	const onDelete = () => {
-		mutateDelete({
-			variables: { id: bookmark.id },
-		});
-	};
-
-	const onToggleArchived = () => {
+	const handleToggleArchived = () => {
 		mutateUpdate({
 			variables: {
 				id: bookmark.id,
@@ -191,7 +152,7 @@ export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
 					lineHeight="0"
 					aria-label="Toggle liked"
 					data-hotkey="l"
-					onClick={onToggleLiked}
+					onClick={handleToggleLiked}
 				/>
 			</Tooltip>
 
@@ -223,7 +184,7 @@ export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
 							: "Move to archive"
 					}
 					data-hotkey="a"
-					onClick={onToggleArchived}
+					onClick={handleToggleArchived}
 				/>
 			</Tooltip>
 
@@ -265,9 +226,7 @@ export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
 			/>
 
 			<DeleteBookmarkConfirmationModal
-				isOpen={currentAction === "delete"}
-				isDeleting={isDeleting}
-				onConfirm={onDelete}
+				bookmarkId={currentAction === "delete" ? bookmark.id : null}
 				onClose={() => setCurrentAction(null)}
 			/>
 		</>
