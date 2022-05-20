@@ -1,12 +1,12 @@
+import { TagsList } from "@/components/TagsList";
 import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { getHostnameFromUrl } from "@/utils";
 import { BookmarksListEntry_BookmarkFragment } from "@/__generated__/operations";
 import { Box, Flex, HStack, Link, Stack } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { memo, useRef } from "react";
+import { BookmarksListEntryActions } from "../../BookmarkActions";
 import { BookmarkImage } from "./BookmarkImage";
-import { BookmarksListEntryActions } from "./BookmarkListEntryActions";
-import { TagsList } from "./TagsList";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;

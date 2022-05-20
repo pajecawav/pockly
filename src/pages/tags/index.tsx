@@ -1,9 +1,6 @@
-import {
-	TagsList,
-	TagsList_tagFragment,
-} from "@/components/BookmarksList/TagsList";
 import { Empty } from "@/components/Empty";
 import { Header } from "@/components/Header";
+import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import {
 	GetAllTagsQuery,
 	GetAllTagsQueryVariables,

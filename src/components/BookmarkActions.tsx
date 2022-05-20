@@ -19,12 +19,12 @@ import {
 	HiOutlineTag,
 	HiOutlineTrash,
 } from "react-icons/hi";
-import { FilledIcon } from "../FilledIcon";
-import { Hotkey } from "../Hotkey";
-import { Tooltip } from "../Tooltip";
-import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { DeleteBookmarkConfirmationModal } from "./DeleteBookmarkConfirmationModal";
 import { EditBookmarkTagsModal } from "./EditBookmarkTagsModal";
+import { FilledIcon } from "./FilledIcon";
+import { Hotkey } from "./Hotkey";
+import { Tooltip } from "./Tooltip";
+import { TooltipLabel } from "./Tooltip/TooltipLabel";
 
 interface Props {
 	bookmark: BookmarksListEntry_BookmarkFragment;

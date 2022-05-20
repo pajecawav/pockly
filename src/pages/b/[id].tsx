@@ -1,9 +1,6 @@
-import { EditableBookmarkNote } from "@/components/Bookmark/EditableBookmarkNote";
-import {
-	TagsList,
-	TagsList_tagFragment,
-} from "@/components/BookmarksList/TagsList";
+import { EditableBookmarkNote } from "@/components/EditableBookmarkNote";
 import { Header } from "@/components/Header";
+import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import { getHostnameFromUrl } from "@/utils";
 import {
 	GetBookmarkQuery,

@@ -29,10 +29,9 @@ import {
 	HiOutlineTag,
 } from "react-icons/hi";
 import { RemoveScroll } from "react-remove-scroll";
+import { AddBookmarkModal } from "../AddBookmarkModal";
 import { Hotkey } from "../Hotkey";
-import { Kbd } from "../Kbd";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
-import { AddBookmarkModal } from "./AddBookmarkModal";
 import { SidebarHeading } from "./SidebarHeading";
 import { SidebarLink } from "./SidebarLink";
 
