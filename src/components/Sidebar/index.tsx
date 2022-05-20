@@ -151,6 +151,7 @@ export function Sidebar() {
 					shadow="sm"
 					border="1px"
 					leftIcon={<HiOutlinePencilAlt width={16} />}
+					data-hotkey="c"
 					onClick={() => {
 						sidebarState.onClose();
 						addBookmarkModalState.onOpen();

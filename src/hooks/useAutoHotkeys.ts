@@ -65,6 +65,7 @@ export function useAutoHotkeys({ ref, scopeRef, options }: UseAutoHotkeysArgs) {
 
 			if (handleHotkey(event.key)) {
 				event.stopPropagation();
+				event.preventDefault();
 				resetPreviousKey();
 				return;
 			}

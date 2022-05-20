@@ -117,7 +117,7 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 			isOpen={isOpen}
 			onClose={close}
 			isCentered
-			// initialFocusRef={selectRef}
+			initialFocusRef={selectRef}
 		>
 			<ModalOverlay />
 			<ModalContent>
