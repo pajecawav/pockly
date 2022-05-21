@@ -1,5 +1,4 @@
-import { EditableBookmarkNote } from "@/components/Bookmark/EditableBookmarkNote";
-import { EditableBookmarkTitle } from "@/components/Bookmark/EditableBookmarkTitle";
+import { BookmarkEditForm } from "@/components/Bookmark/BookmarkEditForm";
 import { Header } from "@/components/Header";
 import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import { getHostnameFromUrl } from "@/utils";
@@ -8,13 +7,26 @@ import {
 	GetBookmarkQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
-import { Box, Center, Link, Spinner, Stack, Text } from "@chakra-ui/react";
+import {
+	Box,
+	Button,
+	Center,
+	Heading,
+	HStack,
+	Link,
+	Spinner,
+	Stack,
+	Text,
+} from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
+import { useMemo, useState } from "react";
 
 export default function BookmarkPage() {
 	const router = useRouter();
 	const id = router.query.id as string | undefined;
+
+	const [isEditing, setIsEditing] = useState(false);
 
 	const { data } = useQuery<GetBookmarkQuery, GetBookmarkQueryVariables>(
 		gql`
@@ -38,27 +50,57 @@ export default function BookmarkPage() {
 
 	const bookmark = data?.bookmark;
 
+	// TODO: render as markdown
+	const renderedNote = useMemo(() => {
+		if (!bookmark?.note) {
+			return null;
+		}
+
+		return bookmark.note
+			.split("\n")
+			.filter(Boolean)
+			.map((paragraph, index) => (
+				<Text
+					key={index}
+					fontSize="lg"
+					lineHeight="1.7"
+					_notFirst={{ mt: "1em" }}
+				>
+					{paragraph}
+				</Text>
+			));
+	}, [bookmark?.note]);
+
 	return (
 		<>
-			<Header>
-				{bookmark && (
-					<Text noOfLines={1} title={bookmark?.title}>
-						{bookmark.title}
-					</Text>
-				)}
-			</Header>
+			<Header />
 
 			{!bookmark ? (
 				<Center w="full" h="32">
 					<Spinner />
 				</Center>
+			) : isEditing ? (
+				<Box mt="4">
+					<BookmarkEditForm
+						bookmark={bookmark}
+						onDone={() => setIsEditing(false)}
+					/>
+				</Box>
 			) : (
-				<Stack spacing="2" mt="4">
+				<Stack spacing="2" mt="6">
 					<Box>
-						<EditableBookmarkTitle
-							id={bookmark.id}
-							title={bookmark.title}
-						/>
+						<HStack alignItems="start">
+							<Heading flex={1} as="h2" size="lg">
+								{bookmark.title}
+							</Heading>
+							<Button
+								size="md"
+								onClick={() => setIsEditing(true)}
+							>
+								Edit
+							</Button>
+						</HStack>
+
 						<Link
 							href={bookmark.url}
 							isExternal
@@ -67,13 +109,8 @@ export default function BookmarkPage() {
 							{getHostnameFromUrl(bookmark.url)}
 						</Link>
 					</Box>
-
 					{bookmark.tags && <TagsList tags={bookmark.tags} />}
-
-					<EditableBookmarkNote
-						id={bookmark.id}
-						note={bookmark.note}
-					/>
+					(renderedNote && <Box>{renderedNote}</Box>)
 				</Stack>
 			)}
 		</>

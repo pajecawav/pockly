@@ -13,7 +13,7 @@ import { Tooltip } from "./Tooltip";
 import { TooltipLabel } from "./Tooltip/TooltipLabel";
 
 interface Props {
-	children: ReactNode;
+	children?: ReactNode;
 }
 
 export function Header({ children }: Props) {
