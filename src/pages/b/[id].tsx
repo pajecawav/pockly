@@ -1,4 +1,5 @@
-import { EditableBookmarkNote } from "@/components/EditableBookmarkNote";
+import { EditableBookmarkNote } from "@/components/Bookmark/EditableBookmarkNote";
+import { EditableBookmarkTitle } from "@/components/Bookmark/EditableBookmarkTitle";
 import { Header } from "@/components/Header";
 import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import { getHostnameFromUrl } from "@/utils";
@@ -54,9 +55,10 @@ export default function BookmarkPage() {
 			) : (
 				<Stack spacing="2" mt="4">
 					<Box>
-						<Box fontSize="2xl" fontWeight="medium">
-							{bookmark.title}
-						</Box>
+						<EditableBookmarkTitle
+							id={bookmark.id}
+							title={bookmark.title}
+						/>
 						<Link
 							href={bookmark.url}
 							isExternal

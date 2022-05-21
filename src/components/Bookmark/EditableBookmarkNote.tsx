@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { z } from "zod";
-import { TextareaAutosize } from "./TextareaAutosize";
+import { TextareaAutosize } from "../TextareaAutosize";
 
 interface Props {
 	id: string;
