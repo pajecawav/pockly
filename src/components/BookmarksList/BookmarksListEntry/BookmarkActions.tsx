@@ -1,5 +1,5 @@
 import {
-	BookmarksListEntry_BookmarkFragment,
+	BookmarkActions_BookmarkFragment,
 	UpdateBookmarkMutation,
 	UpdateBookmarkMutationVariables,
 	UpdateBookmarkMutation_BookmarkFragment,
@@ -17,17 +17,31 @@ import {
 	HiOutlineTag,
 	HiOutlineTrash,
 } from "react-icons/hi";
-import { DeleteBookmarkConfirmationModal } from "./DeleteBookmarkModal";
-import { EditBookmarkTagsModal } from "./EditBookmarkTagsModal";
-import { FilledIcon } from "./FilledIcon";
-import { Hotkey } from "./Hotkey";
-import { Tooltip } from "./Tooltip";
-import { TooltipLabel } from "./Tooltip/TooltipLabel";
+import { DeleteBookmarkConfirmationModal } from "../../DeleteBookmarkModal";
+import {
+	EditBookmarkTagsModal,
+	EditBookmarkTagsModal_bookmarkFragment,
+} from "../../EditBookmarkTagsModal";
+import { FilledIcon } from "../../FilledIcon";
+import { Hotkey } from "../../Hotkey";
+import { Tooltip } from "../../Tooltip";
+import { TooltipLabel } from "../../Tooltip/TooltipLabel";
 
 interface Props {
-	bookmark: BookmarksListEntry_BookmarkFragment;
+	bookmark: BookmarkActions_BookmarkFragment;
 	afterDelete?: () => void;
 }
+
+export const BookmarkActions_bookmarkFragment = gql`
+	${EditBookmarkTagsModal_bookmarkFragment}
+
+	fragment BookmarkActions_bookmark on Bookmark {
+		id
+		liked
+		archived
+		...EditBookmarkTagsModal_bookmark
+	}
+`;
 
 const UpdateBookmarkMutation_bookmarkFragment = gql`
 	fragment UpdateBookmarkMutation_bookmark on Bookmark {
@@ -36,7 +50,7 @@ const UpdateBookmarkMutation_bookmarkFragment = gql`
 	}
 `;
 
-export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
+export function BookmarkActions({ bookmark, afterDelete }: Props) {
 	const toast = useToast();
 
 	const [currentAction, setCurrentAction] = useState<
@@ -228,6 +242,7 @@ export function BookmarksListEntryActions({ bookmark, afterDelete }: Props) {
 			<DeleteBookmarkConfirmationModal
 				bookmarkId={currentAction === "delete" ? bookmark.id : null}
 				onClose={() => setCurrentAction(null)}
+				afterDelete={afterDelete}
 			/>
 		</>
 	);

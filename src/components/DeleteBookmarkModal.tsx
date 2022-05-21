@@ -20,11 +20,13 @@ import { useRef } from "react";
 interface Props {
 	bookmarkId?: string | null;
 	onClose: () => void;
+	afterDelete?: () => void;
 }
 
 export function DeleteBookmarkConfirmationModal({
 	bookmarkId,
 	onClose,
+	afterDelete,
 }: Props) {
 	const toast = useToast();
 
@@ -48,7 +50,7 @@ export function DeleteBookmarkConfirmationModal({
 					status: "success",
 					description: "Deleted bookmark!",
 				});
-				onClose();
+				(afterDelete || onClose)();
 			},
 			update: (cache, result) => {
 				if (result.data?.deleteBookmark) {

@@ -1,4 +1,7 @@
-import { BookmarkEditForm } from "@/components/Bookmark/BookmarkEditForm";
+import {
+	BookmarkEditForm,
+	BookmarkEditForm_bookmarkFragment,
+} from "@/components/Bookmark/BookmarkEditForm";
 import { Header } from "@/components/Header";
 import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import { getHostnameFromUrl } from "@/utils";
@@ -31,6 +34,7 @@ export default function BookmarkPage() {
 	const { data } = useQuery<GetBookmarkQuery, GetBookmarkQueryVariables>(
 		gql`
 			${TagsList_tagFragment}
+			${BookmarkEditForm_bookmarkFragment}
 
 			query GetBookmark($id: String!) {
 				bookmark(id: $id) {
@@ -42,6 +46,7 @@ export default function BookmarkPage() {
 						id
 						...TagsList_tag
 					}
+					...BookmarkEditForm_bookmark
 				}
 			}
 		`,

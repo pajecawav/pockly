@@ -5,7 +5,7 @@ import { BookmarksListEntry_BookmarkFragment } from "@/__generated__/operations"
 import { Box, Flex, HStack, Link, Stack } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { memo, useRef } from "react";
-import { BookmarksListEntryActions } from "../../BookmarkActions";
+import { BookmarkActions } from "./BookmarkActions";
 import { BookmarkImage } from "./BookmarkImage";
 
 interface Props {
@@ -119,7 +119,7 @@ export const BookmarksListEntry = memo(function BookmarksListEntry({
 				alignItems="center"
 				order={{ base: 3, sm: "initial" }}
 			>
-				<BookmarksListEntryActions
+				<BookmarkActions
 					bookmark={bookmark}
 					afterDelete={afterDelete}
 				/>
