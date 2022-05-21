@@ -1,9 +1,30 @@
 import { RefObject, useEffect, useRef } from "react";
 
+const HOTKEY_SEQUENCE_TIMEOUT = 250;
+
 interface UseAutoHotkeysArgs {
 	ref: RefObject<HTMLElement> | HTMLElement;
 	scopeRef?: RefObject<HTMLElement> | HTMLElement;
 	options?: boolean | AddEventListenerOptions;
+}
+
+function getHotkey(event: KeyboardEvent): string {
+	let hotkey = "";
+
+	// modifiers
+	if (event.ctrlKey) hotkey += "ctrl+";
+	if (event.altKey) hotkey += "alt+";
+
+	// key
+	if (!["Control", "Alt"].includes(event.key)) {
+		hotkey += event.key;
+	}
+
+	if (hotkey.endsWith("+")) {
+		hotkey = hotkey.slice(0, -1);
+	}
+
+	return hotkey;
 }
 
 export function useAutoHotkeys({ ref, scopeRef, options }: UseAutoHotkeysArgs) {
@@ -55,15 +76,17 @@ export function useAutoHotkeys({ ref, scopeRef, options }: UseAutoHotkeysArgs) {
 				previousKey.current = null;
 			}
 
-			function updatePreviousKey() {
-				previousKey.current = event.key;
+			function updatePreviousKey(key: string) {
+				previousKey.current = key;
 				resetPreviousKeyTimeoutId.current = window.setTimeout(
 					resetPreviousKey,
-					250
+					HOTKEY_SEQUENCE_TIMEOUT
 				);
 			}
 
-			if (handleHotkey(event.key)) {
+			const hotkey = getHotkey(event);
+
+			if (handleHotkey(hotkey)) {
 				event.stopPropagation();
 				event.preventDefault();
 				resetPreviousKey();
@@ -71,17 +94,17 @@ export function useAutoHotkeys({ ref, scopeRef, options }: UseAutoHotkeysArgs) {
 			}
 
 			if (!previousKey.current) {
-				updatePreviousKey();
+				updatePreviousKey(hotkey);
 				return;
 			}
 
-			const success = handleHotkey(`${previousKey.current} ${event.key}`);
+			const success = handleHotkey(`${previousKey.current} ${hotkey}`);
 			if (success) {
 				event.stopPropagation();
 				resetPreviousKey();
 				return;
 			} else {
-				updatePreviousKey();
+				updatePreviousKey(hotkey);
 			}
 		}
 
