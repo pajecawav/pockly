@@ -20,7 +20,7 @@ module.exports = withBundleAnalyzer(
 		pwa: {
 			dest: "public",
 			dynamicStartUrl: true,
-			dynamicStartUrlRedirect: "/login",
+			dynamicStartUrlRedirect: "/auth/login",
 			disable: process.env.NODE_ENV === "development",
 		},
 	})

@@ -16,7 +16,7 @@ export default NextAuth({
 		colorScheme: "auto",
 	},
 	pages: {
-		signIn: "/login",
+		signIn: "/auth/login",
 	},
 	callbacks: {
 		session: ({ session, user }) => {
