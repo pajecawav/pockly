@@ -28,7 +28,7 @@ export default function MyApp({
 				/>
 			</Head>
 			<ChakraProvider resetCSS={true} theme={theme}>
-				<SessionProvider session={session}>
+				<SessionProvider session={session} refetchOnWindowFocus={false}>
 					<ApolloProvider client={client}>
 						<NProgress />
 
