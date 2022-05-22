@@ -2,7 +2,7 @@ import {
 	BookmarksList,
 	BookmarksList_bookmarkFragment,
 } from "@/components/BookmarksList";
-import { Header } from "@/components/Header";
+import { HeaderPortal } from "@/components/Header";
 import {
 	GetArchivedBookmarksQuery,
 	GetArchivedBookmarksQueryVariables,
@@ -37,12 +37,12 @@ export default function ArchivedBookmarksPage() {
 
 	return (
 		<>
-			<Header>
+			<HeaderPortal>
 				<Box>
 					Archive{" "}
 					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
 				</Box>
-			</Header>
+			</HeaderPortal>
 
 			{!bookmarks ? (
 				<Center w="full" h="32">

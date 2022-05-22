@@ -6,18 +6,19 @@ import {
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
 import {
-	Box,
 	Button,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
 	Input,
+	Spacer,
 	Stack,
 	useToast,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useEffect } from "react";
 import { z } from "zod";
+import { HeaderPortal } from "../Header";
 import { TextareaAutosize } from "../TextareaAutosize";
 
 interface Props {
@@ -95,6 +96,7 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 	return (
 		<Stack
 			as="form"
+			id="edit-bookmark-form"
 			direction="column"
 			fontSize="lg"
 			onSubmit={form.handleSubmit(handleSubmit)}
@@ -128,20 +130,23 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 				)}
 			</FormControl>
 
-			<Box alignSelf="end">
-				<Button size="md" variant="ghost" onClick={() => onDone?.()}>
+			<HeaderPortal>
+				<Spacer />
+
+				<Button size="sm" variant="ghost" onClick={() => onDone?.()}>
 					Cancel
 				</Button>
 
 				<Button
 					type="submit"
-					size="md"
+					form="edit-bookmark-form"
+					size="sm"
 					disabled={!form.formState.isDirty}
 					isLoading={loading}
 				>
 					Save
 				</Button>
-			</Box>
+			</HeaderPortal>
 		</Stack>
 	);
 }

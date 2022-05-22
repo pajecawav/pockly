@@ -1,5 +1,6 @@
 import { Box, Stack } from "@chakra-ui/layout";
 import React, { ReactNode } from "react";
+import { Header, HeaderProvider } from "./Header";
 import { Sidebar } from "./Sidebar";
 
 interface Props {
@@ -18,9 +19,13 @@ export function DefaultAppShell({ children }: Props) {
 			spacing={{ base: "0", md: "2" }}
 		>
 			<Sidebar />
-			<Box as="main" flex="1" w="0">
-				{children}
-			</Box>
+
+			<HeaderProvider>
+				<Box flex="1" w="0">
+					<Header />
+					<Box as="main">{children}</Box>
+				</Box>
+			</HeaderProvider>
 		</Stack>
 	);
 }

@@ -84,6 +84,7 @@
 		"@types/node": "^16.11.11",
 		"@types/nprogress": "^0.2.0",
 		"@types/react": "^18.0.9",
+		"@types/react-dom": "^18.0.4",
 		"concurrently": "^7.2.0",
 		"eslint": "^8.15.0",
 		"eslint-config-next": "^12.1.6",

@@ -2,7 +2,7 @@ import {
 	BookmarksList,
 	BookmarksList_bookmarkFragment,
 } from "@/components/BookmarksList";
-import { Header } from "@/components/Header";
+import { HeaderPortal } from "@/components/Header";
 import { useZodForm } from "@/hooks/useZodForm";
 import {
 	SearchBookmarksQuery,
@@ -69,12 +69,12 @@ export default function SearchBookmarksPage() {
 
 	return (
 		<>
-			<Header>
+			<HeaderPortal>
 				<Box>
 					Search Bookmarks{" "}
 					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
 				</Box>
-			</Header>
+			</HeaderPortal>
 
 			<Grid
 				as="form"

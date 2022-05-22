@@ -2,8 +2,10 @@ import {
 	BookmarkEditForm,
 	BookmarkEditForm_bookmarkFragment,
 } from "@/components/Bookmark/BookmarkEditForm";
-import { Header } from "@/components/Header";
+import { HeaderPortal } from "@/components/Header";
 import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
+import { Tooltip } from "@/components/Tooltip";
+import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
 import { getHostnameFromUrl } from "@/utils";
 import {
 	GetBookmarkQuery,
@@ -12,11 +14,12 @@ import {
 import { useQuery } from "@apollo/client";
 import {
 	Box,
-	Button,
 	Center,
 	Heading,
-	HStack,
+	Icon,
+	IconButton,
 	Link,
+	Spacer,
 	Spinner,
 	Stack,
 	Text,
@@ -24,6 +27,7 @@ import {
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
+import { HiOutlinePencil } from "react-icons/hi";
 
 export default function BookmarkPage() {
 	const router = useRouter();
@@ -78,7 +82,21 @@ export default function BookmarkPage() {
 
 	return (
 		<>
-			<Header />
+			{!isEditing && (
+				<HeaderPortal>
+					<Spacer />
+
+					<Tooltip label={<TooltipLabel>Edit bookmark</TooltipLabel>}>
+						<IconButton
+							icon={<Icon as={HiOutlinePencil} boxSize="5" />}
+							variant="ghost"
+							size="sm"
+							onClick={() => setIsEditing(true)}
+							aria-label="Edit bookmark"
+						/>
+					</Tooltip>
+				</HeaderPortal>
+			)}
 
 			{!bookmark ? (
 				<Center w="full" h="32">
@@ -94,17 +112,9 @@ export default function BookmarkPage() {
 			) : (
 				<Stack spacing="2" mt="6">
 					<Box>
-						<HStack alignItems="start">
-							<Heading flex={1} as="h2" size="lg">
-								{bookmark.title}
-							</Heading>
-							<Button
-								size="md"
-								onClick={() => setIsEditing(true)}
-							>
-								Edit
-							</Button>
-						</HStack>
+						<Heading as="h2" size="lg">
+							{bookmark.title}
+						</Heading>
 
 						<Link
 							href={bookmark.url}

@@ -2,7 +2,9 @@ import {
 	BookmarksList,
 	BookmarksList_bookmarkFragment,
 } from "@/components/BookmarksList";
-import { Header } from "@/components/Header";
+import { HeaderPortal } from "@/components/Header";
+import { Tooltip } from "@/components/Tooltip";
+import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
 import { usePinnedTagsStore } from "@/stores/usePinnedTagsStore";
 import {
 	DeleteTagMutation,
@@ -11,14 +13,7 @@ import {
 	GetBookmarksWithTagQueryVariables,
 } from "@/__generated__/operations";
 import { useMutation, useQuery } from "@apollo/client";
-import {
-	Box,
-	Center,
-	HStack,
-	IconButton,
-	Spinner,
-	Text,
-} from "@chakra-ui/react";
+import { Box, Center, Icon, IconButton, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
@@ -91,29 +86,43 @@ export default function BookmarksWithTagPage() {
 
 	return (
 		<>
-			<Header>
-				<Box>
-					{tag}{" "}
-					{data?.bookmarks?.length !== undefined &&
-						`(${data.bookmarks.length})`}
-				</Box>
-			</Header>
+			{tag && (
+				<HeaderPortal>
+					<Box>
+						{tag}{" "}
+						{data?.bookmarks?.length !== undefined &&
+							`(${data.bookmarks.length})`}
+					</Box>
+					<Tooltip label={<TooltipLabel>Pin tag</TooltipLabel>}>
+						<IconButton
+							icon={
+								<Icon
+									as={
+										isPinned
+											? AiFillPushpin
+											: AiOutlinePushpin
+									}
+									boxSize="5"
+								/>
+							}
+							variant="ghost"
+							size="sm"
+							aria-label={isPinned ? "Unpin tag" : "Pin tag"}
+							onClick={onTogglePin}
+						/>
+					</Tooltip>
+					<Tooltip label={<TooltipLabel>Delete tag</TooltipLabel>}>
+						<IconButton
+							icon={<Icon as={HiOutlineTrash} boxSize="5" />}
+							variant="ghost"
+							size="sm"
+							aria-label="Delete tag"
+							onClick={onDelete}
+						/>
+					</Tooltip>
+				</HeaderPortal>
+			)}
 
-			<HStack my="2" fontWeight="semibold">
-				<Text>{tag}</Text>
-				<IconButton
-					icon={isPinned ? <AiFillPushpin /> : <AiOutlinePushpin />}
-					onClick={onTogglePin}
-					title={isPinned ? "Unpin tag" : "Pin tag"}
-					aria-label={isPinned ? "Unpin tag" : "Pin tag"}
-				/>
-				<IconButton
-					icon={<HiOutlineTrash />}
-					onClick={onDelete}
-					title="Delete tag"
-					aria-label="Delete tag"
-				/>
-			</HStack>
 			{!data ? (
 				<Center w="full" h="32">
 					<Spinner />

@@ -1,5 +1,5 @@
 import { Empty } from "@/components/Empty";
-import { Header } from "@/components/Header";
+import { HeaderPortal } from "@/components/Header";
 import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import {
 	GetAllTagsQuery,
@@ -31,20 +31,20 @@ export default function AllTagsPage() {
 
 	return (
 		<>
-			<Header>
+			<HeaderPortal>
 				<Box>
 					All Tags{" "}
 					{data?.tags?.length !== undefined &&
 						`(${data.tags.length})`}
 				</Box>
-			</Header>
+			</HeaderPortal>
 
 			{!tags ? (
 				<Center w="full" h="32">
 					<Spinner />
 				</Center>
 			) : (
-				<Stack direction="column" mt="3">
+				<Stack direction="column" gap="1" mt="3">
 					<Input
 						value={query}
 						onChange={e => setQuery(e.target.value)}
@@ -54,7 +54,7 @@ export default function AllTagsPage() {
 					{data!.tags.length === 0 ? (
 						<Empty>No tags.</Empty>
 					) : (
-						<TagsList tags={tags} />
+						<TagsList tags={tags} gap="2" size="lg" />
 					)}
 				</Stack>
 			)}
