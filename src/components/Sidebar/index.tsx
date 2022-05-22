@@ -2,22 +2,17 @@ import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
 import { usePinnedTagsStore } from "@/stores/usePinnedTagsStore";
 import {
-	Avatar,
 	Box,
 	Button,
-	chakra,
-	HStack,
 	Icon,
 	IconButton,
 	Stack,
-	Text,
 	useBreakpointValue,
 	useColorModeValue,
 	useDisclosure,
 	useOutsideClick,
 	VStack,
 } from "@chakra-ui/react";
-import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import {
@@ -32,13 +27,12 @@ import {
 import { RemoveScroll } from "react-remove-scroll";
 import { AddBookmarkModal } from "../AddBookmarkModal";
 import { Hotkey } from "../Hotkey";
-import { ThemeSelect } from "../ThemeSelect";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
+import { DropdownMenu } from "./DropdownMenu";
 import { SidebarHeading } from "./SidebarHeading";
 import { SidebarLink } from "./SidebarLink";
 
 export function Sidebar() {
-	const session = useSession<true>();
 	const router = useRouter();
 
 	const sidebarRef = useRef<HTMLDivElement>(null);
@@ -129,21 +123,7 @@ export function Sidebar() {
 					/>
 				</Box>
 
-				<HStack w="full">
-					<Button
-						variant="link"
-						display="flex"
-						gap={2}
-						alignItems="center"
-						onClick={() => signOut()}
-					>
-						<Avatar
-							size="xs"
-							src={session.data?.user.image ?? undefined}
-						/>
-						<Text noOfLines={1}>{session.data?.user?.name}</Text>
-					</Button>
-				</HStack>
+				<DropdownMenu />
 
 				<Button
 					size="sm"
@@ -236,8 +216,6 @@ export function Sidebar() {
 						</SidebarLink>
 					))}
 				</Stack>
-
-				<ThemeSelect />
 			</VStack>
 		</RemoveScroll>
 	);
