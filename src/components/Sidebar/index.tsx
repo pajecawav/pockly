@@ -5,6 +5,7 @@ import {
 	Avatar,
 	Box,
 	Button,
+	chakra,
 	HStack,
 	Icon,
 	IconButton,
@@ -31,6 +32,7 @@ import {
 import { RemoveScroll } from "react-remove-scroll";
 import { AddBookmarkModal } from "../AddBookmarkModal";
 import { Hotkey } from "../Hotkey";
+import { ThemeSelect } from "../ThemeSelect";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { SidebarHeading } from "./SidebarHeading";
 import { SidebarLink } from "./SidebarLink";
@@ -83,7 +85,6 @@ export function Sidebar() {
 			/>
 
 			<VStack
-				as="nav"
 				w="48"
 				h={{ base: "100vh", md: "max-content" }}
 				zIndex="overlay"
@@ -164,7 +165,7 @@ export function Sidebar() {
 					onClose={addBookmarkModalState.onClose}
 				/>
 
-				<Stack direction="column" w="full" spacing="0.5">
+				<Stack as="nav" direction="column" w="full" spacing="0.5">
 					<SidebarHeading>Bookmarks</SidebarHeading>
 					<SidebarLink
 						href="/read"
@@ -235,6 +236,8 @@ export function Sidebar() {
 						</SidebarLink>
 					))}
 				</Stack>
+
+				<ThemeSelect />
 			</VStack>
 		</RemoveScroll>
 	);

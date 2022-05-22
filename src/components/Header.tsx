@@ -1,24 +1,12 @@
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
-import {
-	Box,
-	HStack,
-	Icon,
-	IconButton,
-	Spacer,
-	useColorMode,
-} from "@chakra-ui/react";
-import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
+import { Box, HStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { Tooltip } from "./Tooltip";
-import { TooltipLabel } from "./Tooltip/TooltipLabel";
 
 interface Props {
 	children?: ReactNode;
 }
 
 export function Header({ children }: Props) {
-	const { colorMode, toggleColorMode } = useColorMode();
-
 	return (
 		<Box
 			position="sticky"
@@ -38,29 +26,6 @@ export function Header({ children }: Props) {
 				fontWeight="semibold"
 			>
 				{children}
-
-				<Spacer />
-
-				<Tooltip label={<TooltipLabel>Toggle theme</TooltipLabel>}>
-					<IconButton
-						display="flex"
-						icon={
-							<Icon
-								as={
-									colorMode === "light"
-										? HiOutlineMoon
-										: HiOutlineSun
-								}
-								boxSize="6"
-							/>
-						}
-						alignSelf="flex-end"
-						size="sm"
-						variant="ghost"
-						onClick={() => toggleColorMode()}
-						aria-label="Toggle theme"
-					/>
-				</Tooltip>
 			</HStack>
 		</Box>
 	);
