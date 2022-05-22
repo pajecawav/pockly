@@ -21,7 +21,9 @@ export function TagsList({ tags, size, ...props }: Props) {
 			{tags.map(tag => (
 				<NextLink key={tag.id} href={`/tags/${tag.name}`} passHref>
 					<Link>
-						<Tag size={size}>{tag.name}</Tag>
+						<Tag size={size} bg="telegram.50">
+							{tag.name}
+						</Tag>
 					</Link>
 				</NextLink>
 			))}

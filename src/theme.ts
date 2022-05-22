@@ -22,10 +22,6 @@ const Button: ComponentStyleConfig = {
 	},
 };
 
-IconButtonComponent.defaultProps = {
-	...IconButtonComponent.defaultProps,
-	variant: "unstyled",
-};
 const IconButton: ComponentStyleConfig = {
 	defaultProps: {
 		size: { md: "sm" },

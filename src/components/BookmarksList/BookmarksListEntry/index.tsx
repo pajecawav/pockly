@@ -63,7 +63,7 @@ export const BookmarksListEntry = memo(function BookmarksListEntry({
 				px="2"
 				transform="translateX(-0.5rem)"
 				borderRadius="lg"
-				bg="gray.200"
+				bg="gray.50"
 				display="none"
 				_groupFocusWithin={{ display: "block" }}
 				_dark={{ bg: "gray.700" }}
@@ -114,7 +114,7 @@ export const BookmarksListEntry = memo(function BookmarksListEntry({
 
 			<HStack
 				direction="row"
-				spacing="1.5"
+				spacing="0.5"
 				mt="1"
 				alignItems="center"
 				order={{ base: 3, sm: "initial" }}

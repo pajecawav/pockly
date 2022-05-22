@@ -138,14 +138,14 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 					</TooltipLabel>
 				}
 			>
-				<span>
+				<IconButton as="div" variant="ghost" size="sm" aria-label="">
 					<NextLink href={`/b/${bookmark.id}`} passHref>
 						<Link display="block" lineHeight="0" data-hotkey="n">
 							{/* TODO: better icon */}
 							<Icon as={HiOutlineAnnotation} boxSize="6" />
 						</Link>
 					</NextLink>
-				</span>
+				</IconButton>
 			</Tooltip>
 
 			<Tooltip
@@ -163,7 +163,8 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 							filled={bookmark.liked}
 						/>
 					}
-					lineHeight="0"
+					variant="ghost"
+					size="sm"
 					aria-label="Toggle liked"
 					data-hotkey="l"
 					onClick={handleToggleLiked}
@@ -191,7 +192,8 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 							boxSize="6"
 						/>
 					}
-					lineHeight="0"
+					variant="ghost"
+					size="sm"
 					aria-label={
 						bookmark.archived
 							? "Add to reading list"
@@ -211,7 +213,8 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 			>
 				<IconButton
 					icon={<Icon as={HiOutlineTag} boxSize="6" />}
-					lineHeight="0"
+					variant="ghost"
+					size="sm"
 					aria-label="Edit tags"
 					data-hotkey="t"
 					onClick={() => setCurrentAction("editTags")}
@@ -227,7 +230,8 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 			>
 				<IconButton
 					icon={<Icon as={HiOutlineTrash} boxSize="6" />}
-					lineHeight="0"
+					variant="ghost"
+					size="sm"
 					aria-label="Delete bookmark"
 					data-hotkey="d"
 					onClick={() => setCurrentAction("delete")}
