@@ -65,6 +65,7 @@ export function Sidebar() {
 	}, [router.pathname]);
 
 	const addBookmarkModalState = useDisclosure();
+	const bg = useDefaultBackgroundColor();
 
 	return (
 		<RemoveScroll enabled={sidebarIsOpen}>
@@ -100,7 +101,7 @@ export function Sidebar() {
 				pr={5}
 				pl={{ base: "3", md: "0" }}
 				pt={{ base: "10", md: "2" }}
-				bg={useDefaultBackgroundColor()}
+				bg={{ base: bg, md: "transparent" }}
 				ref={sidebarRef}
 			>
 				<Box

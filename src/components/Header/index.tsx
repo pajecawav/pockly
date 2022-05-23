@@ -1,5 +1,5 @@
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
-import { Box, HStack } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
 import { useContext } from "react";
 import { HeaderContext } from "./HeaderPortal";
 
@@ -11,25 +11,19 @@ export function Header() {
 	const [, setHeader] = useContext(HeaderContext);
 
 	return (
-		<Box
+		<HStack
 			position="sticky"
 			top="0"
-			bg={useDefaultBackgroundColor()}
+			h={HEADER_HEIGHT}
 			zIndex="sticky"
-			mx="-2"
-		>
-			{/* TODO: remove this element */}
-			<HStack
-				h={HEADER_HEIGHT}
-				pl={{ base: "10", md: "0" }}
-				py="3"
-				mx="2"
-				borderBottom="1px"
-				borderColor="gray.100"
-				_dark={{ borderColor: "gray.700" }}
-				fontWeight="semibold"
-				ref={setHeader}
-			/>
-		</Box>
+			pl={{ base: "10", md: "0" }}
+			py="3"
+			bg={useDefaultBackgroundColor()}
+			borderBottom="1px"
+			borderColor="gray.100"
+			_dark={{ borderColor: "gray.700" }}
+			fontWeight="semibold"
+			ref={setHeader}
+		/>
 	);
 }
