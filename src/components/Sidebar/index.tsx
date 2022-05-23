@@ -26,7 +26,6 @@ import {
 } from "react-icons/hi";
 import { RemoveScroll } from "react-remove-scroll";
 import { AddBookmarkModal } from "../AddBookmarkModal";
-import { Hotkey } from "../Hotkey";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { DropdownMenu } from "./DropdownMenu";
 import { SidebarHeading } from "./SidebarHeading";
@@ -152,10 +151,10 @@ export function Sidebar() {
 						icon={HiOutlineCollection}
 						hotkey="g r"
 						label={
-							<TooltipLabel>
-								Go to reading list &middot;{" "}
-								<Hotkey value="G R" />
-							</TooltipLabel>
+							<TooltipLabel
+								text="Go to reading list"
+								hotkey="G R"
+							/>
 						}
 					>
 						Reading List
@@ -164,11 +163,7 @@ export function Sidebar() {
 						href="/liked"
 						icon={HiOutlineHeart}
 						hotkey="g l"
-						label={
-							<TooltipLabel>
-								Go to liked &middot; <Hotkey value="G L" />
-							</TooltipLabel>
-						}
+						label={<TooltipLabel text="Go to liked" hotkey="G L" />}
 					>
 						Liked
 					</SidebarLink>
@@ -177,9 +172,7 @@ export function Sidebar() {
 						icon={HiOutlineArchive}
 						hotkey="g a"
 						label={
-							<TooltipLabel>
-								Go to archive &middot; <Hotkey value="G A" />
-							</TooltipLabel>
+							<TooltipLabel text="Go to archive" hotkey="G A" />
 						}
 					>
 						Archive
@@ -189,9 +182,7 @@ export function Sidebar() {
 						icon={HiOutlineSearch}
 						hotkey="g s"
 						label={
-							<TooltipLabel>
-								Go to search &middot; <Hotkey value="G S" />
-							</TooltipLabel>
+							<TooltipLabel text="Go to search" hotkey="G S" />
 						}
 					>
 						Search
@@ -202,11 +193,7 @@ export function Sidebar() {
 						href="/tags"
 						icon={HiOutlineTag}
 						hotkey="g t"
-						label={
-							<TooltipLabel>
-								Go to tags &middot; <Hotkey value="G T" />
-							</TooltipLabel>
-						}
+						label={<TooltipLabel text="Go to tags" hotkey="G T" />}
 					>
 						All Tags
 					</SidebarLink>

@@ -1,7 +1,7 @@
 import { TagsList_TagFragment } from "@/__generated__/operations";
-import { Flex, FlexProps, Link, Tag, TagProps } from "@chakra-ui/react";
+import { Flex, FlexProps, Tag, TagProps } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import NextLink from "next/link";
+import { ChakraNextLink } from "./ChakraNextLink";
 
 interface Props extends FlexProps {
 	tags: TagsList_TagFragment[];
@@ -19,13 +19,11 @@ export function TagsList({ tags, size, ...props }: Props) {
 	return (
 		<Flex flexWrap="wrap" gap="1.5" {...props}>
 			{tags.map(tag => (
-				<NextLink key={tag.id} href={`/tags/${tag.name}`} passHref>
-					<Link>
-						<Tag size={size} _light={{ bg: "telegram.50" }}>
-							{tag.name}
-						</Tag>
-					</Link>
-				</NextLink>
+				<ChakraNextLink key={tag.id} href={`/tags/${tag.name}`}>
+					<Tag size={size} _light={{ bg: "telegram.50" }}>
+						{tag.name}
+					</Tag>
+				</ChakraNextLink>
 			))}
 		</Flex>
 	);

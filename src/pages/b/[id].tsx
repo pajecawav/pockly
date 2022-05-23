@@ -86,7 +86,7 @@ export default function BookmarkPage() {
 				<HeaderPortal>
 					<Spacer />
 
-					<Tooltip label={<TooltipLabel>Edit bookmark</TooltipLabel>}>
+					<Tooltip label={<TooltipLabel text="Edit bookmark" />}>
 						<IconButton
 							icon={<Icon as={HiOutlinePencil} boxSize="5" />}
 							variant="ghost"

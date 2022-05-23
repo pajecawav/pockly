@@ -1,3 +1,4 @@
+import { ChakraNextLink } from "@/components/ChakraNextLink";
 import {
 	BookmarkActions_BookmarkFragment,
 	UpdateBookmarkMutation,
@@ -5,9 +6,8 @@ import {
 	UpdateBookmarkMutation_BookmarkFragment,
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
-import { Icon, IconButton, Link, useToast } from "@chakra-ui/react";
+import { Icon, useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import NextLink from "next/link";
 import { useState } from "react";
 import {
 	HiOutlineAnnotation,
@@ -22,10 +22,9 @@ import {
 	EditBookmarkTagsModal,
 	EditBookmarkTagsModal_bookmarkFragment,
 } from "../../EditBookmarkTagsModal";
-import { FilledIcon } from "../../FilledIcon";
-import { Hotkey } from "../../Hotkey";
 import { Tooltip } from "../../Tooltip";
 import { TooltipLabel } from "../../Tooltip/TooltipLabel";
+import { BookmarkActionButton } from "./BookmarkActionButton";
 
 interface Props {
 	bookmark: BookmarkActions_BookmarkFragment;
@@ -131,40 +130,23 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 
 	return (
 		<>
-			<Tooltip
-				label={
-					<TooltipLabel>
-						Open notes &middot; <Hotkey value="N" />
-					</TooltipLabel>
-				}
-			>
-				<IconButton as="div" variant="ghost" size="sm" aria-label="">
-					<NextLink href={`/b/${bookmark.id}`} passHref>
-						<Link display="block" lineHeight="0" data-hotkey="n">
-							{/* TODO: better icon */}
-							<Icon as={HiOutlineAnnotation} boxSize="6" />
-						</Link>
-					</NextLink>
-				</IconButton>
-			</Tooltip>
-
-			<Tooltip
-				label={
-					<TooltipLabel>
-						Toggle like &middot; <Hotkey value="L" />
-					</TooltipLabel>
-				}
-			>
-				<IconButton
-					icon={
-						<FilledIcon
-							as={HiOutlineHeart}
-							boxSize="6"
-							filled={bookmark.liked}
-						/>
-					}
+			<Tooltip label={<TooltipLabel text="Open notes" hotkey="N" />}>
+				<ChakraNextLink
+					href={`/b/${bookmark.id}`}
 					variant="ghost"
 					size="sm"
+					px="1"
+					display="flex"
+					data-hotkey="n"
+				>
+					<Icon as={HiOutlineAnnotation} boxSize="6" />
+				</ChakraNextLink>
+			</Tooltip>
+
+			<Tooltip label={<TooltipLabel text="Toggle like" hotkey="L" />}>
+				<BookmarkActionButton
+					icon={HiOutlineHeart}
+					filled={bookmark.liked}
 					aria-label="Toggle liked"
 					data-hotkey="l"
 					onClick={handleToggleLiked}
@@ -173,27 +155,18 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 
 			<Tooltip
 				label={
-					<TooltipLabel>
-						{bookmark.archived
-							? "Add to reading list"
-							: "Move to archive"}{" "}
-						&middot; <Hotkey value="A" />
-					</TooltipLabel>
+					<TooltipLabel
+						text={
+							bookmark.archived
+								? "Add to reading list"
+								: "Move to archive"
+						}
+						hotkey="A"
+					/>
 				}
 			>
-				<IconButton
-					icon={
-						<Icon
-							as={
-								bookmark.archived
-									? HiOutlinePlus
-									: HiOutlineArchive
-							}
-							boxSize="6"
-						/>
-					}
-					variant="ghost"
-					size="sm"
+				<BookmarkActionButton
+					icon={bookmark.archived ? HiOutlinePlus : HiOutlineArchive}
 					aria-label={
 						bookmark.archived
 							? "Add to reading list"
@@ -204,34 +177,18 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 				/>
 			</Tooltip>
 
-			<Tooltip
-				label={
-					<TooltipLabel>
-						Edit tags &middot; <Hotkey value="T" />
-					</TooltipLabel>
-				}
-			>
-				<IconButton
-					icon={<Icon as={HiOutlineTag} boxSize="6" />}
-					variant="ghost"
-					size="sm"
+			<Tooltip label={<TooltipLabel text="Edit tags" hotkey="T" />}>
+				<BookmarkActionButton
+					icon={HiOutlineTag}
 					aria-label="Edit tags"
 					data-hotkey="t"
 					onClick={() => setCurrentAction("editTags")}
 				/>
 			</Tooltip>
 
-			<Tooltip
-				label={
-					<TooltipLabel>
-						Delete &middot; <Hotkey value="D" />
-					</TooltipLabel>
-				}
-			>
-				<IconButton
-					icon={<Icon as={HiOutlineTrash} boxSize="6" />}
-					variant="ghost"
-					size="sm"
+			<Tooltip label={<TooltipLabel text="Delete" hotkey="D" />}>
+				<BookmarkActionButton
+					icon={HiOutlineTrash}
 					aria-label="Delete bookmark"
 					data-hotkey="d"
 					onClick={() => setCurrentAction("delete")}

@@ -1,14 +1,20 @@
 import { chakra, ChakraProps } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { Hotkey } from "../Hotkey";
 
 interface Props extends ChakraProps {
-	children: ReactNode;
+	text: string;
+	hotkey?: string;
 }
 
-export function TooltipLabel({ children, ...props }: Props) {
+export function TooltipLabel({ text, hotkey, ...props }: Props) {
 	return (
 		<chakra.span color="gray.800" _dark={{ color: "white" }} {...props}>
-			{children}
+			{text}
+			{hotkey && (
+				<>
+					&middot; <Hotkey value={hotkey} />
+				</>
+			)}
 		</chakra.span>
 	);
 }

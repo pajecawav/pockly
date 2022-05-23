@@ -93,7 +93,7 @@ export default function BookmarksWithTagPage() {
 						{data?.bookmarks?.length !== undefined &&
 							`(${data.bookmarks.length})`}
 					</Box>
-					<Tooltip label={<TooltipLabel>Pin tag</TooltipLabel>}>
+					<Tooltip label={<TooltipLabel text="Pin tag" />}>
 						<IconButton
 							icon={
 								<Icon
@@ -111,7 +111,7 @@ export default function BookmarksWithTagPage() {
 							onClick={onTogglePin}
 						/>
 					</Tooltip>
-					<Tooltip label={<TooltipLabel>Delete tag</TooltipLabel>}>
+					<Tooltip label={<TooltipLabel text="Delete tag" />}>
 						<IconButton
 							icon={<Icon as={HiOutlineTrash} boxSize="5" />}
 							variant="ghost"
