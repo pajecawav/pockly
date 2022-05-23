@@ -15,7 +15,12 @@ export function Auth({ children }: Props) {
 	const isUser = !!session?.user;
 
 	useEffect(() => {
-		if (status !== "loading" && !isUser) router.replace("/auth/login");
+		if (status !== "loading" && !isUser) {
+			router.replace({
+				pathname: "/auth/login",
+				query: { next: window.location.pathname },
+			});
+		}
 	}, [isUser, status, router]);
 
 	if (isUser) {
