@@ -27,20 +27,19 @@ function getHotkey(event: KeyboardEvent): string {
 	return hotkey;
 }
 
+function unref(
+	ref: RefObject<HTMLElement> | HTMLElement | null | undefined
+): HTMLElement | null {
+	if (!ref) return null;
+	return ref instanceof HTMLElement ? ref : ref.current;
+}
+
 export function useAutoHotkeys({ ref, scopeRef, options }: UseAutoHotkeysArgs) {
 	const previousKey = useRef<string | null>(null);
 	const resetPreviousKeyTimeoutId = useRef<number | undefined>(undefined);
 
 	useEffect(() => {
-		function unref(
-			ref: RefObject<HTMLElement> | HTMLElement
-		): HTMLElement | null {
-			return ref instanceof HTMLElement ? ref : ref.current;
-		}
-
-		const element = unref(ref);
-		const scopeElement = scopeRef ? unref(scopeRef) : null;
-		if (!element) {
+		if (!unref(ref)) {
 			return;
 		}
 
@@ -58,9 +57,9 @@ export function useAutoHotkeys({ ref, scopeRef, options }: UseAutoHotkeysArgs) {
 			clearTimeout(resetPreviousKeyTimeoutId.current);
 
 			function getElementForHotkey(hotkey: string) {
-				return (scopeElement || element)?.querySelector<HTMLElement>(
-					`[data-hotkey="${hotkey}"]`
-				);
+				return (
+					unref(scopeRef) || unref(ref)
+				)?.querySelector<HTMLElement>(`[data-hotkey="${hotkey}"]`);
 			}
 
 			function handleHotkey(hotkey: string): boolean {
@@ -108,7 +107,8 @@ export function useAutoHotkeys({ ref, scopeRef, options }: UseAutoHotkeysArgs) {
 			}
 		}
 
-		element.addEventListener("keydown", handler, options);
-		return () => element.removeEventListener("keydown", handler, options);
+		const el = unref(ref);
+		el?.addEventListener("keydown", handler, options);
+		return () => el?.removeEventListener("keydown", handler, options);
 	}, [ref, scopeRef, options]);
 }
