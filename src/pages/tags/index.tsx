@@ -54,7 +54,7 @@ export default function AllTagsPage() {
 					{data!.tags.length === 0 ? (
 						<Empty>No tags.</Empty>
 					) : (
-						<TagsList tags={tags} gap="2" size="lg" />
+						<TagsList tags={tags} gap="2" />
 					)}
 				</Stack>
 			)}

@@ -2,6 +2,7 @@ import {
 	BookmarksList,
 	BookmarksList_bookmarkFragment,
 } from "@/components/BookmarksList";
+import { BookmarkSortingSettings } from "@/components/BookmarksList/BookmarksSortingSettings";
 import { HeaderPortal } from "@/components/Header";
 import { Tooltip } from "@/components/Tooltip";
 import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
@@ -13,15 +14,25 @@ import {
 	GetBookmarksWithTagQueryVariables,
 } from "@/__generated__/operations";
 import { useMutation, useQuery } from "@apollo/client";
-import { Box, Center, Icon, IconButton, Spinner } from "@chakra-ui/react";
+import {
+	Box,
+	Center,
+	Icon,
+	IconButton,
+	Spacer,
+	Spinner,
+} from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
 
 export default function BookmarksWithTagPage() {
 	const router = useRouter();
 	const tag = router.query.tag as string;
+
+	const [oldestFirst, setOldestFirst] = useState(false);
 
 	const { isTagPinned, pinTag, unpinTag } = usePinnedTagsStore();
 	const isPinned = tag && isTagPinned(tag);
@@ -33,14 +44,18 @@ export default function BookmarksWithTagPage() {
 		gql`
 			${BookmarksList_bookmarkFragment}
 
-			query GetBookmarksWithTag($tag: String!) {
-				bookmarks(tag: $tag) {
+			query GetBookmarksWithTag($tag: String!, $oldestFirst: Boolean!) {
+				bookmarks(tag: $tag, oldestFirst: $oldestFirst) {
 					id
 					...BookmarksList_bookmark
 				}
 			}
 		`,
-		{ variables: { tag }, skip: !tag, fetchPolicy: "cache-and-network" }
+		{
+			variables: { tag, oldestFirst },
+			skip: !tag,
+			fetchPolicy: "cache-and-network",
+		}
 	);
 
 	const [mutateDelete] = useMutation<
@@ -93,6 +108,7 @@ export default function BookmarksWithTagPage() {
 						{data?.bookmarks?.length !== undefined &&
 							`(${data.bookmarks.length})`}
 					</Box>
+
 					<Tooltip label={<TooltipLabel text="Pin tag" />}>
 						<IconButton
 							icon={
@@ -120,6 +136,13 @@ export default function BookmarksWithTagPage() {
 							onClick={onDelete}
 						/>
 					</Tooltip>
+
+					<Spacer />
+
+					<BookmarkSortingSettings
+						oldestFirst={oldestFirst}
+						onChangeOldestFirst={setOldestFirst}
+					/>
 				</HeaderPortal>
 			)}
 

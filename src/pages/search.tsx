@@ -2,6 +2,7 @@ import {
 	BookmarksList,
 	BookmarksList_bookmarkFragment,
 } from "@/components/BookmarksList";
+import { BookmarkSortingSettings } from "@/components/BookmarksList/BookmarksSortingSettings";
 import { HeaderPortal } from "@/components/Header";
 import { useZodForm } from "@/hooks/useZodForm";
 import {
@@ -9,7 +10,7 @@ import {
 	SearchBookmarksQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
-import { Box, Button, Grid, Input, Select } from "@chakra-ui/react";
+import { Box, Button, Grid, Input, Select, Spacer } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useState } from "react";
 import { enum as zodEnum, object, string, TypeOf } from "zod";
@@ -22,9 +23,10 @@ const schema = object({
 type Schema = TypeOf<typeof schema>;
 
 export default function SearchBookmarksPage() {
-	const [query, setQuery] = useState<SearchBookmarksQueryVariables | null>(
-		null
-	);
+	const [query, setQuery] = useState<SearchBookmarksQueryVariables>({
+		query: "",
+		oldestFirst: false,
+	});
 	const form = useZodForm({ schema });
 
 	const { data, previousData, loading } = useQuery<
@@ -38,6 +40,7 @@ export default function SearchBookmarksPage() {
 				$query: String!
 				$archived: Boolean
 				$liked: Boolean
+				$oldestFirst: Boolean!
 			) {
 				bookmarks(
 					filter: {
@@ -45,18 +48,29 @@ export default function SearchBookmarksPage() {
 						archived: $archived
 						liked: $liked
 					}
+					oldestFirst: $oldestFirst
 				) {
 					id
 					...BookmarksList_bookmark
 				}
 			}
 		`,
-		{ variables: query!, skip: !query, fetchPolicy: "cache-and-network" }
+		{
+			variables: query,
+			skip: !query.query,
+			fetchPolicy: "cache-and-network",
+		}
 	);
+
+	const handleUpdateQuery = (
+		values: Partial<SearchBookmarksQueryVariables>
+	) => {
+		setQuery(pq => ({ ...pq, ...values }));
+	};
 
 	const handleSubmit = (values: Schema) => {
 		if (values.query) {
-			setQuery({
+			handleUpdateQuery({
 				query: values.query,
 				liked: values.scope === "liked" ? true : undefined,
 				archived: values.scope === "archive" ? true : undefined,
@@ -74,6 +88,15 @@ export default function SearchBookmarksPage() {
 					Search Bookmarks{" "}
 					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
 				</Box>
+
+				<Spacer />
+
+				<BookmarkSortingSettings
+					oldestFirst={query.oldestFirst}
+					onChangeOldestFirst={value =>
+						handleUpdateQuery({ oldestFirst: value })
+					}
+				/>
 			</HeaderPortal>
 
 			<Grid
