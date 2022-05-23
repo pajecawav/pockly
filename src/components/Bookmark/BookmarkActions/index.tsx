@@ -130,19 +130,6 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 
 	return (
 		<>
-			<Tooltip label={<TooltipLabel text="Open notes" hotkey="N" />}>
-				<ChakraNextLink
-					href={`/b/${bookmark.id}`}
-					variant="ghost"
-					size="sm"
-					px="1"
-					display="flex"
-					data-hotkey="n"
-				>
-					<Icon as={HiOutlineAnnotation} boxSize="6" />
-				</ChakraNextLink>
-			</Tooltip>
-
 			<Tooltip label={<TooltipLabel text="Toggle like" hotkey="L" />}>
 				<BookmarkActionButton
 					icon={HiOutlineHeart}

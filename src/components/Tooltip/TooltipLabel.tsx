@@ -12,6 +12,7 @@ export function TooltipLabel({ text, hotkey, ...props }: Props) {
 			{text}
 			{hotkey && (
 				<>
+					{" "}
 					&middot; <Hotkey value={hotkey} />
 				</>
 			)}

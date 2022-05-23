@@ -1,11 +1,15 @@
 import { BookmarkActions } from "@/components/Bookmark/BookmarkActions";
+import { ChakraNextLink } from "@/components/ChakraNextLink";
 import { TagsList } from "@/components/TagsList";
+import { Tooltip } from "@/components/Tooltip";
+import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
 import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { getHostnameFromUrl } from "@/utils";
 import { BookmarksListEntry_BookmarkFragment } from "@/__generated__/operations";
-import { Box, Flex, HStack, Link, Stack } from "@chakra-ui/react";
+import { Box, Flex, HStack, Icon, Link, Stack } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { memo, useRef } from "react";
+import { HiOutlineAnnotation } from "react-icons/hi";
 import { BookmarkImage } from "./BookmarkImage";
 
 interface Props {
@@ -119,6 +123,19 @@ export const BookmarksListEntry = memo(function BookmarksListEntry({
 				alignItems="center"
 				order={{ base: 3, sm: "initial" }}
 			>
+				<Tooltip label={<TooltipLabel text="Open notes" hotkey="N" />}>
+					<ChakraNextLink
+						href={`/b/${bookmark.id}`}
+						variant="ghost"
+						size="sm"
+						px="1"
+						display="flex"
+						data-hotkey="n"
+					>
+						<Icon as={HiOutlineAnnotation} boxSize="6" />
+					</ChakraNextLink>
+				</Tooltip>
+
 				<BookmarkActions
 					bookmark={bookmark}
 					afterDelete={afterDelete}
