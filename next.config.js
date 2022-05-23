@@ -7,7 +7,8 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 /** @type {import('next').NextConfig} */
 const config = {
-	reactStrictMode: true,
+	// TODO: for some reason react-beautiful-dnd doesn't work with strict-mode
+	reactStrictMode: false,
 	webpack(config) {
 		config.resolve.alias["@"] = path.join(process.cwd(), "src");
 		return config;

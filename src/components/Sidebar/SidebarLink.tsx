@@ -1,6 +1,6 @@
 import { chakra, useColorModeValue } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { ComponentType, Fragment, ReactNode } from "react";
+import { ComponentType, forwardRef, Fragment, ReactNode } from "react";
 import { ChakraNextLink } from "../ChakraNextLink";
 import { Tooltip } from "../Tooltip";
 
@@ -12,49 +12,50 @@ interface Props {
 	children: string;
 }
 
-export function SidebarLink({
-	href,
-	icon: Icon,
-	hotkey,
-	label,
-	children,
-}: Props) {
-	const router = useRouter();
+export const SidebarLink = forwardRef<HTMLAnchorElement, Props>(
+	function SidebarLink({ href, icon: Icon, hotkey, label, children }, ref) {
+		const router = useRouter();
 
-	const bg = useColorModeValue("gray.100", "gray.700");
+		const bg = useColorModeValue("gray.100", "gray.700");
 
-	const isActive = router.asPath === href;
+		const isActive = router.asPath === href;
 
-	// TODO: memoize wrapper?
-	const Wrapper = label
-		? ({ children }: { children: ReactNode }) => (
-				<Tooltip label={label} placement="right">
+		// TODO: memoize wrapper?
+		const Wrapper = label
+			? ({ children }: { children: ReactNode }) => (
+					<Tooltip label={label} placement="right">
+						{children}
+					</Tooltip>
+			  )
+			: Fragment;
+
+		return (
+			<Wrapper>
+				<ChakraNextLink
+					href={href}
+					w="full"
+					display="flex"
+					alignItems="center"
+					px={2}
+					py={0.5}
+					borderRadius="md"
+					bg={isActive ? bg : undefined}
+					_hover={{ bg }}
+					data-hotkey={hotkey}
+					ref={ref}
+				>
+					{Icon && (
+						<chakra.div
+							w={3.5}
+							marginRight={2}
+							display="inline-block"
+						>
+							<Icon />
+						</chakra.div>
+					)}
 					{children}
-				</Tooltip>
-		  )
-		: Fragment;
-
-	return (
-		<Wrapper>
-			<ChakraNextLink
-				href={href}
-				w="full"
-				display="flex"
-				alignItems="center"
-				px={2}
-				py={0.5}
-				borderRadius="md"
-				bg={isActive ? bg : undefined}
-				_hover={{ bg }}
-				data-hotkey={hotkey}
-			>
-				{Icon && (
-					<chakra.div w={3.5} marginRight={2} display="inline-block">
-						<Icon />
-					</chakra.div>
-				)}
-				{children}
-			</ChakraNextLink>
-		</Wrapper>
-	);
-}
+				</ChakraNextLink>
+			</Wrapper>
+		);
+	}
+);

@@ -1,6 +1,5 @@
 import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
-import { usePinnedTagsStore } from "@/stores/usePinnedTagsStore";
 import {
 	Box,
 	Button,
@@ -28,8 +27,10 @@ import { RemoveScroll } from "react-remove-scroll";
 import { AddBookmarkModal } from "../AddBookmarkModal";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { DropdownMenu } from "./DropdownMenu";
+import { PinnedTags } from "./PinnedTags";
 import { SidebarHeading } from "./SidebarHeading";
 import { SidebarLink } from "./SidebarLink";
+import { SidebarSection } from "./SidebarSection";
 
 export function Sidebar() {
 	const router = useRouter();
@@ -41,8 +42,6 @@ export function Sidebar() {
 		scopeRef: sidebarRef,
 		options: { capture: true },
 	});
-
-	const pinnedTags = usePinnedTagsStore(store => store.tags);
 
 	const isMediumOrLarger = useBreakpointValue({ base: false, md: true });
 	const sidebarState = useDisclosure({ defaultIsOpen: false });
@@ -146,64 +145,74 @@ export function Sidebar() {
 					onClose={addBookmarkModalState.onClose}
 				/>
 
-				<Stack as="nav" direction="column" w="full" spacing="0.5">
-					<SidebarHeading>Bookmarks</SidebarHeading>
-					<SidebarLink
-						href="/read"
-						icon={HiOutlineCollection}
-						hotkey="g r"
-						label={
-							<TooltipLabel
-								text="Go to reading list"
-								hotkey="G R"
-							/>
-						}
-					>
-						Reading List
-					</SidebarLink>
-					<SidebarLink
-						href="/liked"
-						icon={HiOutlineHeart}
-						hotkey="g l"
-						label={<TooltipLabel text="Go to liked" hotkey="G L" />}
-					>
-						Liked
-					</SidebarLink>
-					<SidebarLink
-						href="/archive"
-						icon={HiOutlineArchive}
-						hotkey="g a"
-						label={
-							<TooltipLabel text="Go to archive" hotkey="G A" />
-						}
-					>
-						Archive
-					</SidebarLink>
-					<SidebarLink
-						href="/search"
-						icon={HiOutlineSearch}
-						hotkey="g s"
-						label={
-							<TooltipLabel text="Go to search" hotkey="G S" />
-						}
-					>
-						Search
-					</SidebarLink>
-
-					<SidebarHeading mt="10">Tags</SidebarHeading>
-					<SidebarLink
-						href="/tags"
-						icon={HiOutlineTag}
-						hotkey="g t"
-						label={<TooltipLabel text="Go to tags" hotkey="G T" />}
-					>
-						All Tags
-					</SidebarLink>
-					{pinnedTags.map(tag => (
-						<SidebarLink href={`/tags/${tag}`} key={tag}>
-							{tag}
+				<Stack as="nav" direction="column" w="full" spacing="2">
+					<SidebarSection>
+						<SidebarHeading>Bookmarks</SidebarHeading>
+						<SidebarLink
+							href="/read"
+							icon={HiOutlineCollection}
+							hotkey="g r"
+							label={
+								<TooltipLabel
+									text="Go to reading list"
+									hotkey="G R"
+								/>
+							}
+						>
+							Reading List
 						</SidebarLink>
-					))}
+						<SidebarLink
+							href="/liked"
+							icon={HiOutlineHeart}
+							hotkey="g l"
+							label={
+								<TooltipLabel text="Go to liked" hotkey="G L" />
+							}
+						>
+							Liked
+						</SidebarLink>
+						<SidebarLink
+							href="/archive"
+							icon={HiOutlineArchive}
+							hotkey="g a"
+							label={
+								<TooltipLabel
+									text="Go to archive"
+									hotkey="G A"
+								/>
+							}
+						>
+							Archive
+						</SidebarLink>
+						<SidebarLink
+							href="/search"
+							icon={HiOutlineSearch}
+							hotkey="g s"
+							label={
+								<TooltipLabel
+									text="Go to search"
+									hotkey="G S"
+								/>
+							}
+						>
+							Search
+						</SidebarLink>
+					</SidebarSection>
+
+					<SidebarSection>
+						<SidebarHeading>Tags</SidebarHeading>
+						<SidebarLink
+							href="/tags"
+							icon={HiOutlineTag}
+							hotkey="g t"
+							label={
+								<TooltipLabel text="Go to tags" hotkey="G T" />
+							}
+						>
+							All Tags
+						</SidebarLink>
+						<PinnedTags />
+					</SidebarSection>
 				</Stack>
 			</VStack>
 		</RemoveScroll>
