@@ -121,7 +121,7 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 			direction="column"
 			fontSize="lg"
 			onSubmit={form.handleSubmit(handleSubmit)}
-			ref={formRef}
+			ref={formRef as any}
 		>
 			<FormControl isInvalid={!!form.formState.errors.title} w="full">
 				<FormLabel>Title</FormLabel>
