@@ -27,7 +27,9 @@ export default function AllTagsPage() {
 		{ fetchPolicy: "cache-and-network" }
 	);
 
-	const tags = data?.tags.filter(tag => !query || tag.name.includes(query));
+	const tags = data?.tags.filter(
+		tag => !query || tag.name.toLocaleLowerCase().includes(query)
+	);
 
 	return (
 		<>

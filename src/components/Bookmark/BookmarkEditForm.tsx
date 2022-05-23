@@ -13,6 +13,7 @@ import {
 	Input,
 	Spacer,
 	Stack,
+	useEventListener,
 	useToast,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
@@ -49,6 +50,16 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 	const form = useZodForm({
 		schema,
 		defaultValues: { note: bookmark.note ?? "", title: bookmark.title },
+	});
+
+	useEventListener("keydown", e => {
+		if (
+			e.key === "Escape" &&
+			(!form.formState.isDirty ||
+				confirm("Are you sure you want to discard changes?"))
+		) {
+			onDone?.();
+		}
 	});
 
 	useEffect(() => {
