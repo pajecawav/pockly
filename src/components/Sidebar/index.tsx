@@ -116,6 +116,7 @@ export function Sidebar() {
 					<IconButton
 						display="grid"
 						placeItems="center"
+						variant="unstyled"
 						size="sm"
 						icon={<Icon as={HiOutlineMenu} boxSize="6" />}
 						aria-label="Toggle sidebar"
