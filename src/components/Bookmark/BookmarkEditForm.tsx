@@ -16,7 +16,7 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { z } from "zod";
 import { HeaderPortal } from "../Header";
 import { TextareaAutosize } from "../TextareaAutosize";
@@ -43,6 +43,8 @@ type Schema = z.infer<typeof schema>;
 
 export function BookmarkEditForm({ bookmark, onDone }: Props) {
 	const toast = useToast();
+
+	const formRef = useRef<HTMLFormElement | null>(null);
 
 	const form = useZodForm({
 		schema,
@@ -83,6 +85,25 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 		}
 	);
 
+	// TODO: figure out how to ignore events fired from modals
+	// submit form on ctrl-s
+	useEffect(() => {
+		function handler(e: KeyboardEvent) {
+			if (e.ctrlKey && e.key === "s") {
+				e.preventDefault();
+
+				if (form.formState.isDirty) {
+					formRef.current?.requestSubmit();
+				} else {
+					onDone?.();
+				}
+			}
+		}
+
+		document.addEventListener("keydown", handler);
+		return () => document.removeEventListener("keydown", handler);
+	}, [form, onDone]);
+
 	const handleSubmit = (values: Schema) => {
 		mutate({
 			variables: {
@@ -100,6 +121,7 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 			direction="column"
 			fontSize="lg"
 			onSubmit={form.handleSubmit(handleSubmit)}
+			ref={formRef}
 		>
 			<FormControl isInvalid={!!form.formState.errors.title} w="full">
 				<FormLabel>Title</FormLabel>
@@ -107,6 +129,7 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 					{...form.register("title")}
 					isInvalid={!!form.formState.errors.title}
 					required
+					autoFocus
 				/>
 				{form.formState.errors.title?.message && (
 					<FormErrorMessage>
