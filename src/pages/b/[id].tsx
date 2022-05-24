@@ -12,6 +12,7 @@ import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import { Tooltip } from "@/components/Tooltip";
 import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
 import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
+import { useCanGoBack } from "@/hooks/useCanGoBack";
 import { getHostnameFromUrl } from "@/utils";
 import {
 	GetBookmarkQuery,
@@ -32,14 +33,18 @@ import {
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { useMemo, useRef, useState } from "react";
-import { HiOutlinePencil } from "react-icons/hi";
+import { HiOutlineArrowLeft, HiOutlinePencil } from "react-icons/hi";
 
 export default function BookmarkPage() {
 	const router = useRouter();
 	const id = router.query.id as string | undefined;
 
 	const [isEditing, setIsEditing] = useState(false);
+
 	const actionsRef = useRef<HTMLDivElement | null>(null);
+	useAutoHotkeys({ ref: document.body, scopeRef: actionsRef });
+
+	const canGoBack = useCanGoBack();
 
 	const { data } = useQuery<GetBookmarkQuery, GetBookmarkQueryVariables>(
 		gql`
@@ -53,6 +58,7 @@ export default function BookmarkPage() {
 					title
 					url
 					note
+					addedAt
 					tags {
 						id
 						...TagsList_tag
@@ -64,8 +70,6 @@ export default function BookmarkPage() {
 		`,
 		{ variables: { id: id! }, skip: !id }
 	);
-
-	useAutoHotkeys({ ref: document.body, scopeRef: actionsRef });
 
 	const bookmark = data?.bookmark;
 
@@ -90,39 +94,56 @@ export default function BookmarkPage() {
 			));
 	}, [bookmark?.note]);
 
+	if (!bookmark) {
+		return (
+			<Center w="full" h="32">
+				<Spinner />
+			</Center>
+		);
+	}
+
 	return (
 		<>
-			{bookmark && !isEditing && (
+			{!isEditing && (
 				<HeaderPortal>
+					{canGoBack && (
+						<BookmarkActionButton
+							icon={HiOutlineArrowLeft}
+							onClick={() => router.back()}
+							aria-label="Go back"
+						/>
+					)}
+
 					<Spacer />
 
-					<HStack ref={actionsRef}>
-						<Tooltip
-							label={
-								<TooltipLabel text="Edit bookmark" hotkey="E" />
-							}
-						>
-							<BookmarkActionButton
-								icon={HiOutlinePencil}
-								onClick={() => setIsEditing(true)}
-								hotkey="e"
-								aria-label="Edit bookmark"
-							/>
-						</Tooltip>
+					{bookmark && (
+						<HStack ref={actionsRef}>
+							<Tooltip
+								label={
+									<TooltipLabel
+										text="Edit bookmark"
+										hotkey="E"
+									/>
+								}
+							>
+								<BookmarkActionButton
+									icon={HiOutlinePencil}
+									onClick={() => setIsEditing(true)}
+									hotkey="e"
+									aria-label="Edit bookmark"
+								/>
+							</Tooltip>
 
-						<BookmarkActions
-							bookmark={bookmark}
-							afterDelete={() => router.replace("/read")}
-						/>
-					</HStack>
+							<BookmarkActions
+								bookmark={bookmark}
+								afterDelete={() => router.replace("/read")}
+							/>
+						</HStack>
+					)}
 				</HeaderPortal>
 			)}
 
-			{!bookmark ? (
-				<Center w="full" h="32">
-					<Spinner />
-				</Center>
-			) : isEditing ? (
+			{isEditing ? (
 				<Box mt="4">
 					<BookmarkEditForm
 						bookmark={bookmark}

@@ -1,5 +1,4 @@
-import { Center } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/spinner";
+import { Center, Spinner } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect } from "react";
@@ -29,7 +28,7 @@ export function Auth({ children }: Props) {
 
 	return (
 		<Center w="full">
-			<Spinner size="xl" />
+			<Spinner size="lg" />
 		</Center>
 	);
 }
