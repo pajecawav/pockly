@@ -11,6 +11,12 @@ const typePolicies: StrictTypedTypePolicies = {
 				"oldestFirst",
 				"tag",
 			]),
+			tags: {
+				// always overwrite cached tags with new ones
+				merge(_existing, incoming: any[]) {
+					return incoming;
+				},
+			},
 		},
 	},
 	Bookmark: {
