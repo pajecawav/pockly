@@ -23,8 +23,7 @@ export default function AllTagsPage() {
 					...TagsList_tag
 				}
 			}
-		`,
-		{ fetchPolicy: "cache-and-network" }
+		`
 	);
 
 	const tags = data?.tags.filter(

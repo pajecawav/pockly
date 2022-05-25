@@ -1,7 +1,6 @@
 import {
-	EditBookmarkTagsModalQuery,
 	EditBookmarkTagsModal_BookmarkFragment,
-	namedOperations,
+	GetAllTagsDocument,
 	UpdateBookmarkTagsMutation,
 	UpdateBookmarkTagsMutationVariables,
 } from "@/__generated__/operations";
@@ -44,17 +43,10 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 
 	const selectRef = useRef<SelectInstance | null>(null);
 
-	const { data } = useQuery<EditBookmarkTagsModalQuery>(
-		gql`
-			query EditBookmarkTagsModalQuery {
-				tags {
-					id
-					name
-				}
-			}
-		`,
-		{ skip: !bookmark, fetchPolicy: "cache-and-network" }
-	);
+	// TODO: is it ok to reuse the query from `/tags` page?
+	const { data } = useQuery(GetAllTagsDocument, {
+		skip: !bookmark,
+	});
 
 	const [mutate, { loading: isMutating }] = useMutation<
 		UpdateBookmarkTagsMutation,
@@ -75,14 +67,28 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 			}
 		`,
 		{
-			// TODO: should invalidate root query `tags` field with `update` method
-			// but it doesn't work for some reason
-			refetchQueries: [namedOperations.Query.GetAllTags],
 			onCompleted: () => {
 				close();
 				toast({
 					status: "success",
 					description: "Updated tags!",
+				});
+			},
+			update: (cache, response) => {
+				const tags = response.data?.updateBookmarkTags.tags;
+				if (!tags) return;
+
+				cache.updateQuery({ query: GetAllTagsDocument }, data => {
+					if (!data) return data;
+
+					const existingTagIds = new Set(
+						data.tags.map(tag => tag.id)
+					);
+					const newTags = tags.filter(
+						tag => !existingTagIds.has(tag.id)
+					);
+
+					return { ...data, tags: [...data.tags, ...newTags] };
 				});
 			},
 		}
