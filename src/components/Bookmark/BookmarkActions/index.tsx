@@ -1,4 +1,3 @@
-import { ChakraNextLink } from "@/components/ChakraNextLink";
 import {
 	BookmarkActions_BookmarkFragment,
 	UpdateBookmarkMutation,
@@ -6,13 +5,11 @@ import {
 	UpdateBookmarkMutation_BookmarkFragment,
 } from "@/__generated__/operations";
 import { useMutation } from "@apollo/client";
-import { Icon, useToast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useState } from "react";
 import {
-	HiOutlineAnnotation,
 	HiOutlineArchive,
-	HiOutlineHeart,
 	HiOutlinePlus,
 	HiOutlineTag,
 	HiOutlineTrash,
@@ -25,6 +22,7 @@ import {
 import { Tooltip } from "../../Tooltip";
 import { TooltipLabel } from "../../Tooltip/TooltipLabel";
 import { BookmarkActionButton } from "./BookmarkActionButton";
+import { ToggleLikedBookmarkButton } from "./ToggleLikedBookmarkButton";
 
 interface Props {
 	bookmark: BookmarkActions_BookmarkFragment;
@@ -97,17 +95,6 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 		}
 	);
 
-	const handleToggleLiked = () => {
-		mutateUpdate({
-			variables: {
-				id: bookmark.id,
-				input: {
-					liked: !bookmark.liked,
-				},
-			},
-		});
-	};
-
 	const handleToggleArchived = () => {
 		mutateUpdate({
 			variables: {
@@ -131,12 +118,10 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 	return (
 		<>
 			<Tooltip label={<TooltipLabel text="Toggle like" hotkey="L" />}>
-				<BookmarkActionButton
-					icon={HiOutlineHeart}
-					filled={bookmark.liked}
-					aria-label="Toggle liked"
+				<ToggleLikedBookmarkButton
+					id={bookmark.id}
+					liked={bookmark.liked}
 					data-hotkey="l"
-					onClick={handleToggleLiked}
 				/>
 			</Tooltip>
 

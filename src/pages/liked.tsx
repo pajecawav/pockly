@@ -44,18 +44,13 @@ export default function LikedBookmarksPage() {
 			}
 		`,
 		{
-			// TODO: fix refetching
-			// fetchPolicy: "cache-and-network",
 			variables: { oldestFirst },
 			notifyOnNetworkStatusChange: true,
 		}
 	);
 
 	const bookmarks = useMemo(
-		() =>
-			data?.bookmarks.edges
-				.map(b => b.node)
-				.filter(bookmark => bookmark.liked),
+		() => data?.bookmarks.edges.map(b => b.node),
 		[data?.bookmarks]
 	);
 
