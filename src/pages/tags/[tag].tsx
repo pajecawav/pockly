@@ -4,6 +4,7 @@ import {
 } from "@/components/BookmarksList";
 import { BookmarkSortingSettings } from "@/components/BookmarksList/BookmarksSortingSettings";
 import { HeaderPortal } from "@/components/Header";
+import { PinTagButton } from "@/components/Tag/PinTagButton";
 import { Tooltip } from "@/components/Tooltip";
 import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
 import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
@@ -28,17 +29,15 @@ import {
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { useMemo, useRef, useState } from "react";
-import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
 
 export default function BookmarksWithTagPage() {
 	const router = useRouter();
 	const tag = router.query.tag as string;
 
-	const [oldestFirst, setOldestFirst] = useState(false);
+	const unpinTag = usePinnedTagsStore(store => store.unpinTag);
 
-	const { isTagPinned, pinTag, unpinTag } = usePinnedTagsStore();
-	const isPinned = tag && isTagPinned(tag);
+	const [oldestFirst, setOldestFirst] = useState(false);
 
 	const actionsRef = useRef<HTMLDivElement | null>(null);
 	useAutoHotkeys({ ref: document.body, scopeRef: actionsRef });
@@ -111,14 +110,6 @@ export default function BookmarksWithTagPage() {
 		}
 	);
 
-	function onTogglePin() {
-		if (isPinned) {
-			unpinTag(tag);
-		} else {
-			pinTag(tag);
-		}
-	}
-
 	function onDelete() {
 		mutateDelete();
 	}
@@ -148,23 +139,7 @@ export default function BookmarksWithTagPage() {
 						<Tooltip
 							label={<TooltipLabel text="Pin tag" hotkey="P" />}
 						>
-							<IconButton
-								icon={
-									<Icon
-										as={
-											isPinned
-												? AiFillPushpin
-												: AiOutlinePushpin
-										}
-										boxSize="5"
-									/>
-								}
-								variant="ghost"
-								size="sm"
-								data-hotkey="p"
-								aria-label={isPinned ? "Unpin tag" : "Pin tag"}
-								onClick={onTogglePin}
-							/>
+							<PinTagButton tag={tag} data-hotkey="p" />
 						</Tooltip>
 						<Tooltip
 							label={
