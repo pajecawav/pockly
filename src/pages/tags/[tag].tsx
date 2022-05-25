@@ -18,6 +18,7 @@ import {
 	Box,
 	Button,
 	Center,
+	HStack,
 	Icon,
 	IconButton,
 	Spacer,
@@ -139,33 +140,35 @@ export default function BookmarksWithTagPage() {
 				<HeaderPortal>
 					<Box>{tag}</Box>
 
-					<Tooltip label={<TooltipLabel text="Pin tag" />}>
-						<IconButton
-							icon={
-								<Icon
-									as={
-										isPinned
-											? AiFillPushpin
-											: AiOutlinePushpin
-									}
-									boxSize="5"
-								/>
-							}
-							variant="ghost"
-							size="sm"
-							aria-label={isPinned ? "Unpin tag" : "Pin tag"}
-							onClick={onTogglePin}
-						/>
-					</Tooltip>
-					<Tooltip label={<TooltipLabel text="Delete tag" />}>
-						<IconButton
-							icon={<Icon as={HiOutlineTrash} boxSize="5" />}
-							variant="ghost"
-							size="sm"
-							aria-label="Delete tag"
-							onClick={onDelete}
-						/>
-					</Tooltip>
+					<HStack spacing={{ base: "2", md: "0.5" }}>
+						<Tooltip label={<TooltipLabel text="Pin tag" />}>
+							<IconButton
+								icon={
+									<Icon
+										as={
+											isPinned
+												? AiFillPushpin
+												: AiOutlinePushpin
+										}
+										boxSize="5"
+									/>
+								}
+								variant="ghost"
+								size="sm"
+								aria-label={isPinned ? "Unpin tag" : "Pin tag"}
+								onClick={onTogglePin}
+							/>
+						</Tooltip>
+						<Tooltip label={<TooltipLabel text="Delete tag" />}>
+							<IconButton
+								icon={<Icon as={HiOutlineTrash} boxSize="5" />}
+								variant="ghost"
+								size="sm"
+								aria-label="Delete tag"
+								onClick={onDelete}
+							/>
+						</Tooltip>
+					</HStack>
 
 					<Spacer />
 
