@@ -78,16 +78,34 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 
 			const newBookmark = response.data.createBookmark;
 
-			cache.updateQuery({ query: GetUnreadBookmarksDocument }, data => {
-				if (!data) return data;
+			cache.updateQuery(
+				{
+					query: GetUnreadBookmarksDocument,
+					// TODO: also append to the end if `oldestFirst` is true
+					variables: { oldestFirst: false },
+				},
+				data => {
+					if (!data) return data;
 
-				const bookmarks = data.bookmarks.filter(
-					b => b.id !== newBookmark.id
-				);
-				bookmarks.unshift(newBookmark);
+					let { edges, pageInfo } = data.bookmarks;
+					edges = edges.filter(
+						edge => edge.node.id !== newBookmark.id
+					);
+					edges.unshift({
+						node: newBookmark,
+						__typename: "QueryBookmarksConnectionEdge" as const,
+					});
 
-				return { ...data, bookmarks };
-			});
+					return {
+						...data,
+						bookmarks: {
+							edges,
+							pageInfo,
+							__typename: "QueryBookmarksConnection" as const,
+						},
+					};
+				}
+			);
 		},
 	});
 

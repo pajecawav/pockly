@@ -1,18 +1,32 @@
+import { StrictTypedTypePolicies } from "@/__generated__/apollo-helpers";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { relayStylePagination } from "@apollo/client/utilities";
 
-const cache = new InMemoryCache({
-	typePolicies: {
-		Bookmark: {
-			fields: {
-				tags: {
-					// always overwrite cached tags with new ones
-					merge(_existing, incoming: any[]) {
-						return incoming;
-					},
+const typePolicies: StrictTypedTypePolicies = {
+	Query: {
+		fields: {
+			bookmarks: relayStylePagination([
+				"filter",
+				"sort",
+				"oldestFirst",
+				"tag",
+			]),
+		},
+	},
+	Bookmark: {
+		fields: {
+			tags: {
+				// always overwrite cached tags with new ones
+				merge(_existing, incoming: any[]) {
+					return incoming;
 				},
 			},
 		},
 	},
+};
+
+const cache = new InMemoryCache({
+	typePolicies,
 });
 
 export const client = new ApolloClient({

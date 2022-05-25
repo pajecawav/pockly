@@ -28,7 +28,9 @@ export default function AllTagsPage() {
 	);
 
 	const tags = data?.tags.filter(
-		tag => !query || tag.name.toLocaleLowerCase().includes(query)
+		tag =>
+			!query ||
+			tag.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())
 	);
 
 	return (

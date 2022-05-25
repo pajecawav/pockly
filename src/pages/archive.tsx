@@ -9,46 +9,72 @@ import {
 	GetArchivedBookmarksQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
-import { Box, Center, Spacer, Spinner } from "@chakra-ui/react";
+import { Box, Button, Center, Spacer, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useMemo, useState } from "react";
 
 export default function ArchivedBookmarksPage() {
 	const [oldestFirst, setOldestFirst] = useState(false);
 
-	const { data } = useQuery<
+	const { data, loading, fetchMore } = useQuery<
 		GetArchivedBookmarksQuery,
 		GetArchivedBookmarksQueryVariables
 	>(
 		gql`
 			${BookmarksList_bookmarkFragment}
 
-			query GetArchivedBookmarks($oldestFirst: Boolean!) {
+			query GetArchivedBookmarks(
+				$cursor: String
+				$oldestFirst: Boolean!
+			) {
 				bookmarks(
 					filter: { archived: true }
 					sort: archivedAt
 					oldestFirst: $oldestFirst
+					after: $cursor
 				) {
-					id
-					...BookmarksList_bookmark
+					edges {
+						node {
+							id
+							...BookmarksList_bookmark
+						}
+					}
+					pageInfo {
+						endCursor
+						hasNextPage
+					}
 				}
 			}
 		`,
-		{ fetchPolicy: "cache-and-network", variables: { oldestFirst } }
+		{
+			// TODO: fix refetching
+			// fetchPolicy: "cache-and-network",
+			variables: { oldestFirst },
+			notifyOnNetworkStatusChange: true,
+		}
 	);
 
 	const bookmarks = useMemo(
-		() => data?.bookmarks.filter(bookmark => bookmark.archived),
+		() =>
+			data?.bookmarks.edges
+				.map(b => b.node)
+				.filter(bookmark => bookmark.archived),
 		[data?.bookmarks]
 	);
 
+	const handleFetchMore = () => {
+		if (data) {
+			fetchMore({
+				variables: {
+					cursor: data.bookmarks.pageInfo.endCursor,
+				},
+			});
+		}
+	};
 	return (
 		<>
 			<HeaderPortal>
-				<Box>
-					Archive{" "}
-					{bookmarks?.length !== undefined && `(${bookmarks.length})`}
-				</Box>
+				<Box>Archive</Box>
 
 				<Spacer />
 
@@ -64,6 +90,14 @@ export default function ArchivedBookmarksPage() {
 				</Center>
 			) : (
 				<BookmarksList bookmarks={bookmarks} />
+			)}
+
+			{data?.bookmarks.pageInfo.hasNextPage && (
+				<Center mt="2">
+					<Button isLoading={loading} onClick={handleFetchMore}>
+						Load more
+					</Button>
+				</Center>
 			)}
 		</>
 	);

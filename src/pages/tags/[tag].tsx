@@ -16,6 +16,7 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import {
 	Box,
+	Button,
 	Center,
 	Icon,
 	IconButton,
@@ -24,7 +25,7 @@ import {
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
 
@@ -37,24 +38,42 @@ export default function BookmarksWithTagPage() {
 	const { isTagPinned, pinTag, unpinTag } = usePinnedTagsStore();
 	const isPinned = tag && isTagPinned(tag);
 
-	const { data } = useQuery<
+	const { data, loading, fetchMore } = useQuery<
 		GetBookmarksWithTagQuery,
 		GetBookmarksWithTagQueryVariables
 	>(
 		gql`
 			${BookmarksList_bookmarkFragment}
 
-			query GetBookmarksWithTag($tag: String!, $oldestFirst: Boolean!) {
-				bookmarks(tag: $tag, oldestFirst: $oldestFirst) {
-					id
-					...BookmarksList_bookmark
+			query GetBookmarksWithTag(
+				$cursor: String
+				$tag: String!
+				$oldestFirst: Boolean!
+			) {
+				bookmarks(
+					tag: $tag
+					oldestFirst: $oldestFirst
+					after: $cursor
+				) {
+					edges {
+						node {
+							id
+							...BookmarksList_bookmark
+						}
+					}
+					pageInfo {
+						endCursor
+						hasNextPage
+					}
 				}
 			}
 		`,
 		{
+			// TODO: fix refetching
+			// fetchPolicy: "cache-and-network",
 			variables: { tag, oldestFirst },
 			skip: !tag,
-			fetchPolicy: "cache-and-network",
+			notifyOnNetworkStatusChange: true,
 		}
 	);
 
@@ -99,15 +118,29 @@ export default function BookmarksWithTagPage() {
 		mutateDelete();
 	}
 
+	function handleFetchMore() {
+		if (data) {
+			fetchMore({
+				variables: {
+					cursor: data.bookmarks.pageInfo.endCursor,
+				},
+			});
+		}
+	}
+
+	const bookmarks = useMemo(
+		() =>
+			data?.bookmarks.edges
+				.map(b => b.node)
+				.filter(bookmark => bookmark.archived === false),
+		[data?.bookmarks]
+	);
+
 	return (
 		<>
 			{tag && (
 				<HeaderPortal>
-					<Box>
-						{tag}{" "}
-						{data?.bookmarks?.length !== undefined &&
-							`(${data.bookmarks.length})`}
-					</Box>
+					<Box>{tag}</Box>
 
 					<Tooltip label={<TooltipLabel text="Pin tag" />}>
 						<IconButton
@@ -146,12 +179,20 @@ export default function BookmarksWithTagPage() {
 				</HeaderPortal>
 			)}
 
-			{!data ? (
+			{!bookmarks ? (
 				<Center w="full" h="32">
 					<Spinner />
 				</Center>
 			) : (
-				<BookmarksList bookmarks={data.bookmarks} />
+				<BookmarksList bookmarks={bookmarks} />
+			)}
+
+			{data?.bookmarks.pageInfo.hasNextPage && (
+				<Center mt="2">
+					<Button isLoading={loading} onClick={handleFetchMore}>
+						Load more
+					</Button>
+				</Center>
 			)}
 		</>
 	);
