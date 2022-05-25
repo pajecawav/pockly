@@ -55,10 +55,7 @@ export default function ArchivedBookmarksPage() {
 	);
 
 	const bookmarks = useMemo(
-		() =>
-			data?.bookmarks.edges
-				.map(b => b.node)
-				.filter(bookmark => bookmark.archived),
+		() => data?.bookmarks.edges.map(b => b.node),
 		[data?.bookmarks]
 	);
 

@@ -55,10 +55,7 @@ export default function ReadingListPage() {
 	);
 
 	const bookmarks = useMemo(
-		() =>
-			data?.bookmarks.edges
-				.map(b => b.node)
-				.filter(bookmark => bookmark.archived === false),
+		() => data?.bookmarks.edges.map(b => b.node),
 		[data?.bookmarks]
 	);
 
