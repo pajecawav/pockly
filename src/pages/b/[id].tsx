@@ -105,19 +105,24 @@ export default function BookmarkPage() {
 	return (
 		<>
 			{!isEditing && (
-				<HeaderPortal>
+				<HeaderPortal ref={actionsRef}>
 					{canGoBack && (
-						<BookmarkActionButton
-							icon={HiOutlineArrowLeft}
-							onClick={() => router.back()}
-							aria-label="Go back"
-						/>
+						<Tooltip
+							label={<TooltipLabel text="Go back" hotkey="Esc" />}
+						>
+							<BookmarkActionButton
+								icon={HiOutlineArrowLeft}
+								onClick={() => router.back()}
+								hotkey="Escape"
+								aria-label="Go back"
+							/>
+						</Tooltip>
 					)}
 
 					<Spacer />
 
 					{bookmark && (
-						<HStack ref={actionsRef}>
+						<HStack>
 							<Tooltip
 								label={
 									<TooltipLabel

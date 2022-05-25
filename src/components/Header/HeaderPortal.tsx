@@ -1,4 +1,12 @@
-import { createContext, Key, ReactNode, useContext, useState } from "react";
+import {
+	createContext,
+	forwardRef,
+	Key,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 import ReactDOM from "react-dom";
 
 type HeaderContextValue = [
@@ -21,7 +29,26 @@ export const HeaderProvider = (props: {
 	);
 };
 
-export function HeaderPortal({ children }: { children: ReactNode }) {
-	const [header] = useContext(HeaderContext);
-	return header ? ReactDOM.createPortal(children, header) : null;
+interface HeaderPortalProps {
+	children: ReactNode;
 }
+
+export const HeaderPortal = forwardRef<HTMLElement, HeaderPortalProps>(
+	function HeaderPortal({ children }, ref) {
+		const [header] = useContext(HeaderContext);
+
+		useEffect(() => {
+			// TODO: not sure if this is the correct way to implement ref
+			// handling but it works
+			if (typeof ref === "function") {
+				ref(header);
+				return () => ref(null);
+			} else if (ref) {
+				ref.current = header;
+				return () => (ref.current = null);
+			}
+		}, [header, ref]);
+
+		return header ? ReactDOM.createPortal(children, header) : null;
+	}
+);

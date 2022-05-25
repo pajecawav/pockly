@@ -6,6 +6,7 @@ import { BookmarkSortingSettings } from "@/components/BookmarksList/BookmarksSor
 import { HeaderPortal } from "@/components/Header";
 import { Tooltip } from "@/components/Tooltip";
 import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
+import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
 import { usePinnedTagsStore } from "@/stores/usePinnedTagsStore";
 import {
 	DeleteTagMutation,
@@ -26,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
 
@@ -38,6 +39,9 @@ export default function BookmarksWithTagPage() {
 
 	const { isTagPinned, pinTag, unpinTag } = usePinnedTagsStore();
 	const isPinned = tag && isTagPinned(tag);
+
+	const actionsRef = useRef<HTMLDivElement | null>(null);
+	useAutoHotkeys({ ref: document.body, scopeRef: actionsRef });
 
 	const { data, loading, fetchMore } = useQuery<
 		GetBookmarksWithTagQuery,
@@ -140,8 +144,10 @@ export default function BookmarksWithTagPage() {
 				<HeaderPortal>
 					<Box>{tag}</Box>
 
-					<HStack spacing={{ base: "2", md: "0.5" }}>
-						<Tooltip label={<TooltipLabel text="Pin tag" />}>
+					<HStack spacing={{ base: "2", md: "0.5" }} ref={actionsRef}>
+						<Tooltip
+							label={<TooltipLabel text="Pin tag" hotkey="P" />}
+						>
 							<IconButton
 								icon={
 									<Icon
@@ -155,15 +161,21 @@ export default function BookmarksWithTagPage() {
 								}
 								variant="ghost"
 								size="sm"
+								data-hotkey="p"
 								aria-label={isPinned ? "Unpin tag" : "Pin tag"}
 								onClick={onTogglePin}
 							/>
 						</Tooltip>
-						<Tooltip label={<TooltipLabel text="Delete tag" />}>
+						<Tooltip
+							label={
+								<TooltipLabel text="Delete tag" hotkey="D" />
+							}
+						>
 							<IconButton
 								icon={<Icon as={HiOutlineTrash} boxSize="5" />}
 								variant="ghost"
 								size="sm"
+								data-hotkey="d"
 								aria-label="Delete tag"
 								onClick={onDelete}
 							/>
