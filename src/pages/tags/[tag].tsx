@@ -4,38 +4,24 @@ import {
 } from "@/components/BookmarksList";
 import { BookmarkSortingSettings } from "@/components/BookmarksList/BookmarksSortingSettings";
 import { HeaderPortal } from "@/components/Header";
+import { DeleteTagButton } from "@/components/Tag/DeleteTagButton";
 import { PinTagButton } from "@/components/Tag/PinTagButton";
 import { Tooltip } from "@/components/Tooltip";
 import { TooltipLabel } from "@/components/Tooltip/TooltipLabel";
 import { useAutoHotkeys } from "@/hooks/useAutoHotkeys";
-import { usePinnedTagsStore } from "@/stores/usePinnedTagsStore";
 import {
-	DeleteTagMutation,
-	DeleteTagMutationVariables,
 	GetBookmarksWithTagQuery,
 	GetBookmarksWithTagQueryVariables,
 } from "@/__generated__/operations";
-import { useMutation, useQuery } from "@apollo/client";
-import {
-	Box,
-	Button,
-	Center,
-	HStack,
-	Icon,
-	IconButton,
-	Spacer,
-	Spinner,
-} from "@chakra-ui/react";
+import { useQuery } from "@apollo/client";
+import { Box, Button, Center, HStack, Spacer, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { useMemo, useRef, useState } from "react";
-import { HiOutlineTrash } from "react-icons/hi";
 
 export default function BookmarksWithTagPage() {
 	const router = useRouter();
 	const tag = router.query.tag as string;
-
-	const unpinTag = usePinnedTagsStore(store => store.unpinTag);
 
 	const [oldestFirst, setOldestFirst] = useState(false);
 
@@ -81,39 +67,6 @@ export default function BookmarksWithTagPage() {
 		}
 	);
 
-	const [mutateDelete] = useMutation<
-		DeleteTagMutation,
-		DeleteTagMutationVariables
-	>(
-		gql`
-			mutation DeleteTagMutation($tag: String!) {
-				deleteTag(tag: $tag) {
-					id
-					name
-				}
-			}
-		`,
-		{
-			variables: { tag },
-			onCompleted: () => {
-				router.replace("/tags");
-				unpinTag(tag);
-			},
-			update: (cache, response) => {
-				const deletedTag = response.data?.deleteTag;
-				if (deletedTag) {
-					cache.evict({
-						id: cache.identify(deletedTag),
-					});
-				}
-			},
-		}
-	);
-
-	function onDelete() {
-		mutateDelete();
-	}
-
 	function handleFetchMore() {
 		if (data) {
 			fetchMore({
@@ -146,13 +99,10 @@ export default function BookmarksWithTagPage() {
 								<TooltipLabel text="Delete tag" hotkey="D" />
 							}
 						>
-							<IconButton
-								icon={<Icon as={HiOutlineTrash} boxSize="5" />}
-								variant="ghost"
-								size="sm"
+							<DeleteTagButton
+								tag={tag}
 								data-hotkey="d"
-								aria-label="Delete tag"
-								onClick={onDelete}
+								afterDelete={() => router.replace("/tags")}
 							/>
 						</Tooltip>
 					</HStack>
