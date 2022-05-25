@@ -90,11 +90,12 @@ builder.queryField("bookmarks", t =>
 					? { [filter ? "not" : "equals"]: null }
 					: undefined;
 
+			const tsquerySpecialChars = /[()|&:*!]/g;
 			const queryStringToPostgresOperators = (query: string) =>
 				query
-					.split(" ")
-					.map(value => value.trim())
-					.filter(Boolean)
+					.replace(tsquerySpecialChars, " ")
+					.trim()
+					.split(/\s+/)
 					.join(" & ");
 
 			const searchQuery = filter?.query
