@@ -58,9 +58,14 @@ const BookmarksSortOrderEnum = builder.enumType("BookmarksSortOrderEnum", {
 });
 
 builder.queryField("bookmarks", t =>
-	t.prismaField({
+	t.prismaConnection({
 		authScopes: { user: true },
-		type: ["Bookmark"],
+		type: "Bookmark",
+		cursor: "id",
+		defaultSize: 25,
+		maxSize: 100,
+		nodeNullable: false,
+		edgesNullable: false,
 		args: {
 			filter: t.arg({ type: BookmarksFilterInput }),
 			sort: t.arg({

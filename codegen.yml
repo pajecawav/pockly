@@ -17,3 +17,6 @@ generates:
             # - typescript-react-apollo
         config:
             dedupeOperationSuffix: true
+    src/__generated__/apollo-helpers.ts:
+        plugins:
+            - typescript-apollo-client-helpers

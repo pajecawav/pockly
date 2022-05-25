@@ -1,10 +1,11 @@
 import SchemaBuilder from "@pothos/core";
+import PrismaPlugin from "@pothos/plugin-prisma";
+import type PrismaTypes from "@pothos/plugin-prisma/generated";
+import RelayPlugin from "@pothos/plugin-relay";
 import ScopeAuthPlugin from "@pothos/plugin-scope-auth";
 import ValidationPlugin from "@pothos/plugin-validation";
-import { AuthScopes, Context, Scalars } from "./types";
-import type PrismaTypes from "@pothos/plugin-prisma/generated";
-import PrismaPlugin from "@pothos/plugin-prisma";
 import { db } from "prisma/client";
+import { AuthScopes, Context, Scalars } from "./types";
 
 export const builder = new SchemaBuilder<{
 	Scalars: Scalars;
@@ -13,12 +14,16 @@ export const builder = new SchemaBuilder<{
 	PrismaTypes: PrismaTypes;
 }>({
 	// NOTE: make sure that scope-auth plugin is listed first
-	plugins: [ScopeAuthPlugin, ValidationPlugin, PrismaPlugin],
+	plugins: [ScopeAuthPlugin, ValidationPlugin, PrismaPlugin, RelayPlugin],
 	authScopes: async ctx => ({
 		user: !!ctx.user,
 	}),
 	prisma: {
 		client: db,
+	},
+	relayOptions: {
+		clientMutationId: "omit",
+		cursorType: "String",
 	},
 });
 

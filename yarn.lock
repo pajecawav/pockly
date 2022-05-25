@@ -2017,6 +2017,17 @@
     change-case-all "1.0.14"
     tslib "~2.4.0"
 
+"@graphql-codegen/typescript-apollo-client-helpers@^2.1.18":
+  version "2.1.18"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-apollo-client-helpers/-/typescript-apollo-client-helpers-2.1.18.tgz#c0a38f44f10c61ceae8a63c36096b21c6ce96bc6"
+  integrity sha512-DH5hocfJFZ7UXRsozDPpzvQdi4dRJS6rzNbggRMaWXS60iR/dAdLbhtfONZOzTeCcIF+o/j1WrExEcxlV260wg==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^2.4.0"
+    "@graphql-codegen/visitor-plugin-common" "2.8.0"
+    auto-bind "~4.0.0"
+    change-case-all "1.0.14"
+    tslib "~2.4.0"
+
 "@graphql-codegen/typescript-operations@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-2.4.0.tgz#07f371bcda31ecb8edc4c742442014b21c11d53b"
@@ -2583,6 +2594,11 @@
   integrity sha512-gZUNipJ1L1XkIwepk5XgO8rl6CsE5VXYiNZ3snsLpv8mpY7DMxGk/a7MTeZ/VMcisojqfa5uJb3Ez7vCO8ygeg==
   dependencies:
     "@prisma/generator-helper" "^3.14.0"
+
+"@pothos/plugin-relay@^3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@pothos/plugin-relay/-/plugin-relay-3.12.0.tgz#9e615769cbf9eed2736d6cf93f9262aa0ec27dae"
+  integrity sha512-HxbwAWQhFnD7eN3TdZU9RJGUU6O2+lToOX+6zdom17ovnhPnwlkaRTQe7UPOewsH5AgYakl7kFKdnmHWS03MBw==
 
 "@pothos/plugin-scope-auth@^3.9.0":
   version "3.9.0"
