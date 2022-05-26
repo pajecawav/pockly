@@ -69,7 +69,7 @@ export const BookmarksListEntry = memo(function BookmarksListEntry({
 				borderRadius="lg"
 				bg="gray.50"
 				display="none"
-				_groupFocusWithin={{ display: "block" }}
+				_groupFocusWithin={{ display: { md: "block" } }}
 				_dark={{ bg: "gray.700" }}
 			/>
 

@@ -84,8 +84,8 @@ export function DeleteTagModal({ tag, onClose, afterDelete }: Props) {
 						<Text>
 							Delete tag{" "}
 							<chakra.span fontWeight="bold">{tag}</chakra.span>?
-							Deleting the tag test will remove it from all items.
-							Are you sure you want to proceed?
+							Deleting the tag will remove it from all items. Are
+							you sure you want to proceed?
 						</Text>
 					</AlertDialogBody>
 

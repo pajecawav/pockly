@@ -5,6 +5,7 @@ import { forwardRef } from "react";
 export interface BookmarkActionButtonProps
 	extends Omit<IconButtonProps, "icon"> {
 	icon: As<any>;
+	// TODO: remove `hotkey` prop and pass `data-hotkey` directly instead
 	hotkey?: string;
 	filled?: boolean;
 }
