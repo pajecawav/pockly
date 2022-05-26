@@ -13,6 +13,10 @@ body,
 	z-index: 9999;
 }
 
+html[data-theme="dark"] #nprogress .bar {
+	background: #718096;
+}
+
 #nprogress .spinner,
 #nprogress .peg {
 	display: none;
