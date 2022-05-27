@@ -1,8 +1,8 @@
 import { builder } from "../builder";
 
-import "./Bookmark";
-import "./Tag";
-import "./User";
+import "./bookmarsResolver";
+import "./tagsResolver";
+import "./usersResolver";
 
 builder.queryType({});
 builder.mutationType({});

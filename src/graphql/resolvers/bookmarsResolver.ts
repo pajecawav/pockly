@@ -1,6 +1,13 @@
 import { getPageMetadata } from "@/lib/metadata";
+import {
+	bookmarkNoteSchema,
+	bookmarkTitleSchema,
+	bookmarkUrlSchema,
+	tagNameSchema,
+} from "@/lib/schemas";
 import { getHostnameFromUrl } from "@/utils";
 import { db } from "prisma/client";
+import { z } from "zod";
 import { builder } from "../builder";
 
 export const BookmarkObject = builder.prismaObject("Bookmark", {
@@ -124,10 +131,10 @@ const CreateBookmarkInput = builder.inputType("CreateBookmarkInput", {
 	fields: t => ({
 		url: t.string({
 			required: true,
-			validate: { url: true },
+			validate: { schema: bookmarkUrlSchema },
 		}),
 		title: t.string({
-			validate: { minLength: 1, maxLength: 100 },
+			validate: { schema: bookmarkTitleSchema },
 		}),
 	}),
 });
@@ -169,12 +176,10 @@ builder.mutationField("createBookmark", t =>
 const UpdateBookmarkInput = builder.inputType("UpdateBookmarkInput", {
 	fields: t => ({
 		title: t.string({
-			required: false,
-			validate: { minLength: 1, maxLength: 100 },
+			validate: { schema: bookmarkTitleSchema },
 		}),
 		note: t.string({
-			required: false,
-			validate: { maxLength: 5000 },
+			validate: { schema: bookmarkNoteSchema },
 		}),
 		liked: t.boolean({ required: false }),
 		archived: t.boolean({ required: false }),
@@ -218,7 +223,7 @@ const UpdateBookmarkTagsInput = builder.inputType("UpdateBookmarkTagsInput", {
 		tags: t.stringList({
 			required: true,
 			validate: {
-				items: { minLength: 1 },
+				schema: z.array(tagNameSchema),
 				refine: [
 					values => new Set(values).size === values.length,
 					{ message: "All tags must be unique" },

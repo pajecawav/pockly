@@ -1,4 +1,5 @@
 import { useZodForm } from "@/hooks/useZodForm";
+import { bookmarkNoteSchema, bookmarkTitleSchema } from "@/lib/schemas";
 import {
 	BookmarkEditFormMutation,
 	BookmarkEditFormMutationVariables,
@@ -36,9 +37,8 @@ export const BookmarkEditForm_bookmarkFragment = gql`
 `;
 
 const schema = z.object({
-	// TODO: use actual `max` values from backend
-	title: z.string().max(100).min(1),
-	note: z.string().max(5000).optional(),
+	title: bookmarkTitleSchema,
+	note: bookmarkNoteSchema.optional(),
 });
 type Schema = z.infer<typeof schema>;
 

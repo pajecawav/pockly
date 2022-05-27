@@ -1,6 +1,6 @@
 import { db } from "prisma/client";
 import { builder } from "../builder";
-import { BookmarkObject } from "./Bookmark";
+import { BookmarkObject } from "./bookmarsResolver";
 
 export const TagObject = builder.prismaObject("Tag", {
 	findUnique: tag => ({ id: tag.id }),

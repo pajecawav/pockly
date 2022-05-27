@@ -21,11 +21,11 @@ import {
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useMemo, useState } from "react";
-import { enum as zodEnum, object, string, TypeOf } from "zod";
+import { TypeOf, z } from "zod";
 
-const scopeEnum = zodEnum(["all", "liked", "archive"]);
-const schema = object({
-	query: string(),
+const scopeEnum = z.enum(["all", "liked", "archive"]);
+const schema = z.object({
+	query: z.string(),
 	scope: scopeEnum,
 });
 type Schema = TypeOf<typeof schema>;

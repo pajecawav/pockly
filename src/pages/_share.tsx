@@ -1,3 +1,4 @@
+import { bookmarkUrlSchema } from "@/lib/schemas";
 import {
 	ShareTargetMutation,
 	ShareTargetMutationVariables,
@@ -7,9 +8,8 @@ import { Center, Spinner, Text, useToast, VStack } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { Fragment, useCallback, useEffect } from "react";
-import { z } from "zod";
 
-const urlSchema = z.string().url();
+const urlSchema = bookmarkUrlSchema;
 
 export default function ShareTargetPage() {
 	const toast = useToast();

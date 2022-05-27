@@ -1,5 +1,5 @@
 import { useZodForm } from "@/hooks/useZodForm";
-import { optionalTextInputSchema } from "@/utils/schemas";
+import { bookmarkTitleSchema, bookmarkUrlSchema } from "@/lib/schemas";
 import {
 	CreateBookmarkMutation,
 	CreateBookmarkMutationVariables,
@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRef } from "react";
-import { object, string } from "zod";
+import { z } from "zod";
 
 interface Props {
 	isOpen: boolean;
@@ -55,9 +55,9 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const form = useZodForm({
-		schema: object({
-			url: string().url(),
-			title: optionalTextInputSchema(string().min(1).max(100)),
+		schema: z.object({
+			url: bookmarkUrlSchema,
+			title: bookmarkTitleSchema,
 		}),
 		reValidateMode: "onSubmit",
 	});
