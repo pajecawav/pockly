@@ -6,5 +6,5 @@ Object.keys(require.cache)
 	});
 
 module.exports = require("@boost/module").requireModule(
-	require.resolve("./schema/index.ts")
+	require.resolve("./resolvers/index.ts")
 );
