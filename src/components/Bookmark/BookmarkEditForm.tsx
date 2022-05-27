@@ -135,7 +135,7 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 			ref={formRef as any}
 		>
 			<FormControl isInvalid={!!form.formState.errors.title} w="full">
-				<FormLabel>Title</FormLabel>
+				<FormLabel srOnly>Title</FormLabel>
 				<Input
 					{...form.register("title")}
 					isInvalid={!!form.formState.errors.title}
@@ -150,7 +150,7 @@ export function BookmarkEditForm({ bookmark, onDone }: Props) {
 			</FormControl>
 
 			<FormControl isInvalid={!!form.formState.errors.note} w="full">
-				<FormLabel>Note</FormLabel>
+				<FormLabel srOnly>Note</FormLabel>
 				<TextareaAutosize
 					w="full"
 					{...form.register("note")}
