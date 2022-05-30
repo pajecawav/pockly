@@ -9,7 +9,6 @@ import {
 	useBreakpointValue,
 	useColorModeValue,
 	useDisclosure,
-	useOutsideClick,
 	VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -47,14 +46,16 @@ export function Sidebar() {
 	const sidebarState = useDisclosure({ defaultIsOpen: false });
 	const sidebarIsOpen = sidebarState.isOpen && !isMediumOrLarger;
 
-	useOutsideClick({
-		ref: sidebarRef,
-		handler: event => {
-			event.preventDefault();
-			sidebarState.onClose();
-		},
-		enabled: sidebarIsOpen,
-	});
+	useEffect(() => {
+		function handler(e: MouseEvent) {
+			if (!sidebarRef.current?.contains(e.target as HTMLElement)) {
+				sidebarState.onClose();
+			}
+		}
+
+		document.body.addEventListener("click", handler);
+		return () => document.body.removeEventListener("click", handler);
+	}, [sidebarState]);
 
 	useEffect(() => {
 		if (sidebarIsOpen) {
@@ -99,7 +100,7 @@ export function Sidebar() {
 				gap={2}
 				pr={5}
 				pl={{ base: "3", md: "0" }}
-				pt={{ base: "10", md: "2" }}
+				pt={{ base: "12", md: "2" }}
 				bg={{ base: bg, md: "transparent" }}
 				ref={sidebarRef}
 			>
@@ -131,6 +132,7 @@ export function Sidebar() {
 					fontWeight="normal"
 					shadow="sm"
 					border="1px"
+					flexShrink={0}
 					leftIcon={<HiOutlinePencilAlt width={16} />}
 					data-hotkey="c"
 					onClick={() => {

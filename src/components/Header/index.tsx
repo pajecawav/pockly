@@ -17,7 +17,7 @@ export function Header() {
 			h={HEADER_HEIGHT}
 			zIndex="sticky"
 			mx="-2"
-			pl={{ base: "10", md: "2" }}
+			pl={{ base: "12", md: "2" }}
 			pr="2"
 			py="3"
 			bg={useDefaultBackgroundColor()}
