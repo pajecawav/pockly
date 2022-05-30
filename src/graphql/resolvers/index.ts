@@ -1,6 +1,6 @@
 import { builder } from "../builder";
 
-import "./bookmarsResolver";
+import "./bookmarksResolver";
 import "./tagsResolver";
 import "./usersResolver";
 
