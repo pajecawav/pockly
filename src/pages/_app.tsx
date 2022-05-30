@@ -1,5 +1,6 @@
 import { Auth } from "@/components/Auth";
 import { DefaultAppShell } from "@/components/DefaultAppShell";
+import { DynamicHead } from "@/components/DynamicHead";
 import { NProgress } from "@/components/NProgress";
 import { client } from "@/graphql/client";
 import "@/styles/globals.css";
@@ -31,6 +32,8 @@ export default function MyApp({
 				<SessionProvider session={session} refetchOnWindowFocus={false}>
 					<ApolloProvider client={client}>
 						<NProgress />
+
+						<DynamicHead />
 
 						<Wrapper>
 							<AppShell>
