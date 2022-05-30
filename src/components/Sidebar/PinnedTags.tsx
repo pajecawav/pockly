@@ -57,6 +57,7 @@ export function PinnedTags() {
 										{...getDraggableProps(
 											snapshot.isDragging
 										)}
+										tabIndex={-1}
 									>
 										<SidebarLink href={`/tags/${tag}`}>
 											{tag}
