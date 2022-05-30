@@ -1,5 +1,6 @@
 import { useZodForm } from "@/hooks/useZodForm";
 import { bookmarkTitleSchema, bookmarkUrlSchema } from "@/lib/schemas";
+import { optionalTextInputSchema } from "@/utils/schemas";
 import {
 	CreateBookmarkMutation,
 	CreateBookmarkMutationVariables,
@@ -57,7 +58,7 @@ export function AddBookmarkModal({ isOpen, onClose }: Props) {
 	const form = useZodForm({
 		schema: z.object({
 			url: bookmarkUrlSchema,
-			title: bookmarkTitleSchema,
+			title: optionalTextInputSchema(bookmarkTitleSchema),
 		}),
 		reValidateMode: "onSubmit",
 	});
