@@ -5,7 +5,14 @@ declare global {
 	var db: PrismaClient | undefined;
 }
 
-const prisma = global.db || new PrismaClient();
+const prisma =
+	global.db ||
+	new PrismaClient({
+		log:
+			process.env.NODE_ENV === "production"
+				? ["error", "warn"]
+				: ["error", "warn", "query"],
+	});
 
 if (process.env.NODE_ENV !== "production") {
 	global.db = prisma;
