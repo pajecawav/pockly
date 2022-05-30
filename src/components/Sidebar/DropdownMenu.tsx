@@ -16,7 +16,7 @@ export function DropdownMenu() {
 	const session = useSession<true>();
 
 	return (
-		<Popover closeOnBlur={true} placement="bottom-end">
+		<Popover closeOnBlur={true} placement="bottom-start">
 			<PopoverTrigger>
 				<Button variant="link" size="sm">
 					<Avatar
