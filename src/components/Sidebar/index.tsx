@@ -80,8 +80,9 @@ export function Sidebar() {
 
 			<VStack
 				w="48"
-				h={{ base: "100vh", md: "max-content" }}
+				overflowY="auto"
 				zIndex="overlay"
+				h="100vh"
 				position={{ base: "fixed", md: "sticky" }}
 				top="0"
 				left={{
@@ -103,6 +104,7 @@ export function Sidebar() {
 				pt={{ base: "12", md: "2" }}
 				bg={{ base: bg, md: "transparent" }}
 				ref={sidebarRef}
+				aria-hidden={sidebarIsOpen ? undefined : "true"}
 			>
 				<Box
 					h="14"
