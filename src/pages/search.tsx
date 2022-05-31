@@ -10,6 +10,7 @@ import {
 	SearchBookmarksQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
+import { isNetworkRequestInFlight } from "@apollo/client/core/networkStatus";
 import {
 	Box,
 	Button,
@@ -18,9 +19,11 @@ import {
 	Input,
 	Select,
 	Spacer,
+	Spinner,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useMemo, useState } from "react";
+import { Waypoint } from "react-waypoint";
 import { TypeOf, z } from "zod";
 
 const scopeEnum = z.enum(["all", "liked", "archive"]);
@@ -42,6 +45,7 @@ export default function SearchBookmarksPage() {
 		previousData,
 		loading,
 		fetchMore,
+		networkStatus,
 	} = useQuery<SearchBookmarksQuery, SearchBookmarksQueryVariables>(
 		gql`
 			${BookmarksList_bookmarkFragment}
@@ -107,13 +111,13 @@ export default function SearchBookmarksPage() {
 	);
 
 	const handleFetchMore = () => {
-		if (data) {
-			fetchMore({
-				variables: {
-					cursor: data.bookmarks.pageInfo.endCursor,
-				},
-			});
-		}
+		if (!data || isNetworkRequestInFlight(networkStatus)) return;
+
+		fetchMore({
+			variables: {
+				cursor: data.bookmarks.pageInfo.endCursor,
+			},
+		});
 	};
 
 	return (
@@ -166,11 +170,11 @@ export default function SearchBookmarksPage() {
 			{bookmarks && <BookmarksList bookmarks={bookmarks} />}
 
 			{data?.bookmarks.pageInfo.hasNextPage && (
-				<Center mt="2">
-					<Button isLoading={loading} onClick={handleFetchMore}>
-						Load more
-					</Button>
-				</Center>
+				<Waypoint onEnter={handleFetchMore} bottomOffset={-200}>
+					<Center mt="2" h="10">
+						<Spinner />
+					</Center>
+				</Waypoint>
 			)}
 		</>
 	);

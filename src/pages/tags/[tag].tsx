@@ -14,10 +14,12 @@ import {
 	GetBookmarksWithTagQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
-import { Box, Button, Center, HStack, Spacer, Spinner } from "@chakra-ui/react";
+import { isNetworkRequestInFlight } from "@apollo/client/core/networkStatus";
+import { Box, Center, HStack, Spacer, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { useMemo, useRef, useState } from "react";
+import { Waypoint } from "react-waypoint";
 
 export default function BookmarksWithTagPage() {
 	const router = useRouter();
@@ -28,7 +30,7 @@ export default function BookmarksWithTagPage() {
 	const actionsRef = useRef<HTMLDivElement | null>(null);
 	useAutoHotkeys({ ref: document.body, scopeRef: actionsRef });
 
-	const { data, loading, fetchMore } = useQuery<
+	const { data, fetchMore, networkStatus } = useQuery<
 		GetBookmarksWithTagQuery,
 		GetBookmarksWithTagQueryVariables
 	>(
@@ -68,13 +70,13 @@ export default function BookmarksWithTagPage() {
 	);
 
 	function handleFetchMore() {
-		if (data) {
-			fetchMore({
-				variables: {
-					cursor: data.bookmarks.pageInfo.endCursor,
-				},
-			});
-		}
+		if (!data || isNetworkRequestInFlight(networkStatus)) return;
+
+		fetchMore({
+			variables: {
+				cursor: data.bookmarks.pageInfo.endCursor,
+			},
+		});
 	}
 
 	const bookmarks = useMemo(
@@ -125,11 +127,11 @@ export default function BookmarksWithTagPage() {
 			)}
 
 			{data?.bookmarks.pageInfo.hasNextPage && (
-				<Center mt="2">
-					<Button isLoading={loading} onClick={handleFetchMore}>
-						Load more
-					</Button>
-				</Center>
+				<Waypoint onEnter={handleFetchMore} bottomOffset={-200}>
+					<Center mt="2" h="10">
+						<Spinner />
+					</Center>
+				</Waypoint>
 			)}
 		</>
 	);

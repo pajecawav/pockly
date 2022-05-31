@@ -9,14 +9,16 @@ import {
 	GetArchivedBookmarksQueryVariables,
 } from "@/__generated__/operations";
 import { useQuery } from "@apollo/client";
-import { Box, Button, Center, Spacer, Spinner } from "@chakra-ui/react";
+import { isNetworkRequestInFlight } from "@apollo/client/core/networkStatus";
+import { Box, Center, Spacer, Spinner } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useMemo, useState } from "react";
+import { Waypoint } from "react-waypoint";
 
 export default function ArchivedBookmarksPage() {
 	const [oldestFirst, setOldestFirst] = useState(false);
 
-	const { data, loading, fetchMore } = useQuery<
+	const { data, fetchMore, networkStatus } = useQuery<
 		GetArchivedBookmarksQuery,
 		GetArchivedBookmarksQueryVariables
 	>(
@@ -60,13 +62,12 @@ export default function ArchivedBookmarksPage() {
 	);
 
 	const handleFetchMore = () => {
-		if (data) {
-			fetchMore({
-				variables: {
-					cursor: data.bookmarks.pageInfo.endCursor,
-				},
-			});
-		}
+		if (!data || isNetworkRequestInFlight(networkStatus)) return;
+		fetchMore({
+			variables: {
+				cursor: data.bookmarks.pageInfo.endCursor,
+			},
+		});
 	};
 	return (
 		<>
@@ -90,11 +91,11 @@ export default function ArchivedBookmarksPage() {
 			)}
 
 			{data?.bookmarks.pageInfo.hasNextPage && (
-				<Center mt="2">
-					<Button isLoading={loading} onClick={handleFetchMore}>
-						Load more
-					</Button>
-				</Center>
+				<Waypoint onEnter={handleFetchMore} bottomOffset={-200}>
+					<Center mt="2" h="10">
+						<Spinner />
+					</Center>
+				</Waypoint>
 			)}
 		</>
 	);
