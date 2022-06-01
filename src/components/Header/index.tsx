@@ -1,14 +1,13 @@
 import { useDefaultBackgroundColor } from "@/hooks/useDefaultBackgroundColor";
 import { HStack } from "@chakra-ui/react";
-import { useContext } from "react";
-import { HeaderContext } from "./HeaderPortal";
+import { useHeaderContext } from "./HeaderPortal";
 
 export { HeaderPortal, HeaderProvider } from "./HeaderPortal";
 
 export const HEADER_HEIGHT = "14";
 
 export function Header() {
-	const [, setHeader] = useContext(HeaderContext);
+	const [, setHeader] = useHeaderContext();
 
 	return (
 		<HStack
