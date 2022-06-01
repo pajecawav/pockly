@@ -8,7 +8,7 @@ import React, { Fragment } from "react";
 
 export default function LoginPage() {
 	const router = useRouter();
-	const next = router.query.next as string;
+	const next = router.query.next as string | undefined;
 
 	return (
 		<Center w="full" minH="full" p={1}>

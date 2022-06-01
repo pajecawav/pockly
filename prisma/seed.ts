@@ -10,15 +10,13 @@ async function main() {
 		throw new Error("You have to create a user before seeding database");
 	}
 
-	for (let i = 0; i < 10; i++) {
-		await db.bookmark.create({
-			data: {
-				userId: user.id,
-				url: faker.internet.url(),
-				title: faker.lorem.sentence(),
-			},
-		});
-	}
+	await db.bookmark.createMany({
+		data: Array.from({ length: 40 }, () => ({
+			userId: user.id,
+			url: faker.internet.url(),
+			title: faker.lorem.sentence(),
+		})),
+	});
 }
 
 main()

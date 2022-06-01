@@ -20,7 +20,6 @@ export const SidebarLink = forwardRef<HTMLAnchorElement, Props>(
 
 		const isActive = router.asPath === href;
 
-		// TODO: memoize wrapper?
 		const Wrapper = label
 			? ({ children }: { children: ReactNode }) => (
 					<Tooltip label={label} placement="right">

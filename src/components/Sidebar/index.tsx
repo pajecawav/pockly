@@ -24,6 +24,7 @@ import {
 } from "react-icons/hi";
 import { RemoveScroll } from "react-remove-scroll";
 import { AddBookmarkModal } from "../AddBookmarkModal";
+import { HEADER_HEIGHT } from "../Header";
 import { TooltipLabel } from "../Tooltip/TooltipLabel";
 import { DropdownMenu } from "./DropdownMenu";
 import { PinnedTags } from "./PinnedTags";
@@ -105,7 +106,7 @@ export function Sidebar() {
 				ref={sidebarRef}
 			>
 				<Box
-					h="14"
+					h={HEADER_HEIGHT}
 					display={{ base: "grid", md: "none" }}
 					placeItems="center"
 					position="fixed"
