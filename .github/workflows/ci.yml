@@ -26,6 +26,9 @@ jobs:
             - name: Install dependencies
               run: yarn install --frozen-lockfile
 
+            - name: Generate types
+              run: yarn workspace @pockly/web generate
+
             # TODO: use eslint prettier plugin?
             # - name: Check formatting
             #   run: yarn format:check
@@ -51,6 +54,9 @@ jobs:
 
             - name: Install dependencies
               run: yarn install --frozen-lockfile
+
+            - name: Generate types
+              run: yarn workspace @pockly/web generate
 
             - name: Build project
               run: yarn build
