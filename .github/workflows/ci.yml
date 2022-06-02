@@ -6,6 +6,9 @@ on:
     pull_request:
         branches: [master]
 
+env:
+    DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+    CI: true
 jobs:
     Lint:
         runs-on: ubuntu-latest
@@ -22,11 +25,6 @@ jobs:
 
             - name: Install dependencies
               run: yarn install --frozen-lockfile
-
-            - name: Generate types
-              run: yarn workspace @pockly/web generate
-              env:
-                  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
 
             # TODO: use eslint prettier plugin?
             # - name: Check formatting
@@ -53,11 +51,6 @@ jobs:
 
             - name: Install dependencies
               run: yarn install --frozen-lockfile
-
-            - name: Generate types
-              run: yarn workspace @pockly/web generate
-              env:
-                  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
 
             - name: Build project
               run: yarn build

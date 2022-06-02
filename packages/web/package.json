@@ -7,7 +7,7 @@
 		"dev:next": "next dev",
 		"dev:compile": "yarn generate:graphql --watch",
 		"dev:docker": "docker-compose up",
-		"build": "next build",
+		"build": "yarn generate && next build",
 		"vercel-build": "yarn generate && next build && prisma db push --accept-data-loss",
 		"start": "prisma db push && next start",
 		"generate": "yarn generate:prisma && yarn generate:graphql",
