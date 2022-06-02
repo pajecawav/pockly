@@ -1,3 +1,5 @@
 node_modules
 .next
 src/__generated__
+public/sw.js
+public/workbox-*.js
