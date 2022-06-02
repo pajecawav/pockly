@@ -1,3 +1,7 @@
+require("dotenv-expand").expand(
+	require("dotenv").config({ path: "../../.env" })
+);
+
 const path = require("path");
 const withPWA = require("next-pwa");
 

@@ -1,0 +1,8 @@
+{
+	"name": "@pockly/configs",
+	"version": "0.0.0",
+	"private": true,
+	"devDependencies": {
+		"prettier": "^2.6.2"
+	}
+}

@@ -4,6 +4,7 @@
 		"packages/*"
 	],
 	"scripts": {
+		"dev": "yarn workspace @pockly/web run dev",
 		"prepare": "is-ci || husky install"
 	},
 	"lint-staged": {
