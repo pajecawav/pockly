@@ -24,15 +24,16 @@ jobs:
               run: yarn install --frozen-lockfile
 
             - name: Generate types
-              run: yarn generate
+              run: yarn workspace @pockly/web generate
               env:
                   DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
 
-            - name: Check formatting
-              run: yarn format:check
+            # TODO: use eslint prettier plugin?
+            # - name: Check formatting
+            #   run: yarn format:check
 
             - name: Typecheck
-              run: yarn tsc
+              run: yarn typecheck
 
             - name: Lint
               run: yarn lint
@@ -54,7 +55,7 @@ jobs:
               run: yarn install --frozen-lockfile
 
             - name: Generate types
-              run: yarn generate
+              run: yarn workspace @pockly/web generate
               env:
                   DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
 

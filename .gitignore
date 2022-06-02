@@ -1,4 +1,5 @@
 node_modules/
+.turbo/
 
 # debug
 npm-debug.log*

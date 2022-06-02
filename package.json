@@ -4,7 +4,10 @@
 		"packages/*"
 	],
 	"scripts": {
-		"dev": "yarn workspace @pockly/web run dev",
+		"dev": "turbo run dev --scope='@pockly/web'",
+		"build": "turbo run build",
+		"lint": "turbo run lint",
+		"typecheck": "turbo run typecheck",
 		"prepare": "is-ci || husky install"
 	},
 	"lint-staged": {
@@ -16,6 +19,7 @@
 		"husky": "^8.0.1",
 		"is-ci": "^3.0.1",
 		"lint-staged": "^12.4.1",
-		"prettier": "^2.5.0"
+		"prettier": "^2.5.0",
+		"turbo": "^1.2.15"
 	}
 }

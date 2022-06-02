@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "concurrently -c 'blue,yellow,green' 'yarn:dev:docker' 'yarn:dev:next' 'yarn:dev:compile'",
+		"dev": "cross-env FORCE_COLOR=1 concurrently -c 'blue,yellow,green' 'yarn:dev:docker' 'yarn:dev:next' 'yarn:dev:compile'",
 		"dev:next": "next dev",
 		"dev:compile": "yarn generate:graphql --watch",
 		"dev:docker": "docker-compose up",
@@ -15,7 +15,7 @@
 		"generate:graphql": "cross-env DATABASE_URL='postgres://postgres@postgres:5432/postgres' graphql-codegen",
 		"generate:theme-typings": "chakra-cli tokens src/theme.ts",
 		"lint": "next lint",
-		"tsc": "tsc --noEmit",
+		"typecheck": "tsc --noEmit",
 		"format": "prettier './**/*.{js,jsx,ts,tsx,css,json,md,yml}' --write",
 		"format:check": "prettier --check './**/*.{js,jsx,ts,tsx,css,json,md,yml}'"
 	},
