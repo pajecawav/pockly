@@ -6,7 +6,7 @@
 		"dev": "yarn run clean && cross-env NODE_ENV=development run-p -l dev:*",
 		"dev:prepare": "esno scripts/prepare.ts",
 		"dev:web": "vite",
-		"dev:js": "yarn run build:js -- --mode development",
+		"dev:js": "true || yarn run build:js -- --mode development",
 		"build": "cross-env NODE_ENV=production run-s -l clean build:web build:prepare build:js",
 		"build:prepare": "esno scripts/prepare.ts",
 		"build:web": "vite build",
@@ -33,8 +33,11 @@
 		]
 	},
 	"dependencies": {
+		"graphql": "^16.5.0",
+		"graphql-request": "^4.3.0",
 		"react": "^18.1.0",
 		"react-dom": "^18.1.0",
+		"react-icons": "^4.4.0",
 		"zustand": "^4.0.0-rc.1"
 	},
 	"devDependencies": {
@@ -48,6 +51,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.20.0",
 		"@typescript-eslint/parser": "^5.26.0",
 		"@vitejs/plugin-react": "^1.3.2",
+		"autoprefixer": "^10.4.7",
 		"chokidar": "^3.5.3",
 		"cross-env": "^7.0.3",
 		"crx": "^5.0.1",
@@ -62,8 +66,10 @@
 		"kolorist": "^1.5.1",
 		"lint-staged": "^12.4.2",
 		"npm-run-all": "^4.1.5",
+		"postcss": "^8.4.14",
 		"prettier": "^2.6.2",
 		"rimraf": "^3.0.2",
+		"tailwindcss": "^3.0.24",
 		"typescript": "^4.6.3",
 		"unplugin-auto-import": "^0.8.6",
 		"vite": "^2.9.5",

@@ -7,6 +7,7 @@ import { isDev, port, r } from "./scripts/utils";
 
 export const sharedConfig: UserConfig = {
 	root: r("src"),
+	envDir: "../../../",
 	resolve: {
 		alias: {
 			"@": `${r("src")}/`,

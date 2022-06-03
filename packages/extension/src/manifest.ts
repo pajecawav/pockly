@@ -18,15 +18,15 @@ export async function getManifest() {
 			default_icon: "./assets/icon-512.png",
 			default_popup: "./dist/popup/index.html",
 		},
-		options_ui: {
-			page: "./dist/options/index.html",
-			open_in_tab: true,
-			chrome_style: false,
-		},
-		background: {
-			page: "./dist/background/index.html",
-			persistent: false,
-		},
+		// options_ui: {
+		// 	page: "./dist/options/index.html",
+		// 	open_in_tab: true,
+		// 	chrome_style: false,
+		// },
+		// background: {
+		// 	page: "./dist/background/index.html",
+		// 	persistent: false,
+		// },
 		icons: {
 			16: "./assets/icon-512.png",
 			48: "./assets/icon-512.png",
@@ -39,12 +39,12 @@ export async function getManifest() {
 			"http://*/",
 			"https://*/",
 		],
-		content_scripts: [
-			{
-				matches: ["http://*/*", "https://*/*"],
-				js: ["./dist/contentScripts/index.global.js"],
-			},
-		],
+		// content_scripts: [
+		// 	{
+		// 		matches: ["http://*/*", "https://*/*"],
+		// 		js: ["./dist/contentScripts/index.global.js"],
+		// 	},
+		// ],
 		web_accessible_resources: ["dist/contentScripts/style.css"],
 	};
 
