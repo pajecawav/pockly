@@ -18,7 +18,7 @@
 		"typecheck": "tsc --noEmit",
 		"format": "prettier './**/*.{js,jsx,ts,tsx,css,json,md,yml}' --write",
 		"format:check": "prettier --check './**/*.{js,jsx,ts,tsx,css,json,md,yml}'",
-		"clean": "rimraf .next node_modules src/__generated__"
+		"clean": "rimraf .next node_modules .turbo src/__generated__"
 	},
 	"prisma": {
 		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

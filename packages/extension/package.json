@@ -3,11 +3,11 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "yarn run clean && cross-env NODE_ENV=development run-p -l dev:*",
+		"dev": "yarn run clean:build && cross-env NODE_ENV=development run-p -l dev:*",
 		"dev:prepare": "esno scripts/prepare.ts",
 		"dev:web": "vite",
 		"dev:js": "true || yarn run build:js -- --mode development",
-		"build": "cross-env NODE_ENV=production run-s -l clean build:web build:prepare build:js",
+		"build": "cross-env NODE_ENV=production run-s -l clean:build build:web build:prepare build:js",
 		"build:prepare": "esno scripts/prepare.ts",
 		"build:web": "vite build",
 		"build:js": "vite build --config vite.config.content.ts",
@@ -21,7 +21,8 @@
 		"typecheck": "tsc --noEmit",
 		"format": "prettier --write './**/*.{js,jsx,ts,tsx,css,json,md,yml}'",
 		"format:check": "prettier --check './**/*.{js,jsx,ts,tsx,css,json,md,yml}'",
-		"clean": "rimraf extension/dist extension/manifest.json extension.*"
+		"clean:build": "rimraf extension/dist extension/manifest.json extension.*",
+		"clean": "yarn clean:build && rimraf node_modules .turbo"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
