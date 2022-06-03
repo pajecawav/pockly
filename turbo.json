@@ -1,8 +1,12 @@
 {
 	"pipeline": {
 		"build": {
-			"outputs": [".next/**"],
-			"dependsOn": ["^build"]
+			"dependsOn": ["^build"],
+			"outputs": [
+				".next/**",
+				"extension/dist/**",
+				"extension/manifest.json"
+			]
 		},
 		"dev": {
 			"cache": false
