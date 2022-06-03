@@ -1,6 +1,5 @@
 import React from "@vitejs/plugin-react";
 import { dirname, relative } from "path";
-import AutoImport from "unplugin-auto-import/vite";
 import type { UserConfig } from "vite";
 import { defineConfig } from "vite";
 import { isDev, port, r } from "./scripts/utils";
@@ -20,16 +19,6 @@ export const sharedConfig: UserConfig = {
 		// TODO: fast-refrest doesn't work because preabmle isn't injected into html
 		// https://github.com/vitejs/vite/issues/1984
 		React({ fastRefresh: false }),
-
-		AutoImport({
-			imports: [
-				// "vue",
-				{
-					"webextension-polyfill": [["*", "browser"]],
-				},
-			],
-			dts: r("src/auto-imports.d.ts"),
-		}),
 
 		// rewrite assets to use relative path
 		{

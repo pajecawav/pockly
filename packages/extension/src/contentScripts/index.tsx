@@ -1,5 +1,6 @@
-import { onMessage } from "webext-bridge";
 import ReactDom from "react-dom/client";
+import { onMessage } from "webext-bridge";
+import browser from "webextension-polyfill";
 import { App } from "./views/App";
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value

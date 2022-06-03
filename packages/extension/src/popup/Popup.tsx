@@ -1,8 +1,9 @@
-import { Spinner } from "@/components/Spinner";
-import { useEffect, useState } from "react";
-import { request, gql } from "graphql-request";
-import { isForbiddenUrl } from "@/env";
 import { Logo } from "@/components/Logo";
+import { Spinner } from "@/components/Spinner";
+import { isForbiddenUrl } from "@/env";
+import { gql, request } from "graphql-request";
+import { useEffect, useState } from "react";
+import browser from "webextension-polyfill";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
