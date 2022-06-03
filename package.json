@@ -8,7 +8,8 @@
 		"build": "turbo run build",
 		"lint": "turbo run lint",
 		"typecheck": "turbo run typecheck",
-		"prepare": "is-ci || husky install"
+		"prepare": "is-ci || husky install",
+		"clean": "turbo run clean && rimraf node_modules"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,json,md,yml,css}": [
@@ -20,6 +21,7 @@
 		"is-ci": "^3.0.1",
 		"lint-staged": "^12.4.1",
 		"prettier": "^2.5.0",
+		"rimraf": "^3.0.2",
 		"turbo": "^1.2.15"
 	}
 }
