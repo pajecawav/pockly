@@ -11,7 +11,7 @@ generates:
     src/__generated__/operations.ts:
         plugins:
             - typescript
-            - typescript-operations:
+            - typescript-operations
             - named-operations-object
             - typed-document-node
             # - typescript-react-apollo
