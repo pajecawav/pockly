@@ -6,7 +6,7 @@
 		]
 	},
 	"scripts": {
-		"dev": "turbo run dev",
+		"dev": "turbo run dev --filter=@pockly/web --filter=@pockly/prisma",
 		"build": "turbo run build",
 		"generate": "turbo run generate",
 		"lint": "turbo run lint",
