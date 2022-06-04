@@ -29,9 +29,8 @@ jobs:
             - name: Generate types
               run: yarn generate
 
-            # TODO: use eslint prettier plugin?
-            # - name: Check formatting
-            #   run: yarn format:check
+            - name: Check formatting
+              run: yarn format:check
 
             - name: Typecheck
               run: yarn typecheck
