@@ -15,7 +15,7 @@
 		"generate:graphql": "cross-env DATABASE_URL='postgres://postgres@postgres:5432/postgres' graphql-codegen",
 		"generate:theme-typings": "chakra-cli tokens src/theme.ts",
 		"lint": "next lint",
-		"typecheck": "tsc --noEmit",
+		"typecheck": "tsc --noEmit --pretty",
 		"format": "prettier './**/*.{js,jsx,ts,tsx,css,json,md,yml}' --write",
 		"format:check": "prettier --check './**/*.{js,jsx,ts,tsx,css,json,md,yml}'",
 		"clean": "rimraf .next node_modules .turbo src/__generated__"

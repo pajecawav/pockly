@@ -18,7 +18,7 @@
 		"start:chromium": "web-ext run --source-dir ./extension --target=chromium",
 		"start:firefox": "web-ext run --source-dir ./extension --target=firefox-desktop",
 		"lint": "eslint '{src,scripts}/**/*.{json,js,jsx,ts,tsx}'",
-		"typecheck": "tsc --noEmit",
+		"typecheck": "tsc --noEmit --pretty",
 		"format": "prettier --write './**/*.{js,jsx,ts,tsx,css,json,md,yml}'",
 		"format:check": "prettier --check './**/*.{js,jsx,ts,tsx,css,json,md,yml}'",
 		"clean:build": "rimraf extension/dist extension/manifest.json extension.*",
