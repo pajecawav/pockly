@@ -7,7 +7,7 @@
 		"dev:next": "next dev",
 		"dev:compile": "yarn generate:graphql --watch",
 		"build": "next build",
-		"vercel-build": "yarn generate && next build",
+		"vercel-build": "cd ../.. && yarn build --filter @pockly/web",
 		"start": "next start",
 		"generate": "yarn generate:graphql",
 		"generate:graphql": "cross-env DATABASE_URL='postgres://postgres@postgres:5432/postgres' graphql-codegen",
