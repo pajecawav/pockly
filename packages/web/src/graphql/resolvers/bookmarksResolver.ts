@@ -6,7 +6,7 @@ import {
 	tagNameSchema,
 } from "@/lib/schemas";
 import { getHostnameFromUrl } from "@/utils";
-import { db } from "@pockly/prisma/client";
+import { db } from "@pockly/prisma";
 import { z } from "zod";
 import { builder } from "../builder";
 

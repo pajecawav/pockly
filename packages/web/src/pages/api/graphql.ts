@@ -1,5 +1,5 @@
 import { schema } from "@/graphql/resolvers";
-import { db } from "@pockly/prisma/client";
+import { db } from "@pockly/prisma";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiHandler, NextApiRequest } from "next";

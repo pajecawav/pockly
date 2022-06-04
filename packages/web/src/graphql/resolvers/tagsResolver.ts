@@ -1,4 +1,4 @@
-import { db } from "@pockly/prisma/client";
+import { db } from "@pockly/prisma";
 import { builder } from "../builder";
 import { BookmarkObject } from "./bookmarksResolver";
 

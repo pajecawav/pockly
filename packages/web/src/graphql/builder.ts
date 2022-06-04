@@ -1,4 +1,4 @@
-import { db } from "@pockly/prisma/client";
+import { db } from "@pockly/prisma";
 import type PrismaTypes from "@pockly/prisma/generated/pothos";
 import SchemaBuilder from "@pothos/core";
 import PrismaPlugin from "@pothos/plugin-prisma";
