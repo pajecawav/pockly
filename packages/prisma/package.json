@@ -5,8 +5,13 @@
 	"main": "generated/client/index.js",
 	"types": "generated/client/index.d.ts",
 	"scripts": {
+		"dev": "yarn db-up",
 		"generate": "prisma generate",
-		"seed": "esno prisma/seed.ts",
+		"db-up": "docker compose up",
+		"db-down": "docker compose down",
+		"db-push": "prisma db push",
+		"db-studio": "prisma studio",
+		"db-seed": "esno prisma/seed.ts",
 		"clean": "rimraf generated node_modules .turbo"
 	},
 	"prisma": {

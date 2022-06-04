@@ -3,10 +3,9 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "cross-env FORCE_COLOR=1 concurrently -c 'blue,yellow,green' 'yarn:dev:docker' 'yarn:dev:next' 'yarn:dev:compile'",
+		"dev": "cross-env FORCE_COLOR=1 concurrently -c 'blue,yellow' 'yarn:dev:next' 'yarn:dev:compile'",
 		"dev:next": "next dev",
 		"dev:compile": "yarn generate:graphql --watch",
-		"dev:docker": "docker-compose up",
 		"build": "next build",
 		"vercel-build": "yarn generate && next build",
 		"start": "next start",
