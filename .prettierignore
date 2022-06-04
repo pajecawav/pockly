@@ -10,6 +10,7 @@ public
 
 __generated__/
 
+pothos.d.ts
 sw.js
 workbox-*.js
 
