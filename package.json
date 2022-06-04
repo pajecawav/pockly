@@ -11,6 +11,8 @@
 		"generate": "turbo run generate",
 		"lint": "turbo run lint",
 		"typecheck": "turbo run typecheck",
+		"format": "prettier './**/*.{js,jsx,ts,tsx,html,css,json,md,yml}' --write",
+		"format:check": "prettier --list-different './**/*.{js,jsx,ts,tsx,html,css,json,md,yml}'",
 		"clean": "turbo run clean && rimraf node_modules",
 		"prepare": "is-ci || husky install"
 	},

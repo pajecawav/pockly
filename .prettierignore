@@ -1,0 +1,17 @@
+node_modules
+.next
+dist
+public
+
+**/**/node_modules
+**/**/.next
+**/**/dist
+**/**/public
+
+__generated__/
+
+sw.js
+workbox-*.js
+
+*.lock
+*.log
