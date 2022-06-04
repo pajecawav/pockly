@@ -26,8 +26,8 @@ jobs:
             - name: Install dependencies
               run: yarn install --frozen-lockfile
 
-            - name: Generate types
-              run: yarn generate
+            # - name: Generate types
+            #   run: yarn generate
 
             - name: Check formatting
               run: yarn format:check
@@ -54,8 +54,8 @@ jobs:
             - name: Install dependencies
               run: yarn install --frozen-lockfile
 
-            - name: Generate types
-              run: yarn generate
+            # - name: Generate types
+            #   run: yarn generate
 
             - name: Build project
               run: yarn build

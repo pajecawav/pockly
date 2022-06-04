@@ -1,7 +1,8 @@
 {
+	"$schema": "https://turborepo.org/schema.json",
 	"pipeline": {
 		"build": {
-			"dependsOn": ["^build"],
+			"dependsOn": ["generate", "^build"],
 			"outputs": [
 				".next/**",
 				"extension/dist/**",
@@ -12,14 +13,20 @@
 			"cache": false
 		},
 		"generate": {
+			"dependsOn": ["^generate"],
 			"cache": false
 		},
+		"@pockly/prisma#generate": {
+			"inputs": ["schema.prisma"]
+		},
+		"@pockly/web#generate": {
+			"outputs": ["src/__generated__"]
+		},
 		"lint": {
-			"dependsOn": ["^lint"],
 			"outputs": []
 		},
 		"typecheck": {
-			"dependsOn": ["^typecheck"],
+			"dependsOn": ["^generate"],
 			"outputs": []
 		},
 		"clean": {
