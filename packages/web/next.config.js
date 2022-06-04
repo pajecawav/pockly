@@ -5,6 +5,8 @@ require("dotenv-expand").expand(
 const path = require("path");
 const withPWA = require("next-pwa");
 
+const withTM = require("next-transpile-modules")(["@pockly/prisma"]);
+
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
 	enabled: ["true", "1"].includes(process.env.ANALYZE),
 });
@@ -20,13 +22,15 @@ const config = {
 };
 
 module.exports = withBundleAnalyzer(
-	withPWA({
-		...config,
-		pwa: {
-			dest: "public",
-			dynamicStartUrl: true,
-			dynamicStartUrlRedirect: "/auth/login",
-			disable: process.env.NODE_ENV === "development",
-		},
-	})
+	withPWA(
+		withTM({
+			...config,
+			pwa: {
+				dest: "public",
+				dynamicStartUrl: true,
+				dynamicStartUrlRedirect: "/auth/login",
+				disable: process.env.NODE_ENV === "development",
+			},
+		})
+	)
 );

@@ -1,10 +1,10 @@
+import { db } from "@pockly/prisma/client";
+import type PrismaTypes from "@pockly/prisma/generated/pothos";
 import SchemaBuilder from "@pothos/core";
 import PrismaPlugin from "@pothos/plugin-prisma";
-import type PrismaTypes from "@pothos/plugin-prisma/generated";
 import RelayPlugin from "@pothos/plugin-relay";
 import ScopeAuthPlugin from "@pothos/plugin-scope-auth";
 import ValidationPlugin from "@pothos/plugin-validation";
-import { db } from "prisma/client";
 import { AuthScopes, Context, Scalars } from "./types";
 
 export const builder = new SchemaBuilder<{

@@ -1,9 +1,9 @@
 import { schema } from "@/graphql/resolvers";
+import { db } from "@pockly/prisma/client";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiHandler, NextApiRequest } from "next";
 import { getSession } from "next-auth/react";
-import { db } from "prisma/client";
 
 const server = new ApolloServer({
 	schema,
