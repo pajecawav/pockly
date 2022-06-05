@@ -1,55 +1,28 @@
-import { Logo } from "@/components/Logo";
 import { Spinner } from "@/components/Spinner";
 import { isForbiddenUrl } from "@/env";
-import { gql, request } from "graphql-request";
 import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
+import { BookmarkSaved } from "./components/BookmarkSaved";
+import { API_BASE_URL, LOGIN_URL } from "./config";
+import { Bookmark, createBookmark } from "./mutations";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+async function getCurrentTabUrl() {
+	const [tab] = await browser.tabs.query({
+		active: true,
+		lastFocusedWindow: true,
+	});
 
-const GRAPHQL_ENDPOINT_URL = `${API_BASE_URL}/api/graphql`;
+	const url = tab?.url;
 
-const LOGIN_URL = `${API_BASE_URL}/auth/login`;
-const READING_LIST_URL = `${API_BASE_URL}/read`;
-const BOOKMARK_PAGE_BASE_URL = `${API_BASE_URL}/b`;
-
-// TODO: proper types generation
-
-const SAVE_BOOKMARK_MUTATION = gql`
-	mutation SaveBookmark($url: String!) {
-		createBookmark(input: { url: $url }) {
-			id
-			title
-			url
-		}
-	}
-`;
-
-interface SaveBookmarkMutationResult {
-	createBookmark: {
-		id: string;
-		title: string;
-		url: string;
-	};
-}
-
-interface SaveBookmarkMutationVariables {
-	url: string;
+	return url;
 }
 
 export function App() {
-	const [bookmark, setBookmark] = useState<
-		SaveBookmarkMutationResult["createBookmark"] | null
-	>(null);
+	const [bookmark, setBookmark] = useState<Bookmark | null>(null);
 
 	useEffect(() => {
 		async function saveBookmark() {
-			const [tab] = await browser.tabs.query({
-				active: true,
-				lastFocusedWindow: true,
-			});
-
-			const url = tab?.url;
+			const url = await getCurrentTabUrl();
 
 			if (!url || isForbiddenUrl(url)) {
 				console.log(`Forbidden url ${url}`);
@@ -68,11 +41,8 @@ export function App() {
 			}
 
 			try {
-				const { createBookmark } = await request<
-					SaveBookmarkMutationResult,
-					SaveBookmarkMutationVariables
-				>(GRAPHQL_ENDPOINT_URL, SAVE_BOOKMARK_MUTATION, { url });
-				setBookmark(createBookmark);
+				const bookmark = await createBookmark(url);
+				setBookmark(bookmark);
 				console.log("Saved bookmark");
 			} catch (e) {
 				// TODO: handle error
@@ -83,36 +53,21 @@ export function App() {
 	}, []);
 
 	return (
-		<main className="px-2 py-3">
-			<div className="flex gap-2">
-				<Logo className="w-14 h-14 text-blue-400" />
-				<div className="flex-grow">
-					{!bookmark ? (
-						<div className="text-lg">
-							Saving... <Spinner className="inline w-4 h-4" />
-						</div>
-					) : (
-						<>
-							<div className="text-lg">Saved to Pockly</div>
-							<div className="text-sm">
-								<a
-									className="text-blue-500"
-									href={READING_LIST_URL}
-								>
-									Reading List
-								</a>
-								<span className="text-black"> | </span>
-								<a
-									className="text-blue-500"
-									href={`${BOOKMARK_PAGE_BASE_URL}/${bookmark.id}`}
-								>
-									Bookmark Page
-								</a>
-							</div>
-						</>
-					)}
+		<main className="h-[300px] px-4 py-3">
+			{!bookmark ? (
+				<div className="h-full grid place-items-center">
+					<div>
+						<Spinner className="w-6 h-6 mx-auto text-gray-600" />
+						<div className="text-sm text-gray-400">Saving...</div>
+					</div>
 				</div>
-			</div>
+			) : (
+				<BookmarkSaved
+					id={bookmark.id}
+					title={bookmark.title}
+					note={bookmark.note}
+				/>
+			)}
 		</main>
 	);
 }

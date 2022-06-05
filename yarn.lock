@@ -4310,6 +4310,11 @@ ci-info@^3.1.0, ci-info@^3.2.0:
   resolved "https://registry.npmjs.org/ci-info/-/ci-info-3.3.1.tgz"
   integrity sha512-SXgeMX9VwDe7iFFaEWkA5AstuER9YKqy4EhHqr4DVqkwmD9rpVimkMKWHdjn30Ja45txyjhSn63lVX69eVCckg==
 
+class-variance-authority@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/class-variance-authority/-/class-variance-authority-0.2.1.tgz#4c0b857456056e842e2bb0e63620a2a554ed0575"
+  integrity sha512-1saIFSnCyvtc/piraDhejwrPRd2P6btFaDSMy3/UwoitCX3tBcpJt4+hGuK82FoojN+qEkGgGgexfZpNWMrD5w==
+
 clean-stack@^2.0.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/clean-stack/-/clean-stack-2.2.0.tgz"

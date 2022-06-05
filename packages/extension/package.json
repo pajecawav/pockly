@@ -23,6 +23,7 @@
 		"clean": "yarn clean:build && rimraf node_modules .turbo"
 	},
 	"dependencies": {
+		"class-variance-authority": "^0.2.1",
 		"graphql": "^16.5.0",
 		"graphql-request": "^4.3.0",
 		"react": "^18.1.0",
