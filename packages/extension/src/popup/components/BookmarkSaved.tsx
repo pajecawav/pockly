@@ -17,20 +17,20 @@ export function BookmarkSaved({ bookmark }: Props) {
 
 	const [deleted, setDeleted] = useState(false);
 
-	const [isSaving, setIsSaving] = useState(false);
+	const [isUpdating, setIsUpdating] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
-	const isProcessing = isSaving || isDeleting;
+	const isProcessing = isUpdating || isDeleting;
 
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 
-		setIsSaving(true);
+		setIsUpdating(true);
 
 		const updated = await updateBookmark({ id: bookmark.id, title, note });
 		setTitle(updated.title);
 		setNote(updated.note ?? "");
 
-		setIsSaving(false);
+		setIsUpdating(false);
 	}
 
 	async function handleDelete() {
@@ -41,6 +41,8 @@ export function BookmarkSaved({ bookmark }: Props) {
 
 	const headerText = deleted
 		? "Deleted Bookmark"
+		: isUpdating
+		? "Updating Bookmark..."
 		: isDeleting
 		? "Deleting Bookmark..."
 		: "Saved Bookmark";
@@ -55,8 +57,9 @@ export function BookmarkSaved({ bookmark }: Props) {
 			<div
 				className={cn(
 					"flex-grow flex flex-col gap-2 transition-opacity duration-500",
-					deleted && "opacity-0"
+					deleted && "opacity-0 pointer-events-none"
 				)}
+				aria-hidden={deleted}
 			>
 				<div className="text-sm">
 					<a
@@ -94,7 +97,7 @@ export function BookmarkSaved({ bookmark }: Props) {
 					<div className="self-center flex gap-2">
 						<Button
 							type="submit"
-							isLoading={isSaving}
+							isLoading={isUpdating}
 							disabled={isProcessing}
 						>
 							Update
