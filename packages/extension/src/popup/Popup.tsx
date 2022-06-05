@@ -62,11 +62,7 @@ export function App() {
 					</div>
 				</div>
 			) : (
-				<BookmarkSaved
-					id={bookmark.id}
-					title={bookmark.title}
-					note={bookmark.note}
-				/>
+				<BookmarkSaved bookmark={bookmark} />
 			)}
 		</main>
 	);

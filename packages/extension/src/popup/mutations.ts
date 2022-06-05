@@ -1,27 +1,17 @@
+import {
+	CreateBookmarkMutation,
+	CreateBookmarkMutationVariables,
+	UpdateBookmarkMutation,
+	UpdateBookmarkMutationVariables,
+} from "@/__generated__/operations";
 import { request, gql } from "graphql-request";
 import { GRAPHQL_ENDPOINT_URL } from "./config";
 
-// TODO: set up codegen
-
 export type Bookmark = Awaited<ReturnType<typeof createBookmark>>;
-
-export interface CreateBookmarkMutationResult {
-	createBookmark: {
-		id: string;
-		title: string;
-		url: string;
-		note: string;
-	};
-}
-
-export interface CreateBookmarkMutationVariables {
-	url: string;
-	title?: string;
-}
 
 export async function createBookmark(url: string, title?: string) {
 	const { createBookmark } = await request<
-		CreateBookmarkMutationResult,
+		CreateBookmarkMutation,
 		CreateBookmarkMutationVariables
 	>(
 		GRAPHQL_ENDPOINT_URL,
@@ -41,27 +31,13 @@ export async function createBookmark(url: string, title?: string) {
 	return createBookmark;
 }
 
-export interface UpdateBookmarkMutationResult {
-	updateBookmark: {
-		id: string;
-		title: string;
-		note: string;
-	};
-}
-
-export interface UpdateBookmarkMutationVariables {
-	id: string;
-	title?: string;
-	note?: string;
-}
-
 export async function updateBookmark({
 	id,
 	title,
 	note,
 }: UpdateBookmarkMutationVariables) {
 	const { updateBookmark } = await request<
-		UpdateBookmarkMutationResult,
+		UpdateBookmarkMutation,
 		UpdateBookmarkMutationVariables
 	>(
 		GRAPHQL_ENDPOINT_URL,

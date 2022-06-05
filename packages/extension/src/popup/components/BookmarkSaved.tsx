@@ -4,17 +4,15 @@ import { Logo } from "@/components/Logo";
 import { Textarea } from "@/components/Textarea";
 import { FormEvent, useState } from "react";
 import { BOOKMARK_PAGE_BASE_URL, READING_LIST_URL } from "../config";
-import { updateBookmark } from "../mutations";
+import { Bookmark, updateBookmark } from "../mutations";
 
 interface Props {
-	id: string;
-	title: string;
-	note?: string;
+	bookmark: Bookmark;
 }
 
-export function BookmarkSaved(props: Props) {
-	const [title, setTitle] = useState(props.title);
-	const [note, setNote] = useState(props.note);
+export function BookmarkSaved({ bookmark }: Props) {
+	const [title, setTitle] = useState(bookmark.title);
+	const [note, setNote] = useState(bookmark.note ?? "");
 	const [isSaving, setIsSaving] = useState(false);
 
 	async function handleSubmit(e: FormEvent) {
@@ -22,9 +20,9 @@ export function BookmarkSaved(props: Props) {
 
 		setIsSaving(true);
 
-		const bookmark = await updateBookmark({ id: props.id, title, note });
-		setTitle(bookmark.title);
-		setNote(bookmark.note);
+		const updated = await updateBookmark({ id: bookmark.id, title, note });
+		setTitle(updated.title);
+		setNote(updated.note ?? "");
 
 		setIsSaving(false);
 	}
@@ -46,7 +44,7 @@ export function BookmarkSaved(props: Props) {
 					<span className="text-black"> | </span>
 					<a
 						className="text-blue-500 hover:underline"
-						href={`${BOOKMARK_PAGE_BASE_URL}/${props.id}`}
+						href={`${BOOKMARK_PAGE_BASE_URL}/${bookmark.id}`}
 					>
 						Bookmark Page
 					</a>

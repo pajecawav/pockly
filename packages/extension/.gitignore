@@ -12,3 +12,5 @@ dist
 dist-ssr
 extension/manifest.json
 node_modules
+
+src/__generated__

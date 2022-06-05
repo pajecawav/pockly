@@ -22,6 +22,9 @@
 		"@pockly/web#generate": {
 			"outputs": ["src/__generated__"]
 		},
+		"@pockly/extension#generate": {
+			"dependsOn": ["@pockly/web#generate"]
+		},
 		"lint": {
 			"outputs": []
 		},

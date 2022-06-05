@@ -1,0 +1,10 @@
+overwrite: true
+schema: ../web/src/__generated__/schema.graphql
+documents: "./**/!(*.d).{ts,tsx}"
+generates:
+    src/__generated__/operations.ts:
+        plugins:
+            - typescript
+            - typescript-operations
+        config:
+            dedupeOperationSuffix: true
