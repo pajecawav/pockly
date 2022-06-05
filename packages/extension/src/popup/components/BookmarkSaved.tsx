@@ -3,7 +3,7 @@ import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
 import { Textarea } from "@/components/Textarea";
 import { cn } from "@/utils";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { BOOKMARK_PAGE_BASE_URL, READING_LIST_URL } from "../config";
 import { Bookmark, deleteBookmark, updateBookmark } from "../mutations";
 
@@ -21,6 +21,9 @@ export function BookmarkSaved({ bookmark }: Props) {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const isProcessing = isUpdating || isDeleting;
 
+	// hack to avoid using dependencies in useEffect
+	const submitButtonRef = useRef<HTMLButtonElement | null>(null);
+
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 
@@ -32,6 +35,20 @@ export function BookmarkSaved({ bookmark }: Props) {
 
 		setIsUpdating(false);
 	}
+
+	useEffect(() => {
+		if (deleted) return;
+
+		function handler(event: KeyboardEvent) {
+			if (event.ctrlKey && event.key === "s") {
+				event.preventDefault();
+				submitButtonRef.current?.click();
+			}
+		}
+
+		document.body.addEventListener("keydown", handler);
+		() => document.body.removeEventListener("keydown", handler);
+	}, [deleted]);
 
 	async function handleDelete() {
 		setIsDeleting(true);
@@ -99,6 +116,7 @@ export function BookmarkSaved({ bookmark }: Props) {
 							type="submit"
 							isLoading={isUpdating}
 							disabled={isProcessing}
+							ref={submitButtonRef}
 						>
 							Update
 						</Button>

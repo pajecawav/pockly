@@ -1,6 +1,6 @@
 import { cn } from "@/utils";
 import { cva, VariantProps } from "class-variance-authority";
-import { ComponentProps } from "react";
+import { ComponentProps, forwardRef } from "react";
 import { Spinner } from "./Spinner";
 
 // TODO: move custom ui components to @pockly/ui package
@@ -25,37 +25,43 @@ const buttonClassNames = cva(
 );
 
 export interface ButtonProps
-	extends ComponentProps<"button">,
+	extends Omit<ComponentProps<"button">, "ref">,
 		VariantProps<typeof buttonClassNames> {
 	className?: string;
 	isLoading?: boolean;
 }
 
-export function Button({
-	variant,
-	intent,
-	className,
-	isLoading = false,
-	disabled,
-	children,
-	...props
-}: ButtonProps) {
-	return (
-		<button
-			className={cn(
-				"relative",
-				buttonClassNames({ variant, intent }),
-				className
-			)}
-			disabled={disabled || isLoading}
-			{...props}
-		>
-			<span className={cn(isLoading && "opacity-0")}>{children}</span>
-			{isLoading && (
-				<div className="absolute inset-0 grid place-items-center">
-					<Spinner className="h-1/2" />
-				</div>
-			)}
-		</button>
-	);
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+	function Button(
+		{
+			variant,
+			intent,
+			className,
+			isLoading = false,
+			disabled,
+			children,
+			...props
+		},
+		ref
+	) {
+		return (
+			<button
+				className={cn(
+					"relative",
+					buttonClassNames({ variant, intent }),
+					className
+				)}
+				disabled={disabled || isLoading}
+				{...props}
+				ref={ref}
+			>
+				<span className={cn(isLoading && "opacity-0")}>{children}</span>
+				{isLoading && (
+					<div className="absolute inset-0 grid place-items-center">
+						<Spinner className="h-1/2" />
+					</div>
+				)}
+			</button>
+		);
+	}
+);
