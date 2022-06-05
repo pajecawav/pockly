@@ -1,6 +1,8 @@
 import {
 	CreateBookmarkMutation,
 	CreateBookmarkMutationVariables,
+	DeleteBookmarkMutation,
+	DeleteBookmarkMutationVariables,
 	UpdateBookmarkMutation,
 	UpdateBookmarkMutationVariables,
 } from "@/__generated__/operations";
@@ -58,4 +60,23 @@ export async function updateBookmark({
 	);
 
 	return updateBookmark;
+}
+
+export async function deleteBookmark(id: string) {
+	const { deleteBookmark } = await request<
+		DeleteBookmarkMutation,
+		DeleteBookmarkMutationVariables
+	>(
+		GRAPHQL_ENDPOINT_URL,
+		gql`
+			mutation DeleteBookmark($id: String!) {
+				deleteBookmark(id: $id) {
+					id
+				}
+			}
+		`,
+		{ id }
+	);
+
+	return deleteBookmark;
 }

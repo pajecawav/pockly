@@ -53,7 +53,7 @@ export function App() {
 	}, []);
 
 	return (
-		<main className="h-[300px] px-4 py-3">
+		<main className="h-[300px] px-4 py-3 flex flex-col">
 			{!bookmark ? (
 				<div className="h-full grid place-items-center">
 					<div>
