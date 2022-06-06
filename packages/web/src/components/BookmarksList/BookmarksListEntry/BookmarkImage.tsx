@@ -44,6 +44,7 @@ export function BookmarkImage({ title, src }: Props) {
 			</Center>
 			{src && !isError && (
 				<Image
+					bg={backgroundColors[colorIndex][0]}
 					position="absolute"
 					w="full"
 					h="full"
