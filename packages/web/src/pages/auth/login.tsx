@@ -26,16 +26,27 @@ export default function LoginPage() {
 LoginPage.AppShell = Fragment;
 LoginPage.public = true;
 
+const isAbsoluteUrlRegex = new RegExp("^(?:[a-z]+:)?//", "i");
+
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	const session = await getSession({ req });
-	if (session?.user) {
-		return {
-			redirect: {
-				permanent: false,
-				destination: "/",
-			},
-			props: {},
-		};
+	if (!session?.user || !req.url) {
+		return { props: {} };
 	}
-	return { props: {} };
+
+	const requestUrl = new URL(req.url, process.env.BASE_URL);
+	const nextParam = requestUrl.searchParams.get("next");
+
+	let next: string | undefined;
+	if (nextParam && !isAbsoluteUrlRegex.test(nextParam)) {
+		next = nextParam;
+	}
+
+	return {
+		redirect: {
+			permanent: false,
+			destination: next ?? "/read",
+		},
+		props: {},
+	};
 };
