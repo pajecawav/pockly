@@ -27,17 +27,17 @@ export default function ShareTargetPage() {
 			}
 		`,
 		{
-			onCompleted: () => handleSuccess(),
+			onCompleted: ({ createBookmark: { id } }) => handleSuccess(id),
 			onError: () => handleError(),
 		}
 	);
 
-	const handleSuccess = () => {
+	const handleSuccess = (id: string) => {
 		toast({
 			status: "success",
 			description: "Saved bookmark!",
 		});
-		router.replace("/read");
+		router.replace(`/b/${id}`);
 	};
 
 	const handleError = useCallback(() => {
