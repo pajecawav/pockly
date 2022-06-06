@@ -35,8 +35,12 @@ export function Root() {
 
 			if (Object.keys(session).length === 0) {
 				console.log("Not authenticated. Opening login page...");
-				// TODO: add `next` param to redirect to the `/_share` page?
-				browser.tabs.create({ url: LOGIN_URL });
+				const loginUrl = new URL(LOGIN_URL);
+				loginUrl.searchParams.append(
+					"next",
+					`/_share?url=${encodeURIComponent(url)}`
+				);
+				browser.tabs.create({ url: loginUrl.toString() });
 				return;
 			}
 
