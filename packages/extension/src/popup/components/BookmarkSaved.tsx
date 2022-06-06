@@ -65,10 +65,33 @@ export function BookmarkSaved({ bookmark }: Props) {
 		: "Saved Bookmark";
 
 	return (
-		<div className="flex-grow flex flex-col">
+		<div className="flex-grow flex flex-col gap-2">
 			<div className="flex items-center gap-1 text-xl">
-				<Logo className="h-[1em] w-[1em] text-sky-600" />{" "}
-				<span>{headerText}</span>
+				<Logo className="h-12 w-12 text-sky-600" />
+				<div>
+					<div>{headerText}</div>
+					<div
+						className={cn(
+							"text-sm transition-opacity duration-500",
+							deleted && "opacity-0 pointer-events-none"
+						)}
+						aria-hidden={deleted}
+					>
+						<a
+							className="text-blue-500 hover:underline"
+							href={READING_LIST_URL}
+						>
+							Reading List
+						</a>
+						<span className="text-black"> | </span>
+						<a
+							className="text-blue-500 hover:underline"
+							href={`${BOOKMARK_PAGE_BASE_URL}/${bookmark.id}`}
+						>
+							Bookmark Page
+						</a>
+					</div>
+				</div>
 			</div>
 
 			<div
@@ -78,22 +101,6 @@ export function BookmarkSaved({ bookmark }: Props) {
 				)}
 				aria-hidden={deleted}
 			>
-				<div className="text-sm">
-					<a
-						className="text-blue-500 hover:underline"
-						href={READING_LIST_URL}
-					>
-						Reading List
-					</a>
-					<span className="text-black"> | </span>
-					<a
-						className="text-blue-500 hover:underline"
-						href={`${BOOKMARK_PAGE_BASE_URL}/${bookmark.id}`}
-					>
-						Bookmark Page
-					</a>
-				</div>
-
 				<form
 					className="flex-grow flex flex-col gap-2"
 					onSubmit={handleSubmit}
