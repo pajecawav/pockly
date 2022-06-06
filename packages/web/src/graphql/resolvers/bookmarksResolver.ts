@@ -5,6 +5,7 @@ import {
 	bookmarkUrlSchema,
 	tagNameSchema,
 } from "@/lib/schemas";
+import { cleanUrl } from "@/lib/urls";
 import { getHostnameFromUrl } from "@/utils";
 import { db } from "@pockly/prisma";
 import { z } from "zod";
@@ -147,6 +148,8 @@ builder.mutationField("createBookmark", t =>
 			input: t.arg({ type: CreateBookmarkInput, required: true }),
 		},
 		resolve: async (query, _parent, { input }, { user }) => {
+			input.url = cleanUrl(input.url);
+
 			const metadata = await getPageMetadata(input.url);
 
 			const title =

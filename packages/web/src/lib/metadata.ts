@@ -11,6 +11,7 @@ interface PageMetadata {
 }
 
 export async function getPageMetadata(url: string): Promise<PageMetadata> {
+	// TODO: handle errors
 	const response = await axios.get(url);
 	const { title, image } = await metascraper({ html: response.data, url });
 	return { title, image };
