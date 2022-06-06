@@ -23,13 +23,14 @@
 			"outputs": ["src/__generated__"]
 		},
 		"@pockly/extension#generate": {
-			"dependsOn": ["@pockly/web#generate"]
+			"dependsOn": ["@pockly/web#generate"],
+			"outputs": ["src/__generated__"]
 		},
 		"lint": {
 			"outputs": []
 		},
 		"typecheck": {
-			"dependsOn": ["^generate", "generate"],
+			"dependsOn": ["generate"],
 			"outputs": []
 		},
 		"clean": {
