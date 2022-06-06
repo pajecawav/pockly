@@ -9,6 +9,7 @@ interface Props extends TooltipProps {
 export function Tooltip({ children, ...props }: Props) {
 	return (
 		<ChakraTooltip
+			display={{ base: "none", md: "block" }}
 			bg={useDefaultBackgroundColor()}
 			fontSize="xs"
 			borderWidth="1px"
