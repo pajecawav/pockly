@@ -9,8 +9,8 @@ generator client {
 }
 
 generator pothos {
-  provider     = "prisma-pothos-types"
-  output       = "./generated/pothos.d.ts"
+  provider = "prisma-pothos-types"
+  output   = "./generated/pothos.d.ts"
 }
 
 model Account {
@@ -100,4 +100,12 @@ model Tag {
 
   @@unique([name, userId])
   @@map("tags")
+}
+
+model Thumbnail {
+  id        String @id
+  sourceUrl String
+  url       String
+
+  @@map("thumbnails")
 }

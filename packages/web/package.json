@@ -29,6 +29,7 @@
 		"@pothos/plugin-relay": "^3.12.0",
 		"@pothos/plugin-scope-auth": "^3.9.0",
 		"@pothos/plugin-validation": "^3.4.1",
+		"@supabase/supabase-js": "^1.35.3",
 		"apollo-server-core": "^3.8.2",
 		"apollo-server-micro": "^3.8.2",
 		"axios": "^0.27.2",
@@ -52,6 +53,8 @@
 		"react-remove-scroll": "^2.5.3",
 		"react-textarea-autosize": "^8.3.4",
 		"react-waypoint": "^10.1.0",
+		"sharp": "^0.30.6",
+		"uuid": "^8.3.2",
 		"zustand": "^4.0.0-rc.1"
 	},
 	"devDependencies": {
@@ -73,6 +76,8 @@
 		"@types/react": "^18.0.11",
 		"@types/react-beautiful-dnd": "^13.1.2",
 		"@types/react-dom": "^18.0.5",
+		"@types/sharp": "^0.30.3",
+		"@types/uuid": "^8.3.4",
 		"concurrently": "^7.2.1",
 		"cross-env": "^7.0.3",
 		"dotenv": "^16.0.1",

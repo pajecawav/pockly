@@ -5,6 +5,7 @@ import {
 	bookmarkUrlSchema,
 	tagNameSchema,
 } from "@/lib/schemas";
+import { getThumbnailImage } from "@/lib/thumbnails";
 import { cleanUrl } from "@/lib/urls";
 import { getHostnameFromUrl } from "@/utils";
 import { db } from "@pockly/prisma";
@@ -151,6 +152,10 @@ builder.mutationField("createBookmark", t =>
 			input.url = cleanUrl(input.url);
 
 			const metadata = await getPageMetadata(input.url);
+
+			if (metadata.image) {
+				metadata.image = await getThumbnailImage(metadata.image);
+			}
 
 			const title =
 				input.title ?? metadata.title ?? getHostnameFromUrl(input.url);
