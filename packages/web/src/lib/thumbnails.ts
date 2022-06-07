@@ -22,7 +22,6 @@ export async function getThumbnailImage(imageUrl: string): Promise<string> {
 		},
 	});
 
-	console.log({ thumbnail });
 	if (thumbnail) {
 		return thumbnail.url;
 	}
@@ -54,6 +53,7 @@ async function processImage(imageUrl: string): Promise<Buffer> {
 	// TODO: adjust options
 	const image = await sharp(response.data)
 		.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, { fit: "cover" })
+		.webp()
 		.toBuffer();
 
 	return image;
@@ -63,7 +63,7 @@ async function uploadThumbnail(
 	image: Buffer
 ): Promise<{ id: string; url: string }> {
 	const id = uuid();
-	const path = `thumbnails/${id}`;
+	const path = `thumbnails/${id}.webp`;
 
 	const url = await uploadFile(path, image);
 
