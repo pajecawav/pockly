@@ -1,5 +1,5 @@
 import { db } from "./client";
-import faker from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 // faker.seed(123);
 
