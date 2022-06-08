@@ -23,5 +23,5 @@ html[data-theme="dark"] #nprogress .bar {
 }
 
 svg path {
-	stroke-width: 1.75 !important;
+	stroke-width: 1.5 !important;
 }

@@ -150,6 +150,7 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 										createOption(tag.name)
 									)}
 									createOptionPosition="last"
+									placeholder="Enter tags"
 									isClearable={false}
 									backspaceRemovesValue={true}
 									tabSelectsValue={false}
@@ -164,7 +165,7 @@ export function EditBookmarkTagsModal({ bookmark, onClose }: Props) {
 				</ModalBody>
 
 				<ModalFooter>
-					<Button mr={3} variant="ghost" size="md" onClick={close}>
+					<Button mr={3} variant="outline" size="md" onClick={close}>
 						Cancel
 					</Button>
 					<Button

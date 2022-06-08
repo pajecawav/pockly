@@ -90,7 +90,7 @@ export default function BookmarksWithTagPage() {
 				<HeaderPortal>
 					<Box>{tag}</Box>
 
-					<HStack spacing={{ base: "2", md: "0.5" }} ref={actionsRef}>
+					<HStack spacing="0.5" ref={actionsRef}>
 						<Tooltip
 							label={<TooltipLabel text="Pin tag" hotkey="P" />}
 						>

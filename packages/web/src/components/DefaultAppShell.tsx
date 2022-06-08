@@ -11,7 +11,7 @@ export function DefaultAppShell({ children }: Props) {
 	return (
 		<Stack
 			w="full"
-			maxW="4xl"
+			maxW="5xl"
 			mx="auto"
 			direction="row"
 			px="3"

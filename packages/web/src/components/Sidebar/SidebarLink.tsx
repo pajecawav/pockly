@@ -44,11 +44,7 @@ export const SidebarLink = forwardRef<HTMLAnchorElement, Props>(
 					ref={ref}
 				>
 					{Icon && (
-						<chakra.div
-							w={3.5}
-							marginRight={2}
-							display="inline-block"
-						>
+						<chakra.div marginRight={2} display="inline-block">
 							<Icon />
 						</chakra.div>
 					)}
