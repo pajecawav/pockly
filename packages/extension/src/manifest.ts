@@ -11,7 +11,7 @@ export async function getManifest() {
 	const manifest: Manifest.WebExtensionManifest = {
 		manifest_version: 2,
 		// name: pkg.name,
-		name: "pockly",
+		name: "Save to Pockly",
 		version: pkg.version,
 		// description: pkg.description,
 		browser_action: {
@@ -34,8 +34,7 @@ export async function getManifest() {
 		},
 		permissions: [
 			"tabs",
-			"storage",
-			"activeTab",
+			// TODO: figure out how to require less permissions
 			"http://*/",
 			"https://*/",
 		],
