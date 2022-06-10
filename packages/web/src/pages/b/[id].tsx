@@ -7,6 +7,7 @@ import {
 	BookmarkEditForm,
 	BookmarkEditForm_bookmarkFragment,
 } from "@/components/Bookmark/BookmarkEditForm";
+import { BookmarkNote } from "@/components/Bookmark/BookmarkNote";
 import { HeaderPortal } from "@/components/Header";
 import { TagsList, TagsList_tagFragment } from "@/components/TagsList";
 import { Tooltip } from "@/components/Tooltip";
@@ -28,11 +29,10 @@ import {
 	Spacer,
 	Spinner,
 	Stack,
-	Text,
 } from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { HiOutlineArrowLeft, HiOutlinePencil } from "react-icons/hi";
 
 export default function BookmarkPage() {
@@ -72,27 +72,6 @@ export default function BookmarkPage() {
 	);
 
 	const bookmark = data?.bookmark;
-
-	// TODO: render as markdown
-	const renderedNote = useMemo(() => {
-		if (!bookmark?.note) {
-			return null;
-		}
-
-		return bookmark.note
-			.split("\n")
-			.filter(Boolean)
-			.map((paragraph, index) => (
-				<Text
-					key={index}
-					fontSize="lg"
-					lineHeight="1.7"
-					_notFirst={{ mt: "1em" }}
-				>
-					{paragraph}
-				</Text>
-			));
-	}, [bookmark?.note]);
 
 	if (!bookmark) {
 		return (
@@ -158,7 +137,7 @@ export default function BookmarkPage() {
 			) : (
 				<Stack spacing="2" mt="6">
 					<Box>
-						<Heading as="h2" size="lg">
+						<Heading as="div" size="lg">
 							{bookmark.title}
 						</Heading>
 
@@ -170,8 +149,10 @@ export default function BookmarkPage() {
 							{getHostnameFromUrl(bookmark.url)}
 						</Link>
 					</Box>
+
 					{bookmark.tags && <TagsList tags={bookmark.tags} />}
-					(renderedNote && <Box>{renderedNote}</Box>)
+
+					{bookmark.note && <BookmarkNote text={bookmark.note} />}
 				</Stack>
 			)}
 		</>

@@ -50,6 +50,7 @@
 		"react-dom": "^18.1.0",
 		"react-hook-form": "^7.31.3",
 		"react-icons": "^4.4.0",
+		"react-markdown": "^8.0.3",
 		"react-remove-scroll": "^2.5.4",
 		"react-textarea-autosize": "^8.3.4",
 		"react-waypoint": "^10.3.0",
