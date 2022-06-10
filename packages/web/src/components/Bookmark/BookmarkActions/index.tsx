@@ -88,12 +88,14 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 				/>
 			)}
 
-			<BookmarkActionButton
-				icon={HiOutlineTrash}
-				aria-label="Delete bookmark"
-				data-hotkey="d"
-				onClick={() => setCurrentAction("delete")}
-			/>
+			<Tooltip label={<TooltipLabel text="Delete bookmark" hotkey="D" />}>
+				<BookmarkActionButton
+					icon={HiOutlineTrash}
+					aria-label="Delete bookmark"
+					data-hotkey="d"
+					onClick={() => setCurrentAction("delete")}
+				/>
+			</Tooltip>
 
 			<EditBookmarkTagsModal
 				bookmark={currentAction === "editTags" ? bookmark : null}
