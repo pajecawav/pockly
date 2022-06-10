@@ -21,7 +21,7 @@ export function BookmarkSortingSettings({
 	onChangeOldestFirst,
 }: Props) {
 	return (
-		<Menu autoSelect={false} placement="bottom-start">
+		<Menu autoSelect={false} placement="bottom-end">
 			<MenuButton
 				as={IconButton}
 				variant="ghost"

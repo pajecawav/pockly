@@ -1,7 +1,7 @@
 import { BookmarkActions_BookmarkFragment } from "@/__generated__/operations";
 import gql from "graphql-tag";
 import { useState } from "react";
-import { HiOutlineTag, HiOutlineTrash } from "react-icons/hi";
+import { HiOutlineShare, HiOutlineTag, HiOutlineTrash } from "react-icons/hi";
 import { DeleteBookmarkConfirmationModal } from "../../DeleteBookmarkModal";
 import {
 	EditBookmarkTagsModal,
@@ -23,6 +23,7 @@ export const BookmarkActions_bookmarkFragment = gql`
 
 	fragment BookmarkActions_bookmark on Bookmark {
 		id
+		url
 		liked
 		archived
 		...EditBookmarkTagsModal_bookmark
@@ -79,14 +80,20 @@ export function BookmarkActions({ bookmark, afterDelete }: Props) {
 				/>
 			</Tooltip>
 
-			<Tooltip label={<TooltipLabel text="Delete" hotkey="D" />}>
+			{"share" in navigator && (
 				<BookmarkActionButton
-					icon={HiOutlineTrash}
-					aria-label="Delete bookmark"
-					data-hotkey="d"
-					onClick={() => setCurrentAction("delete")}
+					icon={HiOutlineShare}
+					aria-label="Share bookmark"
+					onClick={() => navigator.share({ url: bookmark.url })}
 				/>
-			</Tooltip>
+			)}
+
+			<BookmarkActionButton
+				icon={HiOutlineTrash}
+				aria-label="Delete bookmark"
+				data-hotkey="d"
+				onClick={() => setCurrentAction("delete")}
+			/>
 
 			<EditBookmarkTagsModal
 				bookmark={currentAction === "editTags" ? bookmark : null}
