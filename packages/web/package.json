@@ -30,7 +30,7 @@
 		"@pothos/plugin-scope-auth": "^3.10.0",
 		"@pothos/plugin-validation": "^3.4.2",
 		"@supabase/supabase-js": "^1.35.4",
-		"apollo-server-core": "^3.9.0",
+		"apollo-server-core": "^3.10.1",
 		"apollo-server-micro": "^3.9.0",
 		"axios": "^0.27.2",
 		"chakra-react-select": "^4.1.3",
