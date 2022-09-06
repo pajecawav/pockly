@@ -3,16 +3,22 @@ require("dotenv-expand").expand(
 );
 
 const path = require("path");
-const withPWA = require("next-pwa");
 
 const withTM = require("next-transpile-modules")(["@pockly/prisma"]);
+
+const withPWA = require("next-pwa")({
+	dest: "public",
+	dynamicStartUrl: true,
+	dynamicStartUrlRedirect: "/auth/login",
+	disable: process.env.NODE_ENV === "development",
+});
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
 	enabled: ["true", "1"].includes(process.env.ANALYZE),
 });
 
 /** @type {import('next').NextConfig} */
-const config = {
+let config = {
 	// TODO: for some reason react-beautiful-dnd doesn't work with strict-mode
 	reactStrictMode: false,
 	webpack(config) {
@@ -21,16 +27,8 @@ const config = {
 	},
 };
 
-module.exports = withBundleAnalyzer(
-	withPWA(
-		withTM({
-			...config,
-			pwa: {
-				dest: "public",
-				dynamicStartUrl: true,
-				dynamicStartUrlRedirect: "/auth/login",
-				disable: process.env.NODE_ENV === "development",
-			},
-		})
-	)
-);
+config = withTM(config);
+config = withPWA(config);
+config = withBundleAnalyzer(config);
+
+module.exports = config;
