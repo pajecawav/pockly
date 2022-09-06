@@ -6,7 +6,7 @@
 		"clean": "rimraf node_modules .turbo"
 	},
 	"devDependencies": {
-		"prettier": "^2.7.1",
-		"rimraf": "^3.0.2"
+		"prettier": "2.7.1",
+		"rimraf": "3.0.2"
 	}
 }
