@@ -45,13 +45,10 @@ builder.queryField("bookmark", t =>
 		type: "Bookmark",
 		args: { id: t.arg.string({ required: true }) },
 		resolve: async (query, _root, { id }, { user }) => {
-			// TS complains when result is returned directly
-			const bookmark = await db.bookmark.findFirst({
+			return db.bookmark.findFirstOrThrow({
 				...query,
 				where: { id, userId: user!.id },
-				rejectOnNotFound: true,
 			});
-			return bookmark;
 		},
 	})
 );
@@ -205,9 +202,8 @@ builder.mutationField("updateBookmark", t =>
 			input: t.arg({ type: UpdateBookmarkInput, required: true }),
 		},
 		resolve: async (query, _parent, { id, input }, { user }) => {
-			await db.bookmark.findFirst({
+			await db.bookmark.findFirstOrThrow({
 				where: { id, userId: user!.id },
-				rejectOnNotFound: true,
 			});
 
 			const inputToDateValue = (bool: boolean | undefined) =>
@@ -259,9 +255,8 @@ builder.mutationField("updateBookmarkTags", t =>
 			const tagNamesSet = new Set(tagNames);
 
 			const existingTags = await db.bookmark
-				.findUnique({
+				.findUniqueOrThrow({
 					where: { id },
-					rejectOnNotFound: true,
 				})
 				.tags();
 			const existingTagNames = existingTags.map(tag => tag.name);
@@ -310,9 +305,8 @@ builder.mutationField("deleteBookmark", t =>
 			id: t.arg.string({ required: true }),
 		},
 		resolve: async (_, args, { user }) => {
-			await db.bookmark.findFirst({
+			await db.bookmark.findFirstOrThrow({
 				where: { id: args.id, userId: user!.id },
-				rejectOnNotFound: true,
 			});
 
 			return await db.bookmark.delete({ where: { id: args.id } });
