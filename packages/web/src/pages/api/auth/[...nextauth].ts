@@ -8,8 +8,8 @@ export default NextAuth({
 	adapter: PrismaAdapter(db),
 	providers: [
 		GithubProvider({
-			clientId: process.env.GITHUB_ID,
-			clientSecret: process.env.GITHUB_SECRET,
+			clientId: process.env.GITHUB_ID!,
+			clientSecret: process.env.GITHUB_SECRET!,
 		}),
 	],
 	theme: {

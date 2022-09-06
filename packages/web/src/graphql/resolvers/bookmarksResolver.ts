@@ -45,11 +45,13 @@ builder.queryField("bookmark", t =>
 		type: "Bookmark",
 		args: { id: t.arg.string({ required: true }) },
 		resolve: async (query, _root, { id }, { user }) => {
-			return db.bookmark.findFirst({
+			// TS complains when result is returned directly
+			const bookmark = await db.bookmark.findFirst({
 				...query,
 				where: { id, userId: user!.id },
 				rejectOnNotFound: true,
 			});
+			return bookmark;
 		},
 	})
 );
