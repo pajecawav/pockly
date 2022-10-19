@@ -27,6 +27,6 @@
 		"lint-staged": "^13.0.3",
 		"prettier": "^2.7.1",
 		"rimraf": "^3.0.2",
-		"turbo": "^1.4.5"
+		"turbo": "^1.5.6"
 	}
 }
